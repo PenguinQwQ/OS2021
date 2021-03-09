@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <assert.h>
+#include <string.h>
 
 char path[256] = {"/proc/"};
 
@@ -14,7 +15,18 @@ int main(int argc, char *argv[]) {
   assert(dir != NULL);
   struct dirent *ptr;
   while ((ptr = readdir(dir)) != NULL) {
-	printf("d_name: %s\n", ptr->d_name);
+	char *p;
+	p = malloc(sizeof(ptr->dname) * sizeof(char));
+	int len = strlen(ptr->name);
+	bool judge = true;
+	for (int i = 0; i < len; i++) {
+		if (ptr->dname[i] < '0' || ptr->dname[i] > '9') {
+			judge = false;
+			break;
+		}	
+	}
+	if (judge == false) continue;
+	printf("d_name: %s\n", ptr->dname);
   }
   return 0;
 }
