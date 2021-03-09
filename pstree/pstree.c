@@ -6,6 +6,7 @@
 #include <stdbool.h>
 
 char path[256] = {"/proc/"};
+char finalpath[256];
 
 int main(int argc, char *argv[]) {
   for (int i = 0; i < argc; i++) {
@@ -26,7 +27,11 @@ int main(int argc, char *argv[]) {
 		}	
 	}
 	if (judge == false) continue;
-	printf("d_name: %s\n", ptr->d_name);
+	finalpath[0] = '\0';
+	strcat(finalpath, path);
+	strcat(finalpath, ptr->d_name);
+	strcat(finalpath, "\\status");
+	printf("d_name: %s\n", finalpath);
   }
   return 0;
 }
