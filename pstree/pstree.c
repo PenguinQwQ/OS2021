@@ -7,7 +7,8 @@
 
 char path[256] = {"/proc/"};
 char finalpath[256];
-
+char buff[1024];
+ 
 int main(int argc, char *argv[]) {
   for (int i = 0; i < argc; i++) {
     assert(argv[i]);
@@ -33,8 +34,9 @@ int main(int argc, char *argv[]) {
 	strcat(finalpath, "/status");
 	FILE *fp;
 	fp = fopen(finalpath, "r");
-	fread(path, 256, 1, fp);
-	printf("%s\n", path);
+	assert(fp != NULL);
+	fread(buff, 1024, 1, fp);
+	printf("%s\n", buff);
 	fclose(fp);
 	break;	
   }
