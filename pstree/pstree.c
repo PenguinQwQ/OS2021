@@ -4,8 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
-const int N = 1024;
+#define N 1024
 
 char path[N] = {"/proc/"};
 char finalpath[N];
