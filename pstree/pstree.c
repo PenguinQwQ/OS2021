@@ -17,8 +17,6 @@ int main(int argc, char *argv[]) {
   assert(dir != NULL);
   struct dirent *ptr;
   while ((ptr = readdir(dir)) != NULL) {
-	char *p;
-	p = malloc(sizeof(ptr->d_name) * sizeof(char));
 	int len = strlen(ptr->d_name);
 	bool judge = true;
 	for (int i = 0; i < len; i++) {
