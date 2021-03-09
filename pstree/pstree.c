@@ -2,7 +2,7 @@
 #include <dirent.h>
 #include <assert.h>
 
-char path[256] = {"/proc"};
+char path[256] = {"/proc/"};
 
 int main(int argc, char *argv[]) {
   for (int i = 0; i < argc; i++) {
