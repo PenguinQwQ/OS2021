@@ -16,11 +16,11 @@ int main(int argc, char *argv[]) {
   struct dirent *ptr;
   while ((ptr = readdir(dir)) != NULL) {
 	char *p;
-	p = malloc(sizeof(ptr->dname) * sizeof(char));
-	int len = strlen(ptr->name);
+	p = malloc(sizeof(ptr->d_name) * sizeof(char));
+	int len = strlen(ptr->d_name);
 	bool judge = true;
 	for (int i = 0; i < len; i++) {
-		if (ptr->dname[i] < '0' || ptr->dname[i] > '9') {
+		if (ptr->d_name[i] < '0' || ptr->d_name[i] > '9') {
 			judge = false;
 			break;
 		}	
