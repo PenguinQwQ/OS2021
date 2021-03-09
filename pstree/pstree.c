@@ -31,10 +31,11 @@ int main(int argc, char *argv[]) {
 	strcat(finalpath, path);
 	strcat(finalpath, ptr->d_name);
 	strcat(finalpath, "/status");
-	FILE file = fopen(finalpath, "r");
-	fread(path, 256, 1, file);
+	FILE *fp;
+	fp = fopen(finalpath, "r");
+	fread(path, 256, 1, fp);
 	printf("%s\n", path);
-	fclose(file);
+	fclose(fp);
 	break;	
   }
   return 0;
