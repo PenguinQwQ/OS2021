@@ -2,6 +2,8 @@
 #include <dirent.h>
 #include <assert.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 char path[256] = {"/proc/"};
 
@@ -26,7 +28,7 @@ int main(int argc, char *argv[]) {
 		}	
 	}
 	if (judge == false) continue;
-	printf("d_name: %s\n", ptr->dname);
+	printf("d_name: %s\n", ptr->d_name);
   }
   return 0;
 }
