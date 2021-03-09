@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
     printf("argv[%d] = %s\n", i, argv[i]);
   }
   assert(!argv[argc]);
-  Dir *dir = opendir("/proc");
+  DIR *dir = opendir("/proc");
   assert(dir != NULL);
   return 0;
 }
