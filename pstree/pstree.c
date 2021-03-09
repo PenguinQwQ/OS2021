@@ -10,7 +10,6 @@ int main(int argc, char *argv[]) {
     printf("argv[%d] = %s\n", i, argv[i]);
   }
   assert(!argv[argc]);
-  strcmp(path, "")
   DIR *dir = opendir(path);
   assert(dir != NULL);
   struct dirent *ptr;
