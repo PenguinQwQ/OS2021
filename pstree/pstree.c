@@ -46,8 +46,9 @@ int main(int argc, char *argv[]) {
 	assert(fp != NULL);
 	sum = sum + 1;
 	char tep;
-	fscanf(fp, "%d %s %c %d", e[sum].pid, e[sum].name, tep, e[sum].ppid);
-	printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
+	fscanf(fp, "%d %s %c %d", (int)e[sum].pid, e[sum].name, tep, 
+							  (int)e[sum].ppid);
+	printf("%d %s %d\n", (int)e[sum].pid, e[sum].name, (int)e[sum].ppid);
 	fclose(fp);
   }
   printf("%d\n", sum);
