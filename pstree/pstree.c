@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 	finalpath[0] = '\0';
 	strcat(finalpath, path);
 	strcat(finalpath, ptr->d_name);
-	strcat(finalpath, "/status");
+	strcat(finalpath, "/stat");
 	FILE *fp;
 	fp = fopen(finalpath, "r");
 	assert(fp != NULL);
