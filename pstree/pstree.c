@@ -30,8 +30,12 @@ int main(int argc, char *argv[]) {
 	finalpath[0] = '\0';
 	strcat(finalpath, path);
 	strcat(finalpath, ptr->d_name);
-	strcat(finalpath, "\\status");
-	printf("d_name: %s\n", finalpath);
+	strcat(finalpath, "/status");
+	FILE file = fopen(finalpath, "r");
+	fread(path, 256, 1, file);
+	printf("%s\n", path);
+	fclose(file);
+	break;	
   }
   return 0;
 }
