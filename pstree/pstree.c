@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 
 	fclose(fp);
   }
-  solve(1, 0);
+  solve(0, 0);
   return 0;
 }
 
