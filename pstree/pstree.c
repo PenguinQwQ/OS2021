@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 		strcat(e[sum].name, buff);	
 	}
 	fscanf(fp, "%c %d", &tep, &e[sum].ppid);
-//	printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
+	printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
 	fclose(fp);
   }
   solve(1, 0);
