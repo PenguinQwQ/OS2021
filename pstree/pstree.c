@@ -26,7 +26,8 @@ void solve(int now, int dep) {
 	for (int i = 1; i <= dep; i++) printf("\t");
 	int len = strlen(e[now].name) - 1;
 	for (int i = 1; i < len; i++) printf("%c", e[now].name[i]);
-	if (flag[0] == true) printf("(%d)\n", e[now].pid);
+	if (flag[0] == true) printf("(%d)", e[now].pid);
+	printf("\n");
 	for (int i = 1; i <= sum; i++) {
 		if (e[i].ppid == e[now].pid) solve(i, dep + 1);	
 	}
