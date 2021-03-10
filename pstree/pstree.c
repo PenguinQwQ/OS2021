@@ -30,7 +30,7 @@ void solve(int now, int dep) {
  
 bool check_parentheses(char *tep) {
 	int len = strlen(tep), st = 0;
-	for (int i = 0; i < tep; i++) 
+	for (int i = 0; i < len; i++) 
 		if (tep[i] == '(') st++;
 		else if (tep[i] == ')') st--;
 	if (st == 0) return true;
