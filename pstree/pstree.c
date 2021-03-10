@@ -65,12 +65,12 @@ int main(int argc, char *argv[]) {
 	assert(fp != NULL);
 	sum = sum + 1;
 	char tep;
-	fscanf(fp, "%d %s", &e[sum].pid, e[sum].name);
+	fscanf(fp, "%d %s %c %d", &e[sum].pid, e[sum].name, &tep, &e[sum].ppid);
 	while(check_parentheses(e[sum].name) == false) {
 		fscanf(fp, "%s", buff);
 		strcat(e[sum].name, buff);	
 	}
-	fscanf(fp, "%c %d", &tep, &e[sum].ppid);
+//	fscanf(fp, "%c %d", &tep, &e[sum].ppid);
 
 	//printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
 	fclose(fp);
