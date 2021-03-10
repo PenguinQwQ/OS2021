@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 	fp = fopen(finalpath, "r");
 	assert(fp != NULL);
 	sum = sum + 1;
-	fread(buff, sizeof(buff) * sizeof(char), 1, fp);
+//	fread(buff, sizeof(buff) * sizeof(char), 1, fp);
 	//deal_string(sum);
 	
 	char tep;
