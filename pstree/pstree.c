@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
 	fp = fopen(finalpath, "r");
 	assert(fp != NULL);
 	sum = sum + 1;
-	fread(buff, strlen(buff), 1, fp);
+	fread(buff, 20, 1, fp);
 	printf("%s\n", buff);
 	/*
 	char tep;
