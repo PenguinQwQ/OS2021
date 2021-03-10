@@ -66,8 +66,9 @@ int main(int argc, char *argv[]) {
 	sum = sum + 1;
 	char tep;
 	fscanf(fp, "%d %s %c %d", &e[sum].pid, e[sum].name, &tep, &e[sum].ppid);
-	while(check_parentheses(e[sum].name) == false) {
-		fscanf(fp, "%s", buff);
+	if(check_parentheses(e[sum].name) == false) {
+		fscanf(fp, "%d %s %s %c %d", e[sum].pid, e[sum].name, buff, 
+								     &tep, &e[sum].ppid);
 		strcat(e[sum].name, buff);	
 	}
 //	fscanf(fp, "%c %d", &tep, &e[sum].ppid);
