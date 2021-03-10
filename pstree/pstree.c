@@ -101,6 +101,7 @@ int main(int argc, char *argv[]) {
 	fscanf(fp, "%d %s %c %d", &e[sum].pid, e[sum].name, &tep, &e[sum].ppid);
 	
 	if(check_parentheses(e[sum].name) == false) {
+		sum = sum - 1;
 		continue;
 		/*
 		fscanf(fp, "%d %s%s %c %d", &e[sum].pid, e[sum].name
