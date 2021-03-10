@@ -46,13 +46,7 @@ void error_message(char *tep) {
 }
 
 void version_message() {
-	fprintf(stderr, "pstree (PSmisc) UNKNOWN\n
-Copyright (C) 1993-2017 Werner Almesberger and Craig Small\n
-\n
-PSmisc comes with ABSOLUTELY NO WARRANTY.\n
-This is free software, and you are welcome to redistribute it under\n
-the terms of the GNU General Public License.\n
-For more information about these matters, see the files named COPYING.\n");	
+	fprintf(stderr, "pstree (PSmisc) UNKNOWN\nCopyright (C) 1993-2017 Werner Almesberger and Craig Small\n\nPSmisc comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it under\nthe terms of the GNU General Public License.\nFor more information about these matters, see the files named COPYING.\n");	
 }
 int main(int argc, char *argv[]) {
 
