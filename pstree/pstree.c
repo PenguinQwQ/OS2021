@@ -24,8 +24,9 @@ struct process{
 
 void solve(int now, int dep) {
 	for (int i = 1; i <= dep; i++) printf("\t");
-	if (flag[0] == true) printf("%s(%d)\n", e[now].name, e[now].pid);
-	else printf("%s\n", e[now].name);
+	int len = strlen(e[now].name) - 1;
+	for (int i = 1; i < len; i++) printf("%c", e[now].name[i]);
+	if (flag[0] == true) printf("(%d)\n", e[now].pid);
 	for (int i = 1; i <= sum; i++) {
 		if (e[i].ppid == e[now].pid) solve(i, dep + 1);	
 	}
