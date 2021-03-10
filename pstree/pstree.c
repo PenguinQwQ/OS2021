@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
 	assert(fp != NULL);
 	sum = sum + 1;
 	fread(buff, sizeof(buff) * sizeof(char), 1, fp);
-	printf("%s\n\n", buff, sum);
+	printf("%s\n%d\n", buff, sum);
 	/*
 	char tep;
 	fscanf(fp, "%d %s %c %d", &e[sum].pid, e[sum].name, &tep, &e[sum].ppid);
