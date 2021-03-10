@@ -19,11 +19,11 @@ struct process{
 }e[N];
 
 
-void solve(int n, int k) {
-	for (int i = 1; i <= k; i++) printf("\t");
-	printf("%s\n", e[i].name);
+void solve(int now, int dep) {
+	for (int i = 1; i <= dep; i++) printf("\t");
+	printf("%s\n", e[now].name);
 	for (int i = 1; i <= sum; i++) {
-		if (e[i].ppid == e[n].pid) solve(i, k + 1);	
+		if (e[i].ppid == e[now].pid) solve(i, dep + 1);	
 	}
 	return;
 }
