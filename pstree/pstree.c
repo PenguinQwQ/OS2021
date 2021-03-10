@@ -11,6 +11,9 @@ char path[N] = {"/proc/"};
 char finalpath[N];
 char buff[N];
 int sum = 0;
+bool flag[3] = {false, false, false};
+char arg[6][30] = {"-p", "-n", "-V", 
+						"--show-pids", "--numeric-sort","--version"};
 
 struct process{
 	char name[N];
@@ -21,7 +24,8 @@ struct process{
 
 void solve(int now, int dep) {
 	for (int i = 1; i <= dep; i++) printf("\t");
-	printf("%s(%d)\n", e[now].name, e[now].pid);
+	if (flag[0] == true) printf("%s(%d)\n", e[now].name, e[now].pid);
+	else printf("%s\n", e[now].name);
 	for (int i = 1; i <= sum; i++) {
 		if (e[i].ppid == e[now].pid) solve(i, dep + 1);	
 	}
@@ -37,12 +41,44 @@ bool check_parentheses(char *tep) {
 	else return false;
 }
 
+void error_message(char *tep) {
+	fprintf(stderr, "invalid option -- '%s'\n", tep);	
+}
+
+void version_message() {
+	fprintf(stderr, "pstree (PSmisc) UNKNOWN\n
+Copyright (C) 1993-2017 Werner Almesberger and Craig Small\n
+\n
+PSmisc comes with ABSOLUTELY NO WARRANTY.\n
+This is free software, and you are welcome to redistribute it under\n
+the terms of the GNU General Public License.\n
+For more information about these matters, see the files named COPYING.\n");	
+}
 int main(int argc, char *argv[]) {
+
   for (int i = 0; i < argc; i++) {
     assert(argv[i]);
-    printf("argv[%d] = %s\n", i, argv[i]);
+	if (i == 0) continue;
+	bool bj = false;
+	for (int j = 0; j < 6; j++) {
+		if (strcmp(argv[i], arg[j]) == 0) {
+			bj = true;
+			flag[j % 3] = true;	
+		}
+	}
+
+	if (bj == false) {
+		error_message(argv[i]);
+		return 0;
+	}
+
+	if (flag[2] == true) {
+		version_message();
+		return 0;	
+	} 
   }
   assert(!argv[argc]);
+
   DIR *dir = opendir(path);
   assert(dir != NULL);
   struct dirent *ptr;
