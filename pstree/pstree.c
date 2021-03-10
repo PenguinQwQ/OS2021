@@ -21,7 +21,7 @@ struct process{
 
 void solve(int now, int dep) {
 	for (int i = 1; i <= dep; i++) printf("\t");
-	printf("%s\n", e[now].name);
+	printf("%s(%d)\n", e[now].name, e[now].pid);
 	for (int i = 1; i <= sum; i++) {
 		if (e[i].ppid == e[now].pid) solve(i, dep + 1);	
 	}
