@@ -36,6 +36,13 @@ bool check_parentheses(char *tep) {
 	if (st == 0) return true;
 	else return false;
 }
+/*
+void deal_string(int now) {
+	int len = strlen(buff);
+	for (int i = 0; i < len; i++) {
+		if ()
+	}	
+}*/
 
 int main(int argc, char *argv[]) {
   for (int i = 0; i < argc; i++) {
@@ -65,8 +72,8 @@ int main(int argc, char *argv[]) {
 	assert(fp != NULL);
 	sum = sum + 1;
 	fread(buff, sizeof(buff) * sizeof(char), 1, fp);
-	printf("%s\n%d\n", buff, sum);
-	/*
+	//deal_string(sum);
+	
 	char tep;
 	fscanf(fp, "%d %s %c %d", &e[sum].pid, e[sum].name, &tep, &e[sum].ppid);
 	if(check_parentheses(e[sum].name) == false) {
@@ -77,7 +84,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
-	*/
+	
 	fclose(fp);
   }
 //  solve(1, 0);
