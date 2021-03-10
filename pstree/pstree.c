@@ -5,10 +5,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #define N 1024
+#define M 1000000
 
 char path[N] = {"/proc/"};
 char finalpath[N];
 char buff[N];
+int sum = 0;
 
 struct process{
 	char name[N];
@@ -16,6 +18,15 @@ struct process{
 	pid_t ppid;	
 }e[N];
 
+
+void solve(int n, int k) {
+	for (int i = 1; i <= k; i++) printf("\t");
+	printf("%s\n", e[i].name);
+	for (int i = 1; i <= sum; i++) {
+		if (e[i].ppid == e[n].pid) solve(i, k + 1);	
+	}
+	return;
+}
  
 int main(int argc, char *argv[]) {
   for (int i = 0; i < argc; i++) {
@@ -26,7 +37,6 @@ int main(int argc, char *argv[]) {
   DIR *dir = opendir(path);
   assert(dir != NULL);
   struct dirent *ptr;
-  int sum = 0;
   while ((ptr = readdir(dir)) != NULL) {
 	int len = strlen(ptr->d_name);
 	bool judge = true;
@@ -47,9 +57,21 @@ int main(int argc, char *argv[]) {
 	sum = sum + 1;
 	char tep;
 	fscanf(fp, "%d %s %c %d", &e[sum].pid, e[sum].name, &tep,&e[sum].ppid);
-	printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
+//	printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
 	fclose(fp);
   }
-  printf("%d\n", sum);
+  solve(1, 0);
   return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
