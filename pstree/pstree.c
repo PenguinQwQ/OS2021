@@ -64,6 +64,8 @@ int main(int argc, char *argv[]) {
 	fp = fopen(finalpath, "r");
 	assert(fp != NULL);
 	sum = sum + 1;
+	fread(buff, sizeof(buff) * sizeof(char), 1, fp);
+	/*
 	char tep;
 	fscanf(fp, "%d %s %c %d", &e[sum].pid, e[sum].name, &tep, &e[sum].ppid);
 	if(check_parentheses(e[sum].name) == false) {
@@ -74,6 +76,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
+	*/
 	fclose(fp);
   }
   solve(1, 0);
