@@ -67,10 +67,10 @@ int main(int argc, char *argv[]) {
 	char tep;
 	fscanf(fp, "%d %s %c %d", &e[sum].pid, e[sum].name, &tep, &e[sum].ppid);
 	if(check_parentheses(e[sum].name) == false) {
-		printf("%d\n", e[sum].pid);
 		fscanf(fp, "%d %s %s %c %d", &e[sum].pid, e[sum].name, buff, 
 								     &tep, &e[sum].ppid);
 		strcat(e[sum].name, buff);	
+		printf("%d %s\n", e[sum].pid, buff);
 	}
 
 	printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
