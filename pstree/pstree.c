@@ -28,6 +28,15 @@ void solve(int now, int dep) {
 	return;
 }
  
+bool check_parentheses(char *tep) {
+	int len = strlen(tep), st = 0;
+	for (int i = 0; i < tep; i++) 
+		if (tep[i] == '(') st++;
+		else if (tep[i] == ')') st--;
+	if (st == 0) return true;
+	else return false;
+}
+
 int main(int argc, char *argv[]) {
   for (int i = 0; i < argc; i++) {
     assert(argv[i]);
@@ -56,8 +65,13 @@ int main(int argc, char *argv[]) {
 	assert(fp != NULL);
 	sum = sum + 1;
 	char tep;
-	fscanf(fp, "%d %s %c %d", &e[sum].pid, e[sum].name, &tep,&e[sum].ppid);
-	printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
+	fscanf(fp, "%d %s", &e[sum].pid, e[sum].name);
+	while(check_parentheses(e[sum].name) == false) {
+		fscanf(fp, "%s", buff);
+		strcat(e[sum.name], buff);	
+	}
+	fscanf(fp, "%c %d", &tep, &e[sum].ppid);
+//	printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
 	fclose(fp);
   }
   solve(1, 0);
