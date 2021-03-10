@@ -65,6 +65,7 @@ int main(int argc, char *argv[]) {
 	assert(fp != NULL);
 	sum = sum + 1;
 	fgets(buff, 5, fp);
+	buff[6] = 0;
 	printf("%s\n", buff);
 	/*
 	char tep;
