@@ -64,10 +64,6 @@ int main(int argc, char *argv[]) {
 	fp = fopen(finalpath, "r");
 	assert(fp != NULL);
 	sum = sum + 1;
-	fgets(buff, 5, fp);
-	buff[6] = 0;
-	printf("%s\n", buff);
-	/*
 	char tep;
 	fread(fp, "%d %s", &e[sum].p、id, e[sum].name);
 	while(check_parentheses(e[sum].name) == false) {
@@ -75,7 +71,6 @@ int main(int argc, char *argv[]) {
 		strcat(e[sum].name, buff);	
 	}
 	fscanf(fp, "%c %d", &tep, &e[sum].ppid);
-	*/
 
 	//printf("%d %s %d\n", e[sum].pid, e[sum].name, e[sum].ppid);
 	fclose(fp);
