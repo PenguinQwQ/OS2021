@@ -9,24 +9,26 @@ struct baffle player1, player2;
 
 int main(const char *args) {
   ioe_init();
-  puts("\033[5;34m Welcome to Pinball Game!\033[0m\n");
+  puts("\033[1;34m Welcome to Pinball Game!\033[0m\n");
   puts("\033[1;34m Player1 operator the baffle with 'A' and 'D'.\033[0m\n");
   puts("\033[1;34m Player2 operator the baffle with 'Left' and 'Right'.\033[0m\n");
   puts("\033[1;34m Type 'P' to speed up, and 'L' to speed down.\033[0m\n");
   puts("\033[1;34m Type 'Enter' to increase the number of Pinballs\033[0m\n");
   puts("\033[1;34m Type 'M' to restart the game\033[0m\n");
   puts("\033[1;34m Type 'ESC' to exit\033[0m\n");
+  puts("\033[5;31m Type 'S' to start the game immediately!\033[0m\n");
   splash();
   init_location();
 
 	
   int next_frame = 0, t = 0, speed = init_speed;
+  while(read_key() != AM_KEY_S);
   while (1) {
 	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame);
     next_frame += 1000 / FPS;
 	test_hit();
 	t++;
-	if (t >= 30 && t % speed == 0)update_obj();
+	if (t % speed == 0)update_obj();
 	int key = 0;
 	while ((key = read_key()) != AM_KEY_NONE) {
 		if (key == AM_KEY_ESCAPE) halt(0);
