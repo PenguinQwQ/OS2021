@@ -5,7 +5,7 @@
 #define COL_WHITE  0xeeeeee
 #define COL_RED    0xff0033
 #define COL_GREEN  0x00cc33
-#define length 2
+#define length 6
 static int w, h, block_size;
 uint32_t texture[128][128];
 
@@ -110,7 +110,10 @@ void update_player2(int dir) {
 
 void test_hit() {
 	if (texture[obj.x + obj.v_x][obj.y + obj.v_y] != COL_PURPLE) {
-		if (obj.x + obj.v_x == 0 || obj.x + obj.v_x == w) obj.v_x *= -1;
-		if (obj.y + obj.v_y == 0 || obj.y + obj.v_y == h) obj.v_y *= -1;		}		
+		if (obj.x + obj.v_x == 0 || obj.x + obj.v_x == w - 1) 
+			obj.v_x *= -1;
+		if (obj.y + obj.v_y == 0 || obj.y + obj.v_y == h - 1) 
+			obj.v_y *= -1;		
+	}		
 }	
 	
