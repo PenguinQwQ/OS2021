@@ -142,7 +142,7 @@ void test_bound() {
 	for (int i = 0; i < num; i++) 
 		if (obj[i].y == 0 || obj[i].y == h - 1) {
 			if (obj[i].y == 0) puts("\033[1;31m Player2 win!\033[0m\n");
-			else puts("\033[1;31m Player1 win!\n");
+			else puts("\033[1;31m Player1 win!\033[0m\n");
 			crash = 1;
 			for (int i = 0; i < w; i++)
 				for (int j = 0; j < h; j++)
