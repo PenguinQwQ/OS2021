@@ -2,13 +2,14 @@
 
 #define FPS 30
 #define init_speed 5
+#define BLUE \\033[1;34;40m
 
 struct object obj[10];
 struct baffle player1, player2;
 
 int main(const char *args) {
   ioe_init();
-  puts("Welcome to Pinball Game!\n");
+  puts("BLUE Welcome to Pinball Game!\n");
   puts("Player1 operator the baffle with 'A' and 'D'.\n");
   puts("Player2 operator the baffle with 'Left' and 'Right'\n");
   puts("Type 'P' to speed up, and 'L' to speed down.\n");
