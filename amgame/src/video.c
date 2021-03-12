@@ -69,6 +69,8 @@ void init_location() {
 	for (int i = player2.start; i < player2.start + length; i++) {
 		texture[i][h - 1] = COL_WHITE;	
 	}
+	for (int i = 0; i < h; i++) texture[w - 1][i] = COL_WHITE;
+	for (int i = 0; i < h; i++) texture[0][i]     = COL_WHITE;
 	update_screen();
 }
 
