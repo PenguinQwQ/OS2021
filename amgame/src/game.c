@@ -2,7 +2,7 @@
 
 #define FPS 30
 
-struct object obj;
+struct object obj[10];
 struct baffle player1, player2;
 
 int main(const char *args) {

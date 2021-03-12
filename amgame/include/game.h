@@ -11,7 +11,7 @@ struct baffle{
 	int start;
 	};
 
-extern struct object obj;
+extern struct object obj[10];
 extern struct baffle player1, player2;
 
 void splash();

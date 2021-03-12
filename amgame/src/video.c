@@ -7,10 +7,13 @@
 #define COL_GREEN  0x00cc33
 #define COL_BLUE   0x0000ff
 #define length 6
-static int w, h, block_size, crash = 0;
+static int w, h, block_size, crash = 0, num;
 uint32_t texture[128][128];
 
-extern struct object obj;
+int dx[4] = {1, 1, -1, -1};
+int dy[4] = {1, -1, 1, -1};
+
+extern struct object obj[10];
 
 extern struct baffle player1, player2;
 
@@ -56,6 +59,7 @@ void update_screen() {
 }
 
 void splash() {
+  num = 1;
   crash = 0;
   init();
   for (int i = 0; i < w; i++)
@@ -65,9 +69,11 @@ void splash() {
 }
 
 void init_location() {
-	obj.x = w / 2, obj.y = h / 2;
-	obj.v_x = 1, obj.v_y = 1;
-	texture[obj.x][obj.y] = COL_WHITE;
+	for (int i = 0; i < num; i++) {
+		obj[i].x = w / 2, obj[i].y = h / 2;
+		obj[i].v_x = dx[rand() % 4], obj[i].v_y = dy[rand() % 4];
+		texture[obj[i].x][obj[i].y] = COL_WHITE;
+	}
 	player1.start = w / 2 - (length / 2);
 	player2.start = w / 2 - (length / 2);
 	for (int i = player1.start; i < player1.start + length; i++) {
@@ -83,9 +89,11 @@ void init_location() {
 
 void update_obj() {
 	if (crash) return;
-	texture[obj.x][obj.y] = COL_PURPLE;
-	obj.x += obj.v_x, obj.y += obj.v_y;
-	texture[obj.x][obj.y] = COL_WHITE;	
+	for (int i = 0; i < num; i++) {
+		texture[obj[i].x][obj[i].y] = COL_PURPLE;
+		obj[i].x += obj[i].v_x, obj[i].y += obj[i].v_y;
+		texture[obj[i].x][obj[i].y] = COL_WHITE;
+	}
 	update_screen();
 }
 
@@ -119,21 +127,25 @@ void update_player2(int dir) {
 
 void test_hit() {
 	if (crash) return;
-	if (texture[obj.x + obj.v_x][obj.y + obj.v_y] != COL_PURPLE) {
-		if (obj.x + obj.v_x == 0 || obj.x + obj.v_x == w - 1) 
-			obj.v_x *= -1;
-		if (obj.y + obj.v_y == 0 || obj.y + obj.v_y == h - 1) 
-			obj.v_y *= -1;		
-	}		
+	for (int i = 0; i < num; i++) {
+		if (texture[obj[i].x + obj[i].v_x][obj[i].y + obj[i].v_y] != COL_PURPLE) {
+			if (obj[i].x + obj[i].v_x == 0 || obj[i].x + obj[i].v_x == w - 1) 
+				obj[i].v_x *= -1;
+			if (obj[i].y + obj[i].v_y == 0 || obj[i].y + obj[i].v_y == h - 1) 
+				obj[i].v_y *= -1;		
+		}
+	}
 }
 
 void test_bound() {
 	if (crash) return;
-	if (obj.y == 0 || obj.y == h - 1) {
-		crash = 1;
-		for (int i = 0; i < w; i++)
-			for (int j = 0; j < h; j++)
-				texture[i][j] = COL_BLUE;
-		update_screen();
-	}
-}	
+	for (int i = 0; i < num; i++) 
+		if (obj[i].y == 0 || obj[i].y == h - 1) {
+			crash = 1;
+			for (int i = 0; i < w; i++)
+				for (int j = 0; j < h; j++)
+					texture[i][j] = COL_BLUE;
+			break;
+		}
+	update_screen();
+}
