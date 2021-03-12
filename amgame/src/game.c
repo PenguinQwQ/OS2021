@@ -22,10 +22,10 @@ int main(const char *args) {
   splash();
   init_location();
 
-	
+  while(read_key() != AM_KEY_S);
+
   int next_frame = io_read(AM_TIMER_UPTIME).us / 1000;
   int t = 0, speed = init_speed;
-  while(read_key() != AM_KEY_S);
   while (1) {
 	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame);
     next_frame += 1000 / FPS;
