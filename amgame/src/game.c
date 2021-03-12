@@ -17,10 +17,13 @@ int main(const char *args) {
   puts("Type 'ESC' to exit\n");
 
  // int next_frame = 0;
-
+	
+  int next_frame = 0, t = 0;
   while (1) {
-    int frames = io_read(AM_TIMER_UPTIME).us;
-	printf("%d\n", frames);
+	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame);
+    next_frame += 1000 / FPS;
+	t++;
+	if (t % 30 == 0) printf("%d\n", 1);
 
 //	while(current < frames) current++;
 
