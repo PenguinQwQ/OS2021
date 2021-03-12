@@ -44,7 +44,7 @@ void update_screen() {
 			for (int k = 0; k < block_size; k++) {
 				pixels[k] = texture[i][j];
 			}
-			int up = (crash) ? block_size * block_size: 1;
+			int up = (crash) ? 100: 1;
 			for (int k = 0; k < up; k++) {
 				event.x = i * SIDE, event.y = j * SIDE,
 				event.w = SIDE, event.h = SIDE,
