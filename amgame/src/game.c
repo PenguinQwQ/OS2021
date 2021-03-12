@@ -17,13 +17,13 @@ int main(const char *args) {
   puts("Type 'ESC' to exit\n");
 
 	
-  int next_frame = 0, t = 0;
+  int next_frame = 0, t = 0, speed = 2;
   while (1) {
 	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame);
     next_frame += 1000 / FPS;
 	test_hit();
 	t++;
-	if (t >= 60 && t % 2 == 0)update_obj();
+	if (t >= 60 && t % speed == 0)update_obj();
 	int key = 0;
 	while ((key = read_key()) != AM_KEY_NONE) {
 		if (key == AM_KEY_ESCAPE) halt(0);
@@ -31,6 +31,8 @@ int main(const char *args) {
 		else if (key == AM_KEY_END) update_player2(1);
 		else if (key == AM_KEY_A)   update_player1(-1);
 		else if (key == AM_KEY_D)   update_player1(1);
+		else if (key == AM_KEY_P && speed > 1) speed -= 1;
+		else if (key == AM_KEY_L) speed += 1; 
 	}
 	update_screen();
   }
