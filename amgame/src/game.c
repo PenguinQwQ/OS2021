@@ -9,13 +9,13 @@ struct baffle player1, player2;
 
 int main(const char *args) {
   ioe_init();
-  puts("\033[1;34;0m Welcome to Pinball Game!\033[0m\n");
-  puts("\033[1;34;0m Player1 operator the baffle with 'A' and 'D'.\033[0m\n");
-  puts("\033[1;34;0m Player2 operator the baffle with 'Left' and 'Right'.\033[0m\n");
-  puts("\033[1;34;0m Type 'P' to speed up, and 'L' to speed down.\033[0m\n");
-  puts("\033[1;34;0m Type 'Enter' to increase the number of Pinballs\033[0m\n");
-  puts("\033[1;34;0m Type 'M' to restart the game\033[0m\n");
-  puts("\033[1;34;0m Type 'ESC' to exit\033[0m\n");
+  puts("\033[5;34;47m Welcome to Pinball Game!\033[0m\n");
+  puts("\033[1;34;47m Player1 operator the baffle with 'A' and 'D'.\033[0m\n");
+  puts("\033[1;34;47m Player2 operator the baffle with 'Left' and 'Right'.\033[0m\n");
+  puts("\033[1;34;47m Type 'P' to speed up, and 'L' to speed down.\033[0m\n");
+  puts("\033[1;34;47m Type 'Enter' to increase the number of Pinballs\033[0m\n");
+  puts("\033[1;34;47m Type 'M' to restart the game\033[0m\n");
+  puts("\033[1;34;47m Type 'ESC' to exit\033[0m\n");
   splash();
   init_location();
 
