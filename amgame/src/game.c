@@ -12,12 +12,12 @@ int main(const char *args) {
   puts(args); // make run mainargs=xxx
   puts("\"\n");
 
+  puts("Type 'ESC' to exit\n");
   splash();
   init_location();
-  puts("Type 'ESC' to exit\n");
 
 	
-  int next_frame = 0, t = 0, speed = 2;
+  int next_frame = 0, t = 0, speed = 3;
   while (1) {
 	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame);
     next_frame += 1000 / FPS;
@@ -32,7 +32,8 @@ int main(const char *args) {
 		else if (key == AM_KEY_A)   update_player1(-1);
 		else if (key == AM_KEY_D)   update_player1(1);
 		else if (key == AM_KEY_P && speed > 1) speed -= 1;
-		else if (key == AM_KEY_L) speed += 1; 
+		else if (key == AM_KEY_L) speed += 1;
+		else if (key == AM_KEY_M) init_location(); 
 	}
 	update_screen();
   }
