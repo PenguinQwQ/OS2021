@@ -9,10 +9,6 @@ struct baffle player1, player2;
 int main(const char *args) {
   ioe_init();
 
-  puts("mainargs = \"");
-  puts(args); // make run mainargs=xxx
-  puts("\"\n");
-
   puts("Type 'ESC' to exit\n");
   splash();
   init_location();
