@@ -95,13 +95,13 @@ void update_player1(int dir) {
 
 void update_player2(int dir) {
 	if (dir == 1) {
-		texture[player1.start][h - 1] = COL_PURPLE;
-		texture[player1.start + length][h - 1] = COL_WHITE;
-		player1.start += 1;
+		texture[player2.start][h - 1] = COL_PURPLE;
+		texture[player2.start + length][h - 1] = COL_WHITE;
+		player2.start += 1;
 	}
 	else {
-		texture[player1.start + length - 1][h - 1] = COL_PURPLE;
-		texture[player1.start - 1][h - 1] = COL_WHITE;
-		player1.start -= 1;
+		texture[player2.start + length - 1][h - 1] = COL_PURPLE;
+		texture[player2.start - 1][h - 1] = COL_WHITE;
+		player2.start -= 1;
 	}
 }
