@@ -102,8 +102,8 @@ void update_player2(int dir) {
 		player2.start += 1;
 	}
 	else if (dir == -1 && player2.start > 1){
-		texture[player2.start + length - 1][h - 1] = COL_GREEN;
-		texture[player2.start - 1][h - 1] = COL_WHITE;
+		texture[player2.start + length - 1][h - 1] = COL_PURPLE;
+		texture[player2.start - 1][h - 1] = COL_GREEN;
 		player2.start -= 1;
 	}
 }
