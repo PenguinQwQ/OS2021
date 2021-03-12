@@ -93,7 +93,6 @@ void update_obj() {
 		texture[obj[i].x][obj[i].y] = COL_PURPLE;
 		obj[i].x += obj[i].v_x, obj[i].y += obj[i].v_y;
 		texture[obj[i].x][obj[i].y] = COL_WHITE;
-		printf("%d %d \n", i, obj[i].y);
 	}
 	update_screen();
 }
@@ -135,6 +134,7 @@ void test_hit() {
 			if (obj[i].y + obj[i].v_y == 0 || obj[i].y + obj[i].v_y == h - 1) 
 				obj[i].v_y *= -1;		
 		}
+	printf("%d %d\n", i, obj[i].y);
 	}
 }
 
