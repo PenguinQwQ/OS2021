@@ -155,9 +155,8 @@ void add_object() {
 		printf("The objects can not be more!");
 		return;
 	}	
-	num++;
 	obj[num].x = w / 2, obj[num].y = h / 2;
 	obj[num].v_x = dx[rand() % 4], obj[num].v_y = dy[rand() % 4];
 	texture[obj[num].x][obj[num].y] = COL_WHITE;
-
+	num++;
 }

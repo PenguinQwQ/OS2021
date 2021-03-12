@@ -39,10 +39,7 @@ int main(const char *args) {
 		    splash(), init_location();
 			next_frame = io_read(AM_TIMER_UPTIME).us / 1000; 
 		}
-		else if (key == AM_KEY_RETURN) {
-			add_object();
-			printf("%d\n", obj[1].y);
-		}
+		else if (key == AM_KEY_RETURN) add_object();
 	}
 	update_screen();
 	test_bound();
