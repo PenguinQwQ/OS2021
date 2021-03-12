@@ -23,6 +23,7 @@ int main(const char *args) {
     next_frame += 1000 / FPS;
 	test_hit();
 	t++;
+	t = t % 100;
 	if (t >= 60 && t % speed == 0)update_obj();
 	int key = 0;
 	while ((key = read_key()) != AM_KEY_NONE) {
