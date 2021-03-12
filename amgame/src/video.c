@@ -83,12 +83,12 @@ void update_obj() {
 }
 
 void update_player1(int dir) {
-	if (dir == 1 && player1.start + length - 1 < w - 1) {
+	if (dir == 1 && player1.start + length - 1 < w - 2) {
 		texture[player1.start][0] = COL_PURPLE;
 		texture[player1.start + length][0] = COL_GREEN;
 		player1.start += 1;
 	}
-	else if (dir == -1 && player1.start > 0){
+	else if (dir == -1 && player1.start > 1){
 		texture[player1.start + length - 1][0] = COL_PURPLE;
 		texture[player1.start - 1][0] = COL_GREEN;
 		player1.start -= 1;
@@ -96,13 +96,13 @@ void update_player1(int dir) {
 }
 
 void update_player2(int dir) {
-	if (dir == 1 && player2.start + length - 1 < w - 1) {
+	if (dir == 1 && player2.start + length - 1 < w - 2) {
 		texture[player2.start][h - 1] = COL_PURPLE;
-		texture[player2.start + length][h - 1] = COL_WHITE;
+		texture[player2.start + length][h - 1] = COL_GREEN;
 		player2.start += 1;
 	}
-	else if (dir == -1 && player2.start > 0){
-		texture[player2.start + length - 1][h - 1] = COL_PURPLE;
+	else if (dir == -1 && player2.start > 1){
+		texture[player2.start + length - 1][h - 1] = COL_GREEN;
 		texture[player2.start - 1][h - 1] = COL_WHITE;
 		player2.start -= 1;
 	}
