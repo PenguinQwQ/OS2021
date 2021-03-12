@@ -1,6 +1,6 @@
 #include <game.h>
 
-#define SIDE 16
+#define SIDE 8
 #define COL_PURPLE 0x2a0a29
 #define COL_WHITE  0xeeeeee
 #define length 2
