@@ -1,6 +1,7 @@
 #include <game.h>
 
-// Operating system is a C program!
+#define FPS 30
+
 struct object obj;
 struct baffle player1, player2;
 
@@ -12,10 +13,19 @@ int main(const char *args) {
   puts("\"\n");
 
   splash();
-  puts("Press any key to see its key code...\n");
   init_location();
+  puts("Type 'ESC' to exit\n");
+
+  int current = 0;
+
   while (1) {
-    print_key();
+    int frames = io_read(AM_TIMER_UPTIME).us / (1000000 / FPS);
+
+	while(current < frames) current++;
+
+	update_obj();
+	
+	print_key();
   }
   return 0;
 }
