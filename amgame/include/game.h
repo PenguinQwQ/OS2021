@@ -23,6 +23,7 @@ void update_player2(int dir);
 void update_screen();
 void test_hit();
 void test_bound();
+void add_object();
 static inline void puts(const char *s) {
   for (; *s; s++) putch(*s);
 }
