@@ -56,6 +56,7 @@ void update_screen() {
 }
 
 void splash() {
+  crash = 0;
   init();
   for (int i = 0; i < w; i++)
 	for (int j = 0; j < h; j++)
@@ -64,7 +65,6 @@ void splash() {
 }
 
 void init_location() {
-	crash = 0;
 	obj.x = w / 2, obj.y = h / 2;
 	obj.v_x = 1, obj.v_y = 1;
 	texture[obj.x][obj.y] = COL_WHITE;
