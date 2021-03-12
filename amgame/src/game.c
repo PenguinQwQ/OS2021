@@ -1,9 +1,8 @@
 #include <game.h>
 
 // Operating system is a C program!
-struct object{
-	int x, y, v;
-}obj;
+struct object obj;
+struct baffle player1, player2;
 
 int main(const char *args) {
   ioe_init();
@@ -12,8 +11,9 @@ int main(const char *args) {
   puts(args); // make run mainargs=xxx
   puts("\"\n");
 
-  splash(obj);
+  splash();
   puts("Press any key to see its key code...\n");
+  init_location();
   while (1) {
     print_key();
   }

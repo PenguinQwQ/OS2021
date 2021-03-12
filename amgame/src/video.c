@@ -3,6 +3,7 @@
 #define SIDE 16
 #define COL_PURPLE 0x2a0a29
 #define COL_WHITE  0xeeeeee
+#define length 2
 static int w, h, block_size;
 uint32_t texture[128][128];
 
@@ -54,4 +55,19 @@ void splash() {
 	for (int j = 0; j < h; j++)
 		texture[i][j] = COL_PURPLE;
   update_screen();
+}
+
+void init_location() {
+	obj.x = w / 2, obj.y = h / 2;
+	obj.v_x = 1, obj.v_y = 1;
+	texture[obj.x][obj.y] = COL_WHITE;
+	player1.start = w / 2 - (length / 2);
+	player2.start = w / 2 - (length / 2);
+	for (int i = player1.start; i < player1.start + length; i++) {
+		texture[0][i] = COL_WHITE;	
+	}
+	for (int i = player2.start; i < player2.start + length; i++) {
+		texture[h][i] = COL_WHITE;	
+	}
+	update_screen();
 }
