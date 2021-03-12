@@ -22,9 +22,7 @@ int main(const char *args) {
   while (1) {
 	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame);
     next_frame += 1000 / FPS;
-	t++;
-	if (t % 30 == 0) printf("%d\n", 1);
-
+	if (t++ % 30 == 0)update_obj();
 //	while(current < frames) current++;
 
 //	update_obj();
