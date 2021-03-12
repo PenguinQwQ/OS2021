@@ -1,6 +1,9 @@
 #include <game.h>
 
 // Operating system is a C program!
+struct object{
+	int x, y, v;
+}obj;
 int main(const char *args) {
   ioe_init();
 
@@ -9,7 +12,6 @@ int main(const char *args) {
   puts("\"\n");
 
   splash();
-
   puts("Press any key to see its key code...\n");
   while (1) {
     print_key();
