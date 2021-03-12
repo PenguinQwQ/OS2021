@@ -93,6 +93,7 @@ void update_obj() {
 		texture[obj[i].x][obj[i].y] = COL_PURPLE;
 		obj[i].x += obj[i].v_x, obj[i].y += obj[i].v_y;
 		texture[obj[i].x][obj[i].y] = COL_WHITE;
+		printf("%d %d \n", i, obj[i].y);
 	}
 	update_screen();
 }
@@ -141,7 +142,6 @@ void test_bound() {
 	if (crash) return;
 	for (int i = 0; i < num; i++) 
 		if (obj[i].y == 0 || obj[i].y == h - 1) {
-			printf("%d %d\n", i, obj[i].y);
 			crash = 1;
 			for (int i = 0; i < w; i++)
 				for (int j = 0; j < h; j++)
