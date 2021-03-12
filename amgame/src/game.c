@@ -33,9 +33,10 @@ int main(const char *args) {
 		else if (key == AM_KEY_D)   update_player1(1);
 		else if (key == AM_KEY_P && speed > 1) speed -= 1;
 		else if (key == AM_KEY_L) speed += 1;
-		else if (key == AM_KEY_M) init_location(); 
+		else if (key == AM_KEY_M) splash(), init_location();
 	}
 	update_screen();
+	test_bound();
   }
   return 0;
 }
