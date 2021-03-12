@@ -6,6 +6,8 @@
 static int w, h, block_size;
 uint32_t texture[128][128];
 
+extern struct object obj;
+
 static void init() {
   AM_GPU_CONFIG_T info = {0};
   ioe_read(AM_GPU_CONFIG, &info);
