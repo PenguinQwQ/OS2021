@@ -16,14 +16,15 @@ int main(const char *args) {
   init_location();
   puts("Type 'ESC' to exit\n");
 
-  int current = 0;
+ // int next_frame = 0;
 
   while (1) {
-    int frames = io_read(AM_TIMER_UPTIME).us / (1000000 / FPS);
+    int frames = io_read(AM_TIMER_UPTIME).us;
+	printf("%d\n", frames);
 
-	while(current < frames) current++;
+//	while(current < frames) current++;
 
-	update_obj();
+//	update_obj();
 	
 	print_key();
   }
