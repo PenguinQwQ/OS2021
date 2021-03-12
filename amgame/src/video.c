@@ -4,6 +4,7 @@
 #define COL_PURPLE 0x2a0a29
 #define COL_WHITE  0xeeeeee
 #define COL_RED    0xff0033
+#define COL_GREEN  0x00cc33
 #define length 2
 static int w, h, block_size;
 uint32_t texture[128][128];
@@ -65,10 +66,10 @@ void init_location() {
 	player1.start = w / 2 - (length / 2);
 	player2.start = w / 2 - (length / 2);
 	for (int i = player1.start; i < player1.start + length; i++) {
-		texture[i][0] = COL_WHITE;	
+		texture[i][0] = COL_GREEN;	
 	}
 	for (int i = player2.start; i < player2.start + length; i++) {
-		texture[i][h - 1] = COL_WHITE;	
+		texture[i][h - 1] = COL_GREEN;	
 	}
 	for (int i = 0; i < h; i++) texture[w - 1][i] = COL_RED;
 	for (int i = 0; i < h; i++) texture[0][i]     = COL_RED;
@@ -84,12 +85,12 @@ void update_obj() {
 void update_player1(int dir) {
 	if (dir == 1 && player1.start + length - 1 < w - 1) {
 		texture[player1.start][0] = COL_PURPLE;
-		texture[player1.start + length][0] = COL_WHITE;
+		texture[player1.start + length][0] = COL_GREEN;
 		player1.start += 1;
 	}
 	else if (dir == -1 && player1.start > 0){
 		texture[player1.start + length - 1][0] = COL_PURPLE;
-		texture[player1.start - 1][0] = COL_WHITE;
+		texture[player1.start - 1][0] = COL_GREEN;
 		player1.start -= 1;
 	}
 }
