@@ -8,6 +8,8 @@ uint32_t texture[128][128];
 
 extern struct object obj;
 
+extern struct baffle player1, player2;
+
 static void init() {
   AM_GPU_CONFIG_T info = {0};
   ioe_read(AM_GPU_CONFIG, &info);
