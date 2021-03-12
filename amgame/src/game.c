@@ -23,6 +23,7 @@ int main(const char *args) {
     next_frame += 1000 / FPS;
 	test_hit();
 	t++;
+	if (t < 0) printf("%d\n", t);
 	if (t!= -1 && t >= 30 && t % speed == 0)update_obj();
 	if (speed != 3)printf("%d\n",speed);
 	int key = 0;
