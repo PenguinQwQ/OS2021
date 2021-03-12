@@ -9,8 +9,8 @@ struct baffle player1, player2;
 
 int main(const char *args) {
   ioe_init();
-  puts("\033[5;34 Welcome to Pinball Game!\033[0m\n");
-  puts("\033[1;34;47m Player1 operator the baffle with 'A' and 'D'.\033[0m\n");
+  puts("\033[5;34m Welcome to Pinball Game!\033[0m\n");
+  puts("\033[1;34m Player1 operator the baffle with 'A' and 'D'.\033[0m\n");
   puts("\033[1;34;47m Player2 operator the baffle with 'Left' and 'Right'.\033[0m\n");
   puts("\033[1;34;47m Type 'P' to speed up, and 'L' to speed down.\033[0m\n");
   puts("\033[1;34;47m Type 'Enter' to increase the number of Pinballs\033[0m\n");
