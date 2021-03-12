@@ -99,8 +99,8 @@ void update_player2(int dir) {
 		player1.start += 1;
 	}
 	else {
-		texture[player1.start + length - 1][0] = COL_PURPLE;
-		texture[player1.start - 1][0] = COL_WHITE;
+		texture[player1.start + length - 1][h - 1] = COL_PURPLE;
+		texture[player1.start - 1][h - 1] = COL_WHITE;
 		player1.start -= 1;
 	}
 }
