@@ -1,6 +1,6 @@
 #include <game.h>
 
-#define SIDE 32
+#define SIDE 16
 #define COL_PURPLE 0x2a0a29
 #define COL_WHITE  0xeeeeee
 static int w, h, block_size;
@@ -32,15 +32,16 @@ static void update_screen() {
 	AM_GPU_FBDRAW_T event;
 	uint32_t pixels[SIDE * SIDE];
 	for (int i = 0; i < w; i++)
-		for (int j = 0; j < h; j++)
-			for (int k = 0; k < SIDE * SIDE; k++) {
+		for (int j = 0; j < h; j++) {
+			for (int k = 0; k < block_size; k++) {
 				pixels[k] = texture[i][j];
-				event.x = i * SIDE, event.y = j * SIDE,
-				event.w = SIDE, event.h = SIDE,
-				event.sync = 1,
-				event.pixels = pixels;
-				ioe_write(AM_GPU_FBDRAW, &event); 	
 			}
+			event.x = i * SIDE, event.y = j * SIDE,
+			event.w = SIDE, event.h = SIDE,
+			event.sync = 1,
+			event.pixels = pixels;
+			ioe_write(AM_GPU_FBDRAW, &event); 	
+		}
 }
 
 void splash() {
