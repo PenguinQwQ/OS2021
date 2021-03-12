@@ -80,6 +80,7 @@ void update_obj() {
 }
 
 void update_player1(int dir) {
+	printf("%d\n", player1.start);
 	if (dir == 1) {
 		texture[player1.start][0] = COL_PURPLE;
 		texture[player1.start + length][0] = COL_WHITE;
