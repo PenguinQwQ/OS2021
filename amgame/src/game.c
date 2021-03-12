@@ -8,7 +8,6 @@ struct object obj[10];
 struct baffle player1, player2;
 
 int main(const char *args) {
-  ioe_init();
   puts("\033[1;34m Welcome to Pinball Game!\033[0m\n");
   puts("\033[1;34m Player1 operator the baffle with 'A' and 'D'.\033[0m\n");
   puts("\033[1;34m Player2 operator the baffle with 'Left' and 'Right'.\033[0m\n");
@@ -17,6 +16,8 @@ int main(const char *args) {
   puts("\033[1;34m Type 'M' to restart the game\033[0m\n");
   puts("\033[1;34m Type 'ESC' to exit\033[0m\n");
   puts("\033[5;31m Type 'S' to start the game immediately!\033[0m\n");
+  
+  ioe_init();
   splash();
   init_location();
 
