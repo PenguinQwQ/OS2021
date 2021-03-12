@@ -23,8 +23,7 @@ int main(const char *args) {
     next_frame += 1000 / FPS;
 	test_hit();
 	t++;
-	if (t < 0) printf("%d\n", t);
-	if (t!= -1 && t >= 30 && t % speed == 0)update_obj();
+	if (t >= 30 && t % speed == 0)update_obj();
 	if (speed != 3)printf("%d\n",speed);
 	int key = 0;
 	while ((key = read_key()) != AM_KEY_NONE) {
@@ -36,8 +35,9 @@ int main(const char *args) {
 		else if (key == AM_KEY_P && speed > 1) speed -= 1;
 		else if (key == AM_KEY_L) speed += 1;
 		else if (key == AM_KEY_M) {
-			speed = 3, t = -2;
+			speed = 3, t = 0;
 		    splash(), init_location();
+			next_frame = io_read(AM_TIMER_UPTIME).us / 1000; 
 		}
 	}
 	update_screen();
