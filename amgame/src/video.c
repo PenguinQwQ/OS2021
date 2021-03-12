@@ -76,7 +76,6 @@ void update_obj() {
 	texture[obj.x][obj.y] = COL_PURPLE;
 	obj.x += obj.v_x, obj.y += obj.v_y;
 	texture[obj.x][obj.y] = COL_WHITE;	
-	update_screen();
 }
 
 void update_player1(int dir) {

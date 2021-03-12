@@ -21,7 +21,7 @@ int main(const char *args) {
   while (1) {
 	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame);
     next_frame += 1000 / FPS;
-	if (t++ % 100 == 0)update_obj();
+	if (t++ % 30 == 0)update_obj();
 	int key = 0;
 	while ((key = read_key()) != AM_KEY_NONE) {
 		if (key == AM_KEY_ESCAPE) halt(0);
@@ -30,8 +30,7 @@ int main(const char *args) {
 		else if (key == AM_KEY_A)   update_player1(-1);
 		else if (key == AM_KEY_D)   update_player1(1);
 	}
-	update_obj();
-	
+	update_screen();
   }
   return 0;
 }
