@@ -3,6 +3,7 @@
 #define SIDE 8
 #define COL_PURPLE 0x2a0a29
 #define COL_WHITE  0xeeeeee
+#define COL_RED    0xff0033
 #define length 2
 static int w, h, block_size;
 uint32_t texture[128][128];
@@ -69,8 +70,8 @@ void init_location() {
 	for (int i = player2.start; i < player2.start + length; i++) {
 		texture[i][h - 1] = COL_WHITE;	
 	}
-	for (int i = 0; i < h; i++) texture[w - 1][i] = COL_WHITE;
-	for (int i = 0; i < h; i++) texture[0][i]     = COL_WHITE;
+	for (int i = 0; i < h; i++) texture[w - 1][i] = COL_RED;
+	for (int i = 0; i < h; i++) texture[0][i]     = COL_RED;
 	update_screen();
 }
 
