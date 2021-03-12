@@ -85,7 +85,7 @@ void update_player1(int dir) {
 		texture[player1.start + length][0] = COL_WHITE;
 		player1.start += 1;
 	}
-	else if (player1.start > 0){
+	else if (dir == -1 && player1.start > 0){
 		texture[player1.start + length - 1][0] = COL_PURPLE;
 		texture[player1.start - 1][0] = COL_WHITE;
 		player1.start -= 1;
@@ -98,7 +98,7 @@ void update_player2(int dir) {
 		texture[player2.start + length][h - 1] = COL_WHITE;
 		player2.start += 1;
 	}
-	else if (player2.start > 0){
+	else if (dir == -1 && player2.start > 0){
 		texture[player2.start + length - 1][h - 1] = COL_PURPLE;
 		texture[player2.start - 1][h - 1] = COL_WHITE;
 		player2.start -= 1;
