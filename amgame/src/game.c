@@ -14,8 +14,8 @@ int main(const char *args) {
   puts("\033[1;34;40m Player2 operator the baffle with 'Left' and 'Right'.\033[0m\n");
   puts("\033[1;34;40m Type 'P' to speed up, and 'L' to speed down.\033[0m\n");
   puts("\033[1;34;40m Type 'Enter' to increase the number of Pinballs\033[0m\n");
-  puts("\033[1;34;40m Type 'M' to restart the game\n");
-  puts("\033[1;34;40m Type 'ESC' to exit\n");
+  puts("\033[1;34;40m Type 'M' to restart the game\033[0m\n");
+  puts("\033[1;34;40m Type 'ESC' to exit\033[0m\n");
   splash();
   init_location();
 
