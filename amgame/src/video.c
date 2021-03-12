@@ -64,10 +64,10 @@ void init_location() {
 	player1.start = w / 2 - (length / 2);
 	player2.start = w / 2 - (length / 2);
 	for (int i = player1.start; i < player1.start + length; i++) {
-		texture[i][h] = COL_WHITE;	
+		texture[i][0] = COL_WHITE;	
 	}
 	for (int i = player2.start; i < player2.start + length; i++) {
-		texture[i][h] = COL_WHITE;	
+		texture[i][h - 1] = COL_WHITE;	
 	}
 	update_screen();
 }
