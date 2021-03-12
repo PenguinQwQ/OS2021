@@ -1,6 +1,7 @@
 #include <game.h>
 
 #define SIDE 16
+#define COL_PURPLE 0x2a0a29
 static int w, h;
 
 static void init() {
@@ -27,7 +28,7 @@ void splash() {
   for (int x = 0; x * SIDE <= w; x ++) {
     for (int y = 0; y * SIDE <= h; y++) {
       if ((x & 1) ^ (y & 1)) {
-        draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffffff); // white
+        draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, COL_PURPLE); // white
       }
     }
   }
