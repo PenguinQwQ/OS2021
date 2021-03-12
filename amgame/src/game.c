@@ -24,6 +24,7 @@ int main(const char *args) {
 	test_hit();
 	t++;
 	if (t >= 30 && t % speed == 0)update_obj();
+	printf("%d\n",speed);
 	int key = 0;
 	while ((key = read_key()) != AM_KEY_NONE) {
 		if (key == AM_KEY_ESCAPE) halt(0);
