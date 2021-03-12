@@ -35,8 +35,8 @@ int main(const char *args) {
 	int key = 0;
 	while ((key = read_key()) != AM_KEY_NONE) {
 		if (key == AM_KEY_ESCAPE) halt(0);
-		if (key == AM_KEY_HOME)     update_player2(-1);
-		else if (key == AM_KEY_END) update_player2(1);
+		if (key == AM_KEY_LEFT)     update_player2(-1);
+		else if (key == AM_KEY_RIGHT) update_player2(1);
 		else if (key == AM_KEY_A)   update_player1(-1);
 		else if (key == AM_KEY_D)   update_player1(1);
 		else if (key == AM_KEY_P && speed > 1) speed -= 1;
