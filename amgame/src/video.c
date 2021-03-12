@@ -134,7 +134,6 @@ void test_hit() {
 			if (obj[i].y + obj[i].v_y == 0 || obj[i].y + obj[i].v_y == h - 1) 
 				obj[i].v_y *= -1;		
 		}
-	printf("%d %d\n", i, obj[i].y);
 	}
 }
 
