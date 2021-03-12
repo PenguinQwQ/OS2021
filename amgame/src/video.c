@@ -33,7 +33,7 @@ static void draw_tile(int x, int y, int w, int h, uint32_t color) {
 }
 */
 
-static void update_screen() {
+void update_screen() {
 	AM_GPU_FBDRAW_T event;
 	uint32_t pixels[SIDE * SIDE];
 	for (int i = 0; i < w; i++)
@@ -77,4 +77,30 @@ void update_obj() {
 	obj.x += obj.v_x, obj.y += obj.v_y;
 	texture[obj.x][obj.y] = COL_WHITE;	
 	update_screen();
+}
+
+void update_player1(int dir) {
+	if (dir == 1) {
+		texture[player1.start][0] = COL_PURPLE;
+		texture[player1.start + length][0] = COL_WHITE;
+		player1.start += 1;
+	}
+	else {
+		texture[player1.start + length - 1][0] = COL_PURPLE;
+		texture[player1.start - 1][0] = COL_WHITE;
+		player1.start -= 1;
+	}
+}
+
+void update_player2(int dir) {
+	if (dir == 1) {
+		texture[player1.start][h - 1] = COL_PURPLE;
+		texture[player1.start + length][h - 1] = COL_WHITE;
+		player1.start += 1;
+	}
+	else {
+		texture[player1.start + length - 1][0] = COL_PURPLE;
+		texture[player1.start - 1][0] = COL_WHITE;
+		player1.start -= 1;
+	}
 }

@@ -18,6 +18,9 @@ void splash();
 void init_location();
 void update_obj();
 int read_key();
+void update_player1(int dir);
+void update_player2(int dir);
+void update_screen();
 static inline void puts(const char *s) {
   for (; *s; s++) putch(*s);
 }
