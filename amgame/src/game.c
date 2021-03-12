@@ -22,12 +22,10 @@ int main(const char *args) {
   while (1) {
 	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame);
     next_frame += 1000 / FPS;
-	if (t++ % 30 == 0)update_obj();
-//	while(current < frames) current++;
-
-//	update_obj();
+	if (t++ % 15 == 0)update_obj();
+	while (read_key() != AM_KEY_NONE);
+	update_obj();
 	
-	print_key();
   }
   return 0;
 }

@@ -17,7 +17,7 @@ extern struct baffle player1, player2;
 void splash();
 void init_location();
 void update_obj();
-void print_key();
+int read_key();
 static inline void puts(const char *s) {
   for (; *s; s++) putch(*s);
 }
