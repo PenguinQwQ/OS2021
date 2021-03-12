@@ -22,7 +22,7 @@ int main(const char *args) {
 	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame);
     next_frame += 1000 / FPS;
 	test_hit();
-	if (t++ % 5 == 0)update_obj();
+	if (t++ % 2 == 0)update_obj();
 	int key = 0;
 	while ((key = read_key()) != AM_KEY_NONE) {
 		if (key == AM_KEY_ESCAPE) halt(0);
