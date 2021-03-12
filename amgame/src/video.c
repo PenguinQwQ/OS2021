@@ -107,3 +107,10 @@ void update_player2(int dir) {
 		player2.start -= 1;
 	}
 }
+
+void test_hit() {
+	if (texture[obj.x + obj.v_x][obj.y + obj.v_y] != COL_PURPLE) {
+		if (obj.x + obj.v_x == 0 || obj.x + obj.v_x == w) obj.v_x *= -1;
+		if (obj.y + obj.v_y == 0 || obj.y + obj.v_y == h) obj.v_y *= -1;		}		
+}	
+	

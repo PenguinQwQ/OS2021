@@ -21,6 +21,7 @@ int read_key();
 void update_player1(int dir);
 void update_player2(int dir);
 void update_screen();
+void test_hit();
 static inline void puts(const char *s) {
   for (; *s; s++) putch(*s);
 }

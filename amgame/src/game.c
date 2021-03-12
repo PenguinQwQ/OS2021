@@ -21,6 +21,7 @@ int main(const char *args) {
   while (1) {
 	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame);
     next_frame += 1000 / FPS;
+	test_hit();
 	if (t++ % 30 == 0)update_obj();
 	int key = 0;
 	while ((key = read_key()) != AM_KEY_NONE) {
