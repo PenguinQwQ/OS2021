@@ -21,7 +21,7 @@ struct co {
 	void *arg;
 
 	enum    co_status status;
-	struct  co* waited;
+	struct  co* waiter;
 	jmp_buf context;
 	uint8_t stack[STACK_SIZE];
 };
@@ -30,7 +30,20 @@ struct co* cor[MAX_SIZE];
 
 struct co *cur;
 
+char MainName[5] = {"main"};
+
 static int sum = 0;
+
+__attribute__((constructor)) static void init() {
+	struct co *now = (struct co *)malloc(sizeof(struct co));
+	assert(now != NULL);
+	now -> name = MainName;
+	now -> func = NULL;
+	now -> arg  = NULL;
+
+	now -> status = CO_RUNNING;
+	now -> waiter = NULL;
+}
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 	struct co *now = (struct co *)malloc(sizeof(struct co));
@@ -40,7 +53,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 	now -> arg  = arg;
 
 	now -> status = CO_NEW;
-	now -> waited = NULL;
+	now -> waiter = NULL;
 	memset(now -> stack, 0, sizeof(now -> stack));
 	cor[sum++] = now;
 	return now;
