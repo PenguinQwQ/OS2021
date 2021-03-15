@@ -82,10 +82,10 @@ void co_yield() {
 		int id = rand() % sum;
 		cur = cor[id];	
 		if (cur -> context == NULL) {
-			stack_switch_call(&cur->stack[MAX_SIZE], cur->func, cur->arg);
+			stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg);
 		}
 		else {
-			longjmp(cur->context);	
+			longjmp(cur->context, 1);	
 		}
 	}
 	else {
