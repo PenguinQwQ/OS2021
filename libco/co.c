@@ -32,7 +32,7 @@ struct co *cur;
 static int sum = 0;
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
-	struct co *now = (struct co *)malloc(sizeof(co));
+	struct co *now = (struct co *)malloc(sizeof(struct co));
 	assert(co != NULL);
 	now -> name = name;
 	now -> func = func;
