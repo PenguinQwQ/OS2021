@@ -12,7 +12,7 @@ enum {
 	CO_RUNNING,
 	CO_WAITING,
 	CO_DEAD,	
-};
+}co_status;
 
 struct co {
 	char *name;
