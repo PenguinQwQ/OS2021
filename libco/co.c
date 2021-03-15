@@ -41,7 +41,8 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 	now -> status = CO_NEW;
 	now -> waited = NULL;
 	memset(now -> stack, 0, sizeof(now -> stack));
-	cor[sum++] = co;
+	cor[sum++] = now;
+	return now;
 }
 
 void co_yield() {
