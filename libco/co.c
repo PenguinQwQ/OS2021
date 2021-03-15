@@ -63,8 +63,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg) {
 	  asm volatile (
 	  #if __x86_64__
-	      "andq $0xfffffffffffffff0, %%rsp;
-		   movq %0, %%rsp; movq %2, %%rdi; jmp *%1"
+	      "andq $0xfffffffffffffff0, %%rsp; movq %0, %%rsp; movq %2, %%rdi; jmp *%1"
 		     : : "b"((uintptr_t)sp),     "d"(entry), "a"(arg)
 	  #else
 		  "movl %0, %%esp; movl %2, 4(%0); jmp *%1"
