@@ -43,7 +43,6 @@ __attribute__((constructor)) static void init() {
 
 	now -> status  = CO_RUNNING;
 	now -> waiter  = NULL;
-	now -> context = NULL;
 	cor[sum++] = now;
 }
 
@@ -56,7 +55,6 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 
 	now -> status  = CO_NEW;
 	now -> waiter  = NULL;
-	now -> context = NULL;
 	memset(now -> stack, 0, sizeof(now -> stack));
 	cor[sum++] = now;
 	cur = now;
