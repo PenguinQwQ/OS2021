@@ -1,5 +1,8 @@
 #include "co.h"
 #include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+#include <setjmp.h>
 
 #define STACK_SIZE 65536
 #define MAX_SIZE   128
