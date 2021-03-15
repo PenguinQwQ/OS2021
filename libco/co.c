@@ -7,12 +7,12 @@
 #define STACK_SIZE 65536
 #define MAX_SIZE   128
 
-enum {
+enum co_status{
 	CO_NEW = 1,
 	CO_RUNNING,
 	CO_WAITING,
 	CO_DEAD,	
-}co_status;
+};
 
 struct co {
 	char *name;
