@@ -47,6 +47,7 @@ __attribute__((constructor)) static void init() {
 	now -> waiter  = NULL;
 	cor[sum++] = now;
 	cur = now;
+	assert(cur == cor[0]);
 	printf("2121\n");
 }
 
