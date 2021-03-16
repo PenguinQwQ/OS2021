@@ -3,11 +3,17 @@
 #include <assert.h>
 #include <string.h>
 #include <co.h>
-void fun() {
-	for (int i = 1; i < 1; i++);
+
+void entry(void *arg) {
+	while(1) {
+		printf("%s", (const char *)arg);	
+		co_yield();
+	}	
 }
 int main() {
-	co_start("s", fun, NULL);
-	co_yield();
+	struct co *co1 = co_start("co1", entry, "a");
+	struct co *co2 = co_start("co2", entry, "b");
+	co_wait(co1);
+	co_wait(co2);
 	return 0;	
 }
