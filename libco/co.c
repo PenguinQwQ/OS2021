@@ -87,6 +87,7 @@ void co_yield() {
 		int id = rand() % sum;
 		cur = cor[id];
 		if (cur -> status == CO_NEW) {
+			assert(cur == cor[1]);
 			int val2 = setjmp(cur -> context2);
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
