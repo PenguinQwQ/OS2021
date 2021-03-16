@@ -23,8 +23,8 @@ struct co {
 
 	enum    co_status status;
 	struct  co* waiter;
-	jmp_buf context2;
 	jmp_buf context;
+	jmp_buf context2;
 	uint8_t stack[STACK_SIZE];
 };
 
