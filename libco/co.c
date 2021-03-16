@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define STACK_SIZE 65536
+#define STACK_SIZE 165536
 #define MAX_SIZE   128
 
 enum co_status{
@@ -25,7 +25,6 @@ struct co {
 	struct  co* waiter;
 	jmp_buf context;
 	jmp_buf context2;
-	uint8_t s[STACK_SIZE];
 	uint8_t stack[STACK_SIZE];
 };
 
