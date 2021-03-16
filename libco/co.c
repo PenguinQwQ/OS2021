@@ -4,6 +4,7 @@
 #include <string.h>
 #include <setjmp.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #define STACK_SIZE 65536
 #define MAX_SIZE   128
