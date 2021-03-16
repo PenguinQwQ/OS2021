@@ -71,7 +71,6 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg) {
 			 : : "b"((uintptr_t)sp - 8), "d"(entry), "a"(arg)
       #endif
 	  );
-	  printf("21212\n");
 }
 
 
@@ -80,7 +79,8 @@ void co_yield() {
 	int val = setjmp(cur -> context);
 	if (val == 0) {
 		int id = rand() % sum;
-		cur = cor[id];	
+		cur = cor[id];
+		prinf("%d\n", id);	
 		if (cur -> status == CO_NEW) {
 			cur -> status = CO_RUNNING;
 			stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg);
