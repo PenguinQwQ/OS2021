@@ -85,12 +85,11 @@ void co_yield() {
 	int val = setjmp(cur -> context);
 	if (val == 0) {
 		int id = rand() % sum;
-		while (cor[id] -> status == CO_WAITING) printf("%d\n", sum), id = rand() % sum;
+		while (cor[id] -> status == CO_WAITING) id = rand() % sum;
 		cur = cor[id];
 		if (cur -> status == CO_NEW) {
 			int val2 = setjmp(cur -> context2);
 			if (val2 == 0) {
-				//printf("%p %p %lx\n", &cur->stack[0], &cur->context2, sizeof(cur->context2));
 				cur -> status = CO_RUNNING;
 				stack_switch_call(&cur->stack[MAX_SIZE - 8], cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
 			}
@@ -118,6 +117,7 @@ void co_yield() {
 }
 
 void co_wait(struct co *co) {
+	co -> waiter = cur;
 	if (co->status != CO_DEAD) cur -> status = CO_WAITING;
 	else {
 		free(co);	
