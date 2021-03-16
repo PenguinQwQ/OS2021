@@ -70,6 +70,7 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg) {
 			 : : "b"((uintptr_t)sp - 8), "d"(entry), "a"(arg)
       #endif
 	  );
+	  printf("21212\n");
 }
 
 
