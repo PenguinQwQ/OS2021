@@ -76,8 +76,7 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg, uint
 }
 
 void jmp() {
-	assert(cur == cor[1]);
-	longjmp(cur->context2, 2);	
+	longjmp(cor[1]->context2, 2);	
 }
 
 
@@ -87,7 +86,6 @@ void co_yield() {
 		int id = rand() % sum;
 		cur = cor[id];
 		if (cur -> status == CO_NEW) {
-			assert(cur == cor[1]);
 			int val2 = setjmp(cur -> context2);
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
