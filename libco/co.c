@@ -90,7 +90,7 @@ void co_yield() {
 			int val2 = setjmp(cur -> context2);
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
-				stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
+				stack_switch_call(&cur->stack[MAX_SIZE - 8], cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
 			}
 			else {
 				cur -> status = CO_DEAD;
