@@ -47,8 +47,6 @@ __attribute__((constructor)) static void init() {
 	now -> waiter  = NULL;
 	cor[sum++] = now;
 	cur = now;
-	assert(cur == cor[0]);
-	printf("2121\n");
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
@@ -62,7 +60,6 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 	now -> waiter  = NULL;
 	memset(now -> stack, 0, sizeof(now -> stack));
 	cor[sum++] = now;
-	cur = now;
 	return now;
 }
 static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg) {
