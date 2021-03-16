@@ -75,7 +75,7 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg) {
 }
 
 void jmp() {
-	longjmp(cur->context2, 1);	
+	longjmp(cur->context2, 2);	
 }
 
 
