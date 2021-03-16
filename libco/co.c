@@ -90,6 +90,7 @@ void co_yield() {
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
 				stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg);
+				longjmp(cur->context2, 2);
 				jmp();
 			}
 			else {
