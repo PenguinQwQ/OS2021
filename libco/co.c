@@ -80,7 +80,7 @@ void co_yield() {
 	if (val == 0) {
 		int id = rand() % sum;
 		cur = cor[id];
-		prinf("%d\n", id);	
+		printf("%d\n", id);	
 		if (cur -> status == CO_NEW) {
 			cur -> status = CO_RUNNING;
 			stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg);
