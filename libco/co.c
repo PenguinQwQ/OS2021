@@ -80,7 +80,6 @@ void jmp() {
 
 
 void co_yield() {
-	assert(cur == cor[0]);
 	int val = setjmp(cur -> context);
 	if (val == 0) {
 		int id = rand() % sum;
