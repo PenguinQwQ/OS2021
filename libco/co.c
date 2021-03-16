@@ -86,7 +86,7 @@ void co_yield() {
 		int id = rand() % sum;
 		cur = cor[id];
 		if (cur -> status == CO_NEW) {
-			int val2 = setjmp(cur -> context2);
+			int val2 = setjmp(cor[1] -> context2);
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
 				stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
