@@ -62,14 +62,15 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 	cor[sum++] = now;
 	return now;
 }
-static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg) {
+static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg, void *entry2) {
 	  asm volatile (
 	  #if __x86_64__
-	      "movq %0, %%rsp; andq $0xfffffffffffffff0, %%rsp;movq %2, %%rdi; callq *%1"
-		     : : "b"((uintptr_t)sp),     "d"(entry), "a"(arg)
+	      "movq %0, %%rsp; andq $0xfffffffffffffff0, %%rsp;movq %2, %%rdi;
+		   pushq *%3; callq *%1"
+		     : : "b"((uintptr_t)sp),     "d"(entry), "a"(arg), "c"(entry2)
 	  #else
 		  "movl %0, %%esp; movl %2, 4(%0); call *%1"
-			 : : "b"((uintptr_t)sp - 8), "d"(entry), "a"(arg)
+			 : : "b"((uintptr_t)sp - 8), "d"(entry), "a"(arg), "c"(entry2)
       #endif
 	  );
 }
@@ -88,9 +89,7 @@ void co_yield() {
 			int val2 = setjmp(cur -> context2);
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
-				stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg);
-				jmp();
-				//longjmp(cur->context2, 2);
+				stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg, jmp);
 			}
 			else {
 				cur -> status = CO_DEAD;
