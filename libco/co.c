@@ -24,6 +24,7 @@ struct co {
 	enum    co_status status;
 	struct  co* waiter;
 	jmp_buf context;
+	jmp_buf context2;
 	uint8_t stack[STACK_SIZE];
 };
 
@@ -73,6 +74,9 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg) {
 	  );
 }
 
+void jmp() {
+	longjmp(cur->context2, 1);	
+}
 
 
 void co_yield() {
@@ -80,21 +84,26 @@ void co_yield() {
 	if (val == 0) {
 		int id = rand() % sum;
 		cur = cor[id];
-		printf("%d\n", id);	
 		if (cur -> status == CO_NEW) {
-			cur -> status = CO_RUNNING;
-			stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg);
-			cur -> status = CO_DEAD;
-			if (cur -> waiter != NULL) {
-				cur -> waiter -> status = CO_RUNNING;	
+			int val2 = setjmp(cur -> context2);
+			if (val2 == 0) {
+				cur -> status = CO_RUNNING;
+				stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg);
+				jmp();
 			}
-			int tep = 0;
-			for (int i = 0; i < sum; i++)
-				if (cor[i] == cur) tep = i;	
-			for (int i = tep; i < sum - 1; i++)
-				cor[i] = cor[i + 1];
-			sum--;
-			co_yield();
+			else {
+				cur -> status = CO_DEAD;
+				if (cur -> waiter != NULL) {
+					cur -> waiter -> status = CO_RUNNING;	
+				}
+				int tep = 0;
+				for (int i = 0; i < sum; i++)
+					if (cor[i] == cur) tep = i;	
+				for (int i = tep; i < sum - 1; i++)
+					cor[i] = cor[i + 1];
+				sum--;
+				co_yield();
+			}
 		}
 		else {
 			longjmp(cur->context, 1);	
