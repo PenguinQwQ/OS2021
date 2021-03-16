@@ -7,7 +7,7 @@
 int count = 1;
 
 void entry(void *arg) {
-	printf("1\n");
+//	printf("1\n");
 }
 int main() {
 	struct co *co1 = co_start("co1", entry, "a");
