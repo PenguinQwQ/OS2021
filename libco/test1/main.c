@@ -4,7 +4,7 @@
 #include <string.h>
 #include <co.h>
 void fun() {
-	printf("1\n");
+	for (int i = 1; i <= 100; i++);
 }
 int main() {
 	co_start("s", fun, NULL);
