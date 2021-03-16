@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define STACK_SIZE 131072
+#define STACK_SIZE 1310720
 #define MAX_SIZE   128
 
 enum co_status{
