@@ -4,9 +4,11 @@
 #include <string.h>
 #include <co.h>
 
+int count = 1;
+
 void entry(void *arg) {
-	while(1) {
-		printf("%s", (const char *)arg);	
+	for (int i = 0; i < 5; i++) {
+		printf("%s[%d]", (const char *)arg, count++);	
 		co_yield();
 	}	
 }
@@ -15,5 +17,6 @@ int main() {
 	struct co *co2 = co_start("co2", entry, "b");
 	co_wait(co1);
 	co_wait(co2);
+	printf("Done\n");
 	return 0;	
 }
