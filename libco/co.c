@@ -25,7 +25,7 @@ struct co {
 	struct  co* waiter;
 	jmp_buf context;
 	jmp_buf context2;
-	uint8_t stackw[STACK_SIZE];
+//	uint8_t stackw[STACK_SIZE];
 	uint8_t stack[STACK_SIZE];
 };
 
