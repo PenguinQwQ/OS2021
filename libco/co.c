@@ -90,6 +90,7 @@ void co_yield() {
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
 				stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
+				printf("%p %p\n", &cur->context2, &cur->stack[0]);
 			}
 			else {
 				cur -> status = CO_DEAD;
