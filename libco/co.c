@@ -25,6 +25,7 @@ struct co {
 	struct  co* waiter;
 	jmp_buf context;
 	jmp_buf context2;
+	uint8_t s[1000];
 	uint8_t stack[STACK_SIZE];
 };
 
@@ -76,7 +77,7 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg, uint
 }
 
 void jmp() {
-	longjmp(cor[1]->context2, 2);	
+	longjmp(cur->context2, 2);	
 }
 
 
