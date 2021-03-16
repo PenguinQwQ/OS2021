@@ -84,6 +84,17 @@ void co_yield() {
 		if (cur -> status == CO_NEW) {
 			cur -> status = CO_RUNNING;
 			stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg);
+			cur -> status = CO_DEAD;
+			if (cur -> waiter != NULL) {
+				cur -> waiter -> status = CO_RUNNING;	
+			}
+			int tep = 0;
+			for (int i = 0; i < sum; i++)
+				if (cor[i] == cur) tep = i;	
+			for (int i = tep; i < sum - 1; i++)
+				cor[i] = cor[i + 1];
+			sum--;
+			co_yield();
 		}
 		else {
 			longjmp(cur->context, 1);	
