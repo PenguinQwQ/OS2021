@@ -85,6 +85,7 @@ void co_yield() {
 	int val = setjmp(cur -> context);
 	if (val == 0) {
 		int id = rand() % sum;
+		while (cor[id] -> status == CO_WAITING) id = rand() % sum;
 		cur = cor[id];
 		if (cur -> status == CO_NEW) {
 			int val2 = setjmp(cur -> context2);
@@ -117,5 +118,9 @@ void co_yield() {
 }
 
 void co_wait(struct co *co) {
-
+	if (co->status != CO_DEAD) cur -> status = CO_WAITING;
+	else {
+		free(co);	
+	}
+	co_yield();
 }
