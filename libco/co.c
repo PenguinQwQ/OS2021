@@ -91,8 +91,8 @@ void co_yield() {
 				cur -> status = CO_RUNNING;
 				printf("%d\n", id);
 				stack_switch_call(&cur->stack[MAX_SIZE], cur->func, (uintptr_t)cur->arg);
+				printf("%d\n", id);
 				assert(cur == cor[id]);
-				longjmp(cur->context2, 2);
 				jmp();
 			}
 			else {
