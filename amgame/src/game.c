@@ -21,8 +21,9 @@ int main(const char *args) {
   
   splash();
   init_location();
-
-  while(read_key() != AM_KEY_S);
+  int tep = 0;
+  while((tep = read_key()) != AM_KEY_S && tep != AM_KEY_ESCAPE);
+  if (tep == AM_KEY_ESCAPE) halt(0);
 
   int next_frame = io_read(AM_TIMER_UPTIME).us / 1000;
   int t = 0, speed = init_speed;
