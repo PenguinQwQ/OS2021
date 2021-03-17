@@ -54,8 +54,10 @@ void update_screen() {
 				event.sync = 1,
 				event.pixels = pixels;
 				ioe_write(AM_GPU_FBDRAW, &event);
-				int tep = read_key();
-				if (tep == AM_KEY_ESCAPE) halt(0);
+				if (up == 500) {
+					int tep = read_key();
+					if (tep == AM_KEY_ESCAPE) halt(0);
+				}
 			}
 		}
 }
