@@ -47,13 +47,15 @@ void update_screen() {
 			for (int k = 0; k < block_size; k++) {
 				pixels[k] = texture[i][j];
 			}
-			int up = (crash) ? 50: 1;
+			int up = (crash) ? 500: 1;
 			for (int k = 0; k < up; k++) {
 				event.x = i * SIDE, event.y = j * SIDE,
 				event.w = SIDE, event.h = SIDE,
 				event.sync = 1,
 				event.pixels = pixels;
 				ioe_write(AM_GPU_FBDRAW, &event);
+				int tep = read_key();
+				if (tep == AM_KEY_ESCAPE) halt(0);
 			}
 		}
 }
