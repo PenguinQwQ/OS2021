@@ -38,6 +38,7 @@ char MainName[5] = {"main"};
 static int sum = 0;
 
 __attribute__((constructor)) static void init() {
+	srand(time(0));
 	struct co *now = (struct co *)malloc(sizeof(struct co));
 	assert(now != NULL);
 	now -> name = MainName;
