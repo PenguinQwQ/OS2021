@@ -125,4 +125,5 @@ void co_wait(struct co *co) {
 		free(co);	
 	}
 	co_yield();
+	if (co!= NULL)free(co);
 }
