@@ -28,11 +28,7 @@ int main(const char *args) {
   int next_frame = io_read(AM_TIMER_UPTIME).us / 1000;
   int t = 0, speed = init_speed;
   while (1) {
-	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame) {
-		tep = read_key();
-		if (tep == AM_KEY_ESCAPE) halt(0);	
-		
-	}
+	while(io_read(AM_TIMER_UPTIME).us / 1000 < next_frame);
     next_frame += 1000 / FPS;
 	test_hit();
 	t++;
