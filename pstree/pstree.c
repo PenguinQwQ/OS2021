@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
 
 	if (bj == false) {
 		error_message(argv[i]);
-		return 0;
+		return 1;
 	}
 
 	if (flag[2] == true) {
