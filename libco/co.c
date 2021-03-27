@@ -79,7 +79,7 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg, uint
 }
 
 void jmp() {
-	puts("%p\n", cur);
+	printf("%p\n", cur);
 	longjmp(cur->context2, 2);	
 }
 
