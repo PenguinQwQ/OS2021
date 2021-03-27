@@ -125,5 +125,5 @@ void co_wait(struct co *co) {
 	co -> waiter = cur;
 	if (co->status != CO_DEAD) cur -> status = CO_WAITING;
 	co_yield();
-	free(co);	
+//	free(co);	
 }
