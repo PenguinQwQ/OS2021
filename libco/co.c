@@ -79,8 +79,7 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg, uint
 }
 
 void jmp() {
-	printf("%p %p\n", cur, cor[1]);
-	longjmp(cur->context2, rand());	
+	longjmp(cur->context2, 2);	
 }
 
 
@@ -92,6 +91,7 @@ void co_yield() {
 		cur = cor[id];
 		if (cur -> status == CO_NEW) {
 			int val2 = setjmp(cur -> context2);
+			printf("%p\n", cur);
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
 				stack_switch_call(&(cur->stack[STACK_SIZE - 8]), cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
