@@ -92,6 +92,7 @@ void co_yield() {
 				id = i;
 				break;
 			}
+		printf("%d\n", id);
 /*		while (cor[id] -> status == CO_WAITING || (!id && sum != 1)) {
 			id = rand() % sum, t++;
 			if (t == 100) break;
