@@ -89,7 +89,7 @@ void co_yield() {
 	int val = setjmp(cur -> context);
 	struct co* tep = cur; 
 	if (val == 0) {
-		int id = rand() % sum;
+		int id = 0;
 		while (cor[id] -> status == CO_WAITING ) {
 			id = rand() % sum;
 		}
