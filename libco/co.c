@@ -82,6 +82,23 @@ void jmp() {
 	longjmp(cur->context2, 2);	
 }
 
+void deal() {
+	cur -> status = CO_DEAD;
+	if (cur -> waiter != NULL) {
+					cur -> waiter -> status = CO_RUNNING;	
+				}
+				int tep = 0;
+				for (int i = 0; i < sum; i++)
+					if (cor[i] == cur) tep = i;	
+				for (int i = tep; i < sum - 1; i++)
+					cor[i] = cor[i + 1];
+				sum--;
+				co_yield();
+
+
+
+}
+
 int lst;
 
 void co_yield() {
@@ -99,19 +116,8 @@ void co_yield() {
 				cur -> status = CO_RUNNING;
 				stack_switch_call(&(cur->stack[STACK_SIZE - 16]), cur->func, (uintptr_t)cur->arg, jmp);
 			}
-			else {
-				cur -> status = CO_DEAD;
-				if (cur -> waiter != NULL) {
-					cur -> waiter -> status = CO_RUNNING;	
-				}
-				int tep = 0;
-				for (int i = 0; i < sum; i++)
-					if (cor[i] == cur) tep = i;	
-				for (int i = tep; i < sum - 1; i++)
-					cor[i] = cor[i + 1];
-				sum--;
-				co_yield();
-			}
+			else {deal1();
+						}
 		}
 		else {
 			longjmp(cur->context, 1);	
