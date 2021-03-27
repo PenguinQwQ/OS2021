@@ -33,7 +33,7 @@ struct co {
 
 struct co* cor[MAX_SIZE];
 
-struct co *cur;
+volatile struct co *cur;
 
 char MainName[5] = {"main"};
 
