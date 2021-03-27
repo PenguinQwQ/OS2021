@@ -18,6 +18,7 @@ enum co_status{
 };
 
 struct co {
+	jmp_buf context2;
 	char *name;
 	void (*func)(void *);
 	void *arg;
@@ -26,7 +27,6 @@ struct co {
 	struct  co* waiter;
 	jmp_buf context;
 	uint8_t stackw[STACK_SIZE];
-	jmp_buf context2;
 //	uint8_t stackw[STACK_SIZE];
 	uint8_t __attribute__((aligned(16)))stack[STACK_SIZE];
 };
