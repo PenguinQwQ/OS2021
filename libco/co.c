@@ -91,7 +91,7 @@ void co_yield() {
 		cur = cor[id];
 		if (cur -> status == CO_NEW) {
 			int val2 = setjmp(cur -> context2);
-			printf("%p\n", cur);
+			printf("%p 63453\n", cur);
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
 				stack_switch_call(&(cur->stack[STACK_SIZE - 8]), cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
