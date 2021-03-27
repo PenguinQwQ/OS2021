@@ -90,7 +90,7 @@ void co_yield() {
 		while (cor[id] -> status == CO_WAITING) id = rand() % sum;
 		cur = cor[id];
 		if (cur -> status == CO_NEW) {
-			printf(" 63453\n");
+			printf("%p 63453\n", cur);
 			int val2 = setjmp(cur -> context2);
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
