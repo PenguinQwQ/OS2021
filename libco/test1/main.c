@@ -17,7 +17,7 @@ static int get_count() {
 static void work_loop(void *arg) {
         co_yield();
 		printf("%s\n",arg);
-		co_yield();
+//		co_yield();
 		printf("%s\n",arg);
 }
 
@@ -30,7 +30,7 @@ static void test_1() {
     struct co *thd1 = co_start("thread-1", work, "X");
     struct co *thd2 = co_start("thread-2", work, "Y");
     co_wait(thd1);
-//    co_wait(thd2);
+    co_wait(thd2);
 
 //    printf("\n");
 }
