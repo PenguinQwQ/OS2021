@@ -89,7 +89,7 @@ void co_yield() {
 	struct co* tep = cur; 
 	if (val == 0) {
 		int id = rand() % sum;
-		while (cor[id] -> status == CO_WAITING || (id==0 && sum > 3)) {
+		while (cor[id] -> status == CO_WAITING ) {
 			id = rand() % sum;
 		}
 		cur = cor[id];
