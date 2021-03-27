@@ -110,6 +110,8 @@ void co_yield() {
 					cor[i] = cor[i + 1];
 				sum--;
 //				co_yield();
+				cur = cor[0];
+				longjmp(cur->context, 1);
 			}
 		}
 		else {
