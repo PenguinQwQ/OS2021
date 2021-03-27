@@ -109,9 +109,9 @@ void co_yield() {
 				for (int i = tep; i < sum - 1; i++)
 					cor[i] = cor[i + 1];
 				sum--;
-//				co_yield();
-				cur = cor[0];
-				longjmp(cur->context, 1);
+				val = setjmp(cur -> context);
+				if (val != 0) return;
+				co_yield();
 			}
 		}
 		else {
