@@ -39,7 +39,6 @@ char MainName[5] = {"main"};
 static int sum = 0;
 
 __attribute__((constructor)) static void init() {
-	srand(time(0));
 	struct co *now = (struct co *)malloc(sizeof(struct co));
 	assert(now != NULL);
 	now -> name = MainName;
@@ -96,7 +95,6 @@ void co_yield() {
 				stack_switch_call(&(cur->stack[STACK_SIZE - 8]), cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
 			}
 			else {
-				printf("%d\n", id);
 				cur -> status = CO_DEAD;
 				if (cur -> waiter != NULL) {
 					cur -> waiter -> status = CO_RUNNING;	
