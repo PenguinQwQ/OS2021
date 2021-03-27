@@ -66,7 +66,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 	return now;
 }
 
-static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg, uintptr_t entry2) {
+static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg, void* entry2) {
 	  asm volatile (
 	  #if __x86_64__
 	      "movq %0, %%rsp; andq $0xfffffffffffffff0, %%rsp;movq %2, %%rdi;            pushq %3; jmpq *%1"
@@ -97,7 +97,7 @@ void co_yield() {
 			int val2 = setjmp(cur -> context2);
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
-				stack_switch_call(&(cur->stack[STACK_SIZE - 16]), cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
+				stack_switch_call(&(cur->stack[STACK_SIZE - 16]), cur->func, (uintptr_t)cur->arg, jmp);
 			}
 			else {
 				cur -> status = CO_DEAD;
