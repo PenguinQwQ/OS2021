@@ -25,6 +25,7 @@ struct co {
 
 	enum    co_status status;
 	struct  co* waiter;
+	struct  co* caller;
 	jmp_buf context;
 	uint8_t stackw[STACK_SIZE];
 //	uint8_t stackw[STACK_SIZE];
@@ -86,6 +87,7 @@ int lst;
 
 void co_yield() {
 	int val = setjmp(cur -> context);
+	struct co* tep = cur; 
 	if (val == 0) {
 		int id = rand() % sum;
 		while (cor[id] -> status == CO_WAITING ) {
@@ -96,6 +98,7 @@ void co_yield() {
 			int val2 = setjmp(cur -> context2);
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
+				cur -> caller = tep;
 				stack_switch_call(&(cur->stack[STACK_SIZE - 16]), cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
 			}
 			else {
@@ -109,8 +112,10 @@ void co_yield() {
 				for (int i = tep; i < sum - 1; i++)
 					cor[i] = cor[i + 1];
 				sum--;
-				val = setjmp(cur -> context);
-				if (val != 0) return;
+				if (cur -> caller != NULL) {
+					val = setjmp(cur -> caller -> context);
+					if (val != 0) return;
+				}
 				co_yield();
 			}
 		}
