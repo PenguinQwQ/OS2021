@@ -109,7 +109,7 @@ void co_yield() {
 				for (int i = tep; i < sum - 1; i++)
 					cor[i] = cor[i + 1];
 				sum--;
-				co_yield();
+//				co_yield();
 			}
 		}
 		else {
