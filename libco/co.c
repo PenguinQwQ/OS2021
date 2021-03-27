@@ -17,7 +17,7 @@ enum co_status{
 	CO_DEAD,	
 };
 
-volatile struct co {
+struct co {
 	volatile char *name;
 	void (*func)(void *);
 	void *arg;
@@ -31,7 +31,7 @@ volatile struct co {
 	uint8_t __attribute__((aligned(16)))stack[STACK_SIZE];
 };
 
-struct co* cor[MAX_SIZE];
+volatile struct co* cor[MAX_SIZE];
 
 volatile struct co *cur;
 
