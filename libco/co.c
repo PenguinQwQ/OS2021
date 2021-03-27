@@ -91,6 +91,7 @@ void co_yield() {
 		int id = rand() % sum;
 		while (cor[id] -> status == CO_WAITING || (id==0 && sum != 1)) {
 			id = rand() % sum;
+			printf("%d\n");
 		}
 		cur = cor[id];
 		if (cur -> status == CO_NEW) {
