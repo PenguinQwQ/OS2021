@@ -79,7 +79,17 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg, void
 }
 
 void jmp() {
-	longjmp(cur->context2, 2);	
+	cur -> status = CO_DEAD;
+	if (cur -> waiter != NULL) {
+		cur -> waiter -> status = CO_RUNNING;	
+	}
+	int tep = 0;
+	for (int i = 0; i < sum; i++)
+		if (cor[i] == cur) tep = i;	
+	for (int i = tep; i < sum - 1; i++)
+		cor[i] = cor[i + 1];
+	sum--;
+	co_yield();
 }
 
 int lst;
