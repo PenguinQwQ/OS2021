@@ -80,7 +80,7 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg, uint
 
 void jmp() {
 	printf("%p %p\n", cur, cor[1]);
-	longjmp(cur->context2, 2);	
+	longjmp(cur->context2, rand());	
 }
 
 
