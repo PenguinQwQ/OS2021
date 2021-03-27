@@ -18,22 +18,22 @@ enum co_status{
 };
 
 struct co {
-	volatile char *name;
+	char *name;
 	void (*func)(void *);
 	void *arg;
 
 	enum    co_status status;
-	volatile struct  co* waiter;
-	volatile jmp_buf context;
+	struct  co* waiter;
+	jmp_buf context;
 	uint8_t stackw[STACK_SIZE];
-	volatile jmp_buf context2;
+	jmp_buf context2;
 	uint8_t stacky[STACK_SIZE];
 	uint8_t __attribute__((aligned(16)))stack[STACK_SIZE];
 };
 
-volatile struct co* cor[MAX_SIZE];
+struct co* cor[MAX_SIZE];
 
-volatile struct co *cur;
+struct co *cur;
 
 char MainName[5] = {"main"};
 
@@ -86,9 +86,10 @@ int lst;
 
 void co_yield() {
 	int val = setjmp(cur -> context);
+	struct co* tep = cur; 
 	if (val == 0) {
 		int id = rand() % sum;
-		while (cor[id] -> status == CO_WAITING ) {
+		while (cor[id] -> status == CO_WAITING )) {
 			id = rand() % sum;
 		}
 		cur = cor[id];
