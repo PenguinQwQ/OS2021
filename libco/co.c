@@ -82,12 +82,13 @@ void jmp() {
 	longjmp(cur->context2, 2);	
 }
 
+int lst;
 
 void co_yield() {
 	int val = setjmp(cur -> context);
 	if (val == 0) {
 		int id = 0;
-		for (int i = sum - 1; i >= 0; i--)
+		for (int i = 0; i < sum; i++)
 			if (cor[i] -> status == CO_RUNNING || cor[i] -> status == CO_NEW){
 				id = i;
 				break;
@@ -97,7 +98,6 @@ void co_yield() {
 			if (t == 100) break;
 		}*/
 		cur = cor[id];
-		printf("%d\n", id);
 		if (cur -> status == CO_NEW) {
 			int val2 = setjmp(cur -> context2);
 			if (val2 == 0) {
