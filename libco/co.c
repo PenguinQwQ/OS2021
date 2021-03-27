@@ -109,7 +109,7 @@ void co_yield() {
 				for (int i = tep; i < sum - 1; i++)
 					cor[i] = cor[i + 1];
 				sum--;
-				co_yield();
+//				co_yield();
 			}
 		}
 		else {
@@ -125,5 +125,5 @@ void co_wait(struct co *co) {
 	co -> waiter = cur;
 	if (co->status != CO_DEAD) cur -> status = CO_WAITING;
 	co_yield();
-//	free(co);	
+	free(co);	
 }
