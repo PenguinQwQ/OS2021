@@ -116,7 +116,7 @@ void co_yield() {
 				cur -> status = CO_RUNNING;
 				stack_switch_call(&(cur->stack[STACK_SIZE - 16]), cur->func, (uintptr_t)cur->arg, jmp);
 			}
-			else {deal1();
+			else {deal();
 						}
 		}
 		else {
