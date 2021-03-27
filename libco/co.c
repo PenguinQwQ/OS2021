@@ -96,7 +96,7 @@ void co_yield() {
 				stack_switch_call(&(cur->stack[STACK_SIZE - 8]), cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
 			}
 			else {
-//				printf("%d\n", id);
+				printf("%d\n", id);
 				cur -> status = CO_DEAD;
 				if (cur -> waiter != NULL) {
 					cur -> waiter -> status = CO_RUNNING;	
