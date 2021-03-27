@@ -112,11 +112,6 @@ void co_yield() {
 				for (int i = tep; i < sum - 1; i++)
 					cor[i] = cor[i + 1];
 				sum--;
-				if (cur -> caller != NULL) {
-					val = setjmp(cur -> caller -> context);
-					printf("21\n");
-					if (val != 0) return;
-				}
 				co_yield();
 			}
 		}
