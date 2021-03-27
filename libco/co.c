@@ -18,17 +18,16 @@ enum co_status{
 };
 
 struct co {
-	jmp_buf context2;
 	char *name;
 	void (*func)(void *);
 	void *arg;
 
 	enum    co_status status;
 	struct  co* waiter;
-	struct  co* caller;
 	jmp_buf context;
 	uint8_t stackw[STACK_SIZE];
-//	uint8_t stackw[STACK_SIZE];
+	jmp_buf context2;
+	uint8_t stacky[STACK_SIZE];
 	uint8_t __attribute__((aligned(16)))stack[STACK_SIZE];
 };
 
@@ -98,7 +97,6 @@ void co_yield() {
 			int val2 = setjmp(cur -> context2);
 			if (val2 == 0) {
 				cur -> status = CO_RUNNING;
-				cur -> caller = tep;
 				stack_switch_call(&(cur->stack[STACK_SIZE - 16]), cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
 			}
 			else {
