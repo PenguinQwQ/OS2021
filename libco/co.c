@@ -23,7 +23,7 @@ volatile struct co {
 	void *arg;
 
 	enum    co_status status;
-	struct  co* waiter;
+	volatile struct  co* waiter;
 	volatile jmp_buf context;
 	uint8_t stackw[STACK_SIZE];
 	volatile jmp_buf context2;
