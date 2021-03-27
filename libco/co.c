@@ -17,7 +17,7 @@ enum co_status{
 	CO_DEAD,	
 };
 
-struct co {
+volatile struct co {
 	char *name;
 	void (*func)(void *);
 	void *arg;
@@ -86,7 +86,6 @@ int lst;
 
 void co_yield() {
 	int val = setjmp(cur -> context);
-	struct co* tep = cur; 
 	if (val == 0) {
 		int id = rand() % sum;
 		while (cor[id] -> status == CO_WAITING ) {
