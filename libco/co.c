@@ -88,7 +88,7 @@ void co_yield() {
 	if (val == 0) {
 		int id = 0;
 		for (int i = sum - 1; i >= 0; i--)
-			if (cor[id] -> status == CO_RINNING || cor[id] -> status == CO_NEW)) {
+			if (cor[id] -> status == CO_RUNNING || cor[id] -> status == CO_NEW)) {
 				id = i;
 				break;
 			}
