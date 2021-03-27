@@ -73,7 +73,7 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg, uint
 		     : : "b"((uintptr_t)sp),     "d"(entry), "a"(arg), "r"(entry2)
 	  #else
 		  "movl %0, %%esp; movl %2, (%0); push %3; jmp *%1"
-			 : : "b"((uintptr_t)sp - 8), "d"(entry), "a"(arg), "r"(entry2)
+			 : : "b"((uintptr_t)sp ), "d"(entry), "a"(arg), "r"(entry2)
       #endif
 	  );
 }
