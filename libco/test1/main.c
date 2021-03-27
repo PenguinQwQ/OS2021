@@ -17,7 +17,7 @@ static int get_count() {
 static void work_loop(void *arg) {
         co_yield();
 		printf("%s\n",arg);
-//		co_yield();
+		co_yield();
 		printf("%s\n",arg);
 }
 
