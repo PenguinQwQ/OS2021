@@ -71,7 +71,7 @@ static inline void stack_switch_call (void *sp, void *entry, uintptr_t arg, uint
 	      "movq %0, %%rsp; andq $0xfffffffffffffff0, %%rsp;movq %2, %%rdi;            pushq %3; jmpq *%1"
 		     : : "b"((uintptr_t)sp),     "d"(entry), "a"(arg), "r"(entry2)
 	  #else
-		  "movl %0, %%esp; movl %2, (%0); push %3; jmp *%1"
+		  "movl %0, %%esp; movl %2, 4(%0); push %3; jmp *%1"
 			 : : "b"((uintptr_t)sp - 8), "d"(entry), "a"(arg), "r"(entry2)
       #endif
 	  );
@@ -95,7 +95,7 @@ void co_yield() {
 				stack_switch_call(&(cur->stack[STACK_SIZE - 8]), cur->func, (uintptr_t)cur->arg, (uintptr_t)jmp);
 			}
 			else {
-				printf("%d\n", id);
+//				printf("%d\n", id);
 				cur -> status = CO_DEAD;
 				if (cur -> waiter != NULL) {
 					cur -> waiter -> status = CO_RUNNING;	
