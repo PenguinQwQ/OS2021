@@ -27,7 +27,7 @@ struct co {
 	jmp_buf context;
 	jmp_buf context2;
 //	uint8_t stackw[STACK_SIZE];
-	uint8_t stack[STACK_SIZE];
+	uint8_t __attribute__((aligned(16)))stack[STACK_SIZE];
 };
 
 struct co* cor[MAX_SIZE];
