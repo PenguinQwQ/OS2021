@@ -87,7 +87,11 @@ void co_yield() {
 	int val = setjmp(cur -> context);
 	if (val == 0) {
 		int id = rand() % sum;
-		while (cor[id] -> status == CO_WAITING || (!id && sum != 1)) id = rand() % sum;
+		int t = 0;
+		while (cor[id] -> status == CO_WAITING || (!id && sum != 1)) {
+			id = rand() % sum, t++;
+			if (t == 100) break;
+		}
 		cur = cor[id];
 		if (cur -> status == CO_NEW) {
 			int val2 = setjmp(cur -> context2);
