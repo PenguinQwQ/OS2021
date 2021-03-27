@@ -97,6 +97,7 @@ void co_yield() {
 			if (t == 100) break;
 		}*/
 		cur = cor[id];
+		printf("%d\n", id);
 		if (cur -> status == CO_NEW) {
 			int val2 = setjmp(cur -> context2);
 			if (val2 == 0) {
