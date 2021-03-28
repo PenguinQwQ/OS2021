@@ -5,11 +5,10 @@ static void os_init() {
 }
 
 static void os_run() {
-	while(1){
   for (const char *s = "Hello World from CPU #*\n"; *s; s++) {
     putch(*s == '*' ? '0' + cpu_current() : *s);
-  }}
-  //while (1) ;
+  }
+  while (1) ;
 }
 
 MODULE_DEF(os) = {
