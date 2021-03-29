@@ -15,10 +15,12 @@ static int get_count() {
 }
 
 static void work_loop(void *arg) {
+    const char *s = (const char*)arg;
+    for (int i = 0; i < 100; ++i) {
+        printf("%s%d  ", s, get_count());
+        add_count();
         co_yield();
-		printf("%s\n",arg);
-		co_yield();
-		printf("%s\n",arg);
+    }
 }
 
 static void work(void *arg) {
@@ -29,8 +31,8 @@ static void test_1() {
 
     struct co *thd1 = co_start("thread-1", work, "X");
     struct co *thd2 = co_start("thread-2", work, "Y");
+
     co_wait(thd1);
-    printf("1\n");
     co_wait(thd2);
 
 //    printf("\n");
@@ -57,6 +59,7 @@ static void do_produce(Queue *queue) {
     sprintf(item->data, "libco-%d", g_count++);
     q_push(queue, item);
 }
+
 static void producer(void *arg) {
     Queue *queue = (Queue*)arg;
     for (int i = 0; i < 100; ) {
@@ -114,6 +117,31 @@ static void test_2() {
     q_free(queue);
 }
 
+static void do_test3(void * arg) {
+    for (int i = 0; i < 100; i++) {
+        printf("%s %d %d\n", arg, i, get_count());
+        add_count();
+        if (rand() % 2 == 0) co_yield();
+    }
+}
+
+struct co * thd[128];
+char tmp[128][2];
+static void test_3() {
+    for (int j = 0; j < 100; j++) {
+        for (int i = 1; i <= 127; i++) {
+            tmp[i][0] = i + '0';
+            tmp[i][1] = '\0';
+            printf("%s\n", tmp[i]);
+            thd[i] = co_start(tmp[i], do_test3, tmp[i]);
+        }
+
+        for (int i = 127; i >= 1; i--) {
+            co_wait(thd[i]);
+        }
+    }
+    printf("success test 3\n");
+}
 int main() {
     setbuf(stdout, NULL);
 
@@ -121,6 +149,10 @@ int main() {
     test_1();
 
     printf("\n\nTest #2. Expect: (libco-){200, 201, 202, ..., 399}\n");
+    test_2();
+
+    printf("start test 3\n");
+    //test_3();
 
     printf("\n\n");
 
