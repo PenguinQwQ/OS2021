@@ -10,6 +10,7 @@ static void os_run() {
   }
   int *p = pmm->alloc(1024);
   for (int i = 0; i < 200000; i++) p[i] = i;
+  printf("finish");
   while (1) ;
 }
 
