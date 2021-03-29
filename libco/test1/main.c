@@ -132,7 +132,7 @@ static void test_3() {
         for (int i = 1; i <= 127; i++) {
             tmp[i][0] = i + '0';
             tmp[i][1] = '\0';
-            printf("%s\n", tmp[i]);
+//            printf("%s\n", tmp[i]);
             thd[i] = co_start(tmp[i], do_test3, tmp[i]);
         }
 
