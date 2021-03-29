@@ -1,7 +1,7 @@
 #include <common.h>
 
 static void *kalloc(size_t size) {
-  return NULL;
+  return (void *)heap.start;
 }
 
 static void kfree(void *ptr) {
