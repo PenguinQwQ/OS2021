@@ -9,7 +9,7 @@ static void os_run() {
     putch(*s == '*' ? '0' + cpu_current() : *s);
   }
   int *p = pmm->alloc(1024);
-  assert(p != NULL);
+  for (int i = 0; i < 20; i++) p[i] = i;
   while (1) ;
 }
 
