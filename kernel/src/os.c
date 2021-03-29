@@ -8,9 +8,6 @@ static void os_run() {
   for (const char *s = "Hello World from CPU #*\n"; *s; s++) {
     putch(*s == '*' ? '0' + cpu_current() : *s);
   }
-  int *p = pmm->alloc(1024);
-  for (int i = 0; i < 20000000; i++) p[i] = i;
-  printf("finish");
   while (1) ;
 }
 
