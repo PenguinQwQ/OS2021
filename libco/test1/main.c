@@ -152,7 +152,7 @@ int main() {
     test_2();
 
     printf("start test 3\n");
-    //test_3();
+    test_3();
 
     printf("\n\n");
 
