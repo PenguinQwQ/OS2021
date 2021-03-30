@@ -14,8 +14,9 @@ void test1() {
 		if (top == 0) op = 0;
 		if (top == MAXN) op = 1;
 		if (op == 0) {
-			st2[top++] = rand() & ((1 << 7) - 1);
+			st2[top] = rand() & ((1 << 7) - 1);
 			st[top]    = pmm->alloc(st2[top]); 
+			top++;
 		}
 	    else {
 			pmm->free(st[top - 1]);
