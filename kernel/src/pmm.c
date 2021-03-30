@@ -45,8 +45,8 @@ void* deal_slab(int id, int kd) {
 	while (now != NULL && now -> remain == 0) now = now ->next;
 	assert(now != NULL);
 	assert(now -> remain != 0);
-	now -> remain--;
 	printf("%d %d %d\n", id, kd, now->remain);
+	now -> remain--;
     return (void *)_ptr[now -> belong][now -> remain];	
 }
 
