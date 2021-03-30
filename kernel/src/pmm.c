@@ -9,7 +9,7 @@ typedef struct{
 	int flag;	
 }spinlock_t;
 
-uintptr_t ptr[MAX_PAGE][512];
+static uintptr_t _ptr[MAX_PAGE][512];
 
 int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128};
 
@@ -44,10 +44,17 @@ void* deal_slab(int id, int kd) {
 	now = page_table[id][kd];
 	while (now != NULL && now -> remain == 0) now = now ->next;
 	assert(now != NULL);
-    return (void *)ptr[now -> belong][-- now -> remain];	
+    return (void *)_ptr[now -> belong][-- now -> remain];	
+}
+
+void deal_slab_free(struct page_t *now, void *ptr) {
+	assert(now -> magic == LUCK_NUMBER);
+	now -> remain = now -> remain + 1;
+	_ptr[now -> belong][now -> remain ++] = (uintptr_t)ptr;
 }
 
 static void *kalloc(size_t size) {
+  if ((size >> 20) > 16) return NULL;
   int id = cpu_current();
   int kd = judge_size(size);
   void *space;
@@ -60,7 +67,21 @@ static void *kalloc(size_t size) {
   else assert(0);
 }
 
+int judge_free(void *ptr) {
+  struct page_t *now = (struct page_t *) ((uintptr_t) ptr & (~(PAGE_SIZE - 1 )));	
+  if (now -> magic == LUCK_NUMBER) return 1;
+  assert(0);
+}
+
 static void kfree(void *ptr) {
+  int kd = judge_free(ptr);
+  if (kd == 1) {  
+	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1 )));
+	spinlock(now->lock);
+	deal_slab_free(now, ptr);
+	unspinlock(now->lock);
+  }
+  else assert(0);
 }
 
 
@@ -86,7 +107,7 @@ static void pmm_init() {
 		 for (uintptr_t k = (uintptr_t)heap.start + 128; 
 		                k != (uintptr_t)heap.start +PAGE_SIZE;
 		                k += DataSize[j]) {
-			 ptr[page -> belong][page -> remain] = k;	
+			 _ptr[page -> belong][page -> remain] = k;	
 			 page -> remain = page -> remain + 1;
 		 }
 	  }
