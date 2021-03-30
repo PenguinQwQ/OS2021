@@ -9,7 +9,7 @@ void test1() {
   void *st[MAXN];
   int st2[MAXN];
   int top = 0;
-  for (int i = 0; i < 1000; i++) {
+  for (int i = 0; i < 10; i++) {
 		int	op = rand() & 1;
 		if (top == 0) op = 0;
 		if (top == MAXN) op = 1;
