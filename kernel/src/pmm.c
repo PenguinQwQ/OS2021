@@ -52,6 +52,7 @@ void* deal_slab(int id, int kd) {
 void deal_slab_free(struct page_t *now, void *ptr) {
 	assert(now -> magic == LUCK_NUMBER);
 	now -> remain = now -> remain + 1;
+	printf("# %d\n" , now->remain);
 	_ptr[now -> belong][now -> remain ++] = (uintptr_t)ptr;
 }
 
