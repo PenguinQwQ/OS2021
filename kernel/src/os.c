@@ -26,7 +26,7 @@ void test1() {
 			top--;
 		}
    }
-	
+	printf("%d\n", top);	
 }
 
 
