@@ -10,8 +10,6 @@ typedef struct{
 }spinlock_t;
 
 uintptr_t ptr[MAX_PAGE][512];
-int		  sum[MAX_PAGE] = {0};
-
 
 int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128};
 
@@ -27,8 +25,39 @@ struct page_t{
 struct page_t *page_table[MAX_CPU][MAX_DATA_SIZE];
 spinlock_t lock[MAX_CPU];
 
+void spinlock(spinlock_t *lk) {
+	while(atomic_xchg(&lk -> flag, 1));	
+}
+
+void unspinlock(spinlock_t *lk) {
+	atomic_xchg(&lk -> flag, 0);
+}
+
+int judge_size(size_t size) {
+	for (int i = 0; i < MAX_DATA_SIZE; i++)
+		if (size < DataSize[i]) return i;
+	assert(0);
+}
+
+void* deal_slab(int id, int kd) {
+	struct page_t *now;
+	now = page_table[id][kd];
+	while (now != NULL && now -> remain == 0) now = now ->next;
+	assert(now != NULL);
+    return (void *)ptr[now -> belong][-- now -> remain];	
+}
+
 static void *kalloc(size_t size) {
-  return NULL;
+  int id = cpu_current();
+  int kd = judge_size(size);
+  void *space;
+  if (kd < MAX_DATA_SIZE) {
+	spinlock(&lock[id]);
+	space = deal_slab(id, kd);
+	unspinlock(&lock[id]);	  
+	return space;
+  }
+  else assert(0);
 }
 
 static void kfree(void *ptr) {
@@ -43,9 +72,8 @@ static void pmm_init() {
   
   int tot = cpu_count(), cnt = 0;
   for (int i = 0; i < tot; i++) {
-	  printf("Run on CPU #%d\n",i);
+	  lock[i].flag = 0;
 	  for (int j = 0; j < MAX_DATA_SIZE; j++) {
-		 printf("size %d\n", j);
 		 struct page_t *page = (struct page_t *)heap.start;
 		 page_table[i][j] = (struct page_t *)heap.start;
 		 heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);
@@ -58,8 +86,7 @@ static void pmm_init() {
 		 for (uintptr_t k = (uintptr_t)heap.start + 128; 
 		                k != (uintptr_t)heap.start +PAGE_SIZE;
 		                k += DataSize[j]) {
-			 ptr[page -> belong][sum[page ->belong]++] = k;	
-			 printf ("%p ", k);
+			 ptr[page -> belong][page -> remain] = k;	
 			 page -> remain = page -> remain + 1;
 		 }
 	  }
