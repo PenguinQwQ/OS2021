@@ -42,11 +42,12 @@ int judge_size(size_t size) {
 void* deal_slab(int id, int kd) {
 	struct page_t *now;
 	now = page_table[id][kd];
-	printf("%d %d %d\n", id, kd, now->remain);
 	while (now != NULL && now -> remain == 0) now = now ->next;
 	assert(now != NULL);
 	assert(now -> remain != 0);
-    return (void *)_ptr[now -> belong][-- now -> remain];	
+	now -> remain--;
+	printf("%d %d %d\n", id, kd, now->remain);
+    return (void *)_ptr[now -> belong][now -> remain];	
 }
 
 void deal_slab_free(struct page_t *now, void *ptr) {
