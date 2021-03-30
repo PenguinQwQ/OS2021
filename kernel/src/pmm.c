@@ -35,7 +35,7 @@ void unspinlock(spinlock_t *lk) {
 
 int judge_size(size_t size) {
 	for (int i = 0; i < MAX_DATA_SIZE; i++)
-		if (size < DataSize[i]) return i;
+		if (size <= DataSize[i]) return i;
 	assert(0);
 }
 
