@@ -19,6 +19,7 @@ struct page_t{
 	struct page_t *next;
 	int block_size;
 	int belong;
+	int magic;
 };
 
 struct page_t *page_table[MAX_CPU][MAX_DATA_SIZE];
