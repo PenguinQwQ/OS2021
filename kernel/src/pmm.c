@@ -1,6 +1,7 @@
 #include <common.h>
 
 static void *kalloc(size_t size) {
+  printf("%d\n", cpu_count());
   return NULL;
 }
 
