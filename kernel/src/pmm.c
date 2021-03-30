@@ -49,6 +49,7 @@ void* deal_slab(int id, int kd) {
 
 static void *kalloc(size_t size) {
   int id = cpu_current();
+  printf("%d\n", id);
   int kd = judge_size(size);
   void *space;
   if (kd < MAX_DATA_SIZE) {
