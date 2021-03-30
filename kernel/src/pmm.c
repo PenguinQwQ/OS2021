@@ -70,6 +70,7 @@ static void *kalloc(size_t size) {
 int judge_free(void *ptr) {
   struct page_t *now = (struct page_t *) ((uintptr_t) ptr & (~(PAGE_SIZE - 1 )));	
   if (now -> magic == LUCK_NUMBER) return 1;
+  printf("%p\n", ptr);
   assert(0);
 }
 
