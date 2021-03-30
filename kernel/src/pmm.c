@@ -44,6 +44,7 @@ void* deal_slab(int id, int kd) {
 	now = page_table[id][kd];
 	while (now != NULL && now -> remain == 0) now = now ->next;
 	assert(now != NULL);
+	assert(now -> remain != 0);
     return (void *)_ptr[now -> belong][-- now -> remain];	
 }
 
