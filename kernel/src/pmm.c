@@ -40,6 +40,7 @@ int judge_size(size_t size) {
 }
 
 void* deal_slab(int id, int kd) {
+	printf("%d %d\n", id, kd);
 	struct page_t *now;
 	now = page_table[id][kd];
 	while (now != NULL && now -> remain == 0) now = now ->next;
