@@ -97,7 +97,6 @@ static void pmm_init() {
 	  for (int j = 0; j < MAX_DATA_SIZE; j++) {
 		 struct page_t *page = (struct page_t *)heap.start;
 		 page_table[i][j] = (struct page_t *)heap.start;
-		 heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);
 	     page -> lock       = &lock[i];
 		 page -> next       = NULL;
 		 page -> block_size = DataSize[j];
@@ -110,6 +109,7 @@ static void pmm_init() {
 			 _ptr[page -> belong][page -> remain] = k;	
 			 page -> remain = page -> remain + 1;
 		 }
+		 heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);
 	  }
   }
 }
