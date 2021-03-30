@@ -10,7 +10,6 @@ static void os_run() {
   }
   void *tep = pmm->alloc(1);
   pmm->free(tep);
-  printf("%p\n", tep);
   assert(tep == pmm->alloc(1));
   while (1) ;
 }
