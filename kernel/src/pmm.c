@@ -180,7 +180,7 @@ static void pmm_init() {
   for (int i = 0; i < MAX_BIG_SLAB; i++)
 	BigSlab[BigSlab_Size++] = (uintptr_t)alloc_page(0, 0, 2);
   rSlab = (uintptr_t)heap.start;
-  printf("%d\n", sizeof(BigSlab) * sizeof(uintptr_t));
+  printf("%d\n", sizeof(BigSlab));
   printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
 
