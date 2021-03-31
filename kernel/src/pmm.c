@@ -5,7 +5,7 @@
 #define MAX_PAGE       2000
 #define LUCK_NUMBER    10291223
 #define MAX_LIST       100000
-#define MAX_BIG_SLAB   1
+#define MAX_BIG_SLAB   2048
 
 typedef struct{
 	int flag;	
