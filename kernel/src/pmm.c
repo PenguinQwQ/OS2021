@@ -194,10 +194,10 @@ void deal_Slow_free(uintptr_t left) {
 		int bj = 0;
 		if (List -> val_r[now] == left) bj = 1, List->val_r[now] = right;
 		else if (List -> val_l[nxt] == right) bj = 1, List->val_l[nxt] = left;
-	    printf("%p %p %p %p %p %p\n", left, right, List->val_l[now], List->val_r[now],List->val_l[nxt], List->val_r[nxt]);
 		if (bj) {
 			if (List -> val_r[now] == List -> val_l[nxt]) {
 				List -> val_next[now] = List -> val_next[nxt];
+				List -> val_r[now] = List -> val_r[nxt];
 				List -> val_l[nxt] = List -> val_r[nxt] = 0;
 				List -> val_next[nxt] = 0;
 				List -> val_valid[List -> sum1++] = nxt;
