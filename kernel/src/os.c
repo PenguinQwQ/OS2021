@@ -5,11 +5,11 @@ static void os_init() {
 }
 
 void test1() {	
-  #define MAXN 20000
+  #define MAXN 2000
   void *st[MAXN];
   int st2[MAXN];
   int top = 0;
-  for (int i = 0; i < 10000; i++) {
+  for (int i = 0; i < 1000; i++) {
 		int	op = rand() % 3;
 		if (top == 0) op = 0;
 		if (top == MAXN) op = 2;
