@@ -16,6 +16,7 @@ void test1() {
 		if (op < 2) {
 			st2[top] = 4096 + (rand() & ((1 << 10) - 1));
 			st[top]    = pmm->alloc(st2[top]);
+			printf("%d %p\n",cpu_current, (uintptr_t)st[top]);
 			assert(st[top] != 0); 
 			top++;
 		}
