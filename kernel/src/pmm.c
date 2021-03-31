@@ -12,7 +12,7 @@ typedef struct{
 static uintptr_t _ptr[MAX_PAGE][512];
 
 static int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 256};
-static int power[MAX_DATA_SIZE]    = {1, 3,  7,  15, 31,  15};
+static int power[MAX_DATA_SIZE]    = {10, 30,  70, 150, 310, 150};
 
 struct page_t{
 	spinlock_t *lock;
