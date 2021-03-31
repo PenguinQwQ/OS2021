@@ -2,7 +2,7 @@
 #define PAGE_SIZE      4096
 #define MAX_CPU        8
 #define MAX_DATA_SIZE  8
-#define MAX_PAGE       2000
+#define MAX_PAGE       3000
 #define LUCK_NUMBER    10291223
 #define MAX_LIST       100000
 #define MAX_BIG_SLAB   2048
@@ -165,6 +165,10 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 }
 
 static void pmm_init() {
+  assert(sizeof(DataSize) / sizeof(int) == MAX_DATA_SIZE);
+  int tep = 0;
+  for (int i = 0; i < MAX_DATA_SIZE; i++) tep += power[i];
+  assert(MAX_PAGE <= tep);
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
