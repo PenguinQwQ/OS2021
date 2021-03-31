@@ -10,9 +10,9 @@ void test1() {
   int st2[MAXN];
   int top = 0;
   for (int i = 0; i < 1000; i++) {
-		int	op = rand() % 2;
+		int	op = rand() % 3;
 		if (top == 0) op = 0;
-		//if (top == MAXN) op = 2;
+		if (top == MAXN) op = 2;
 		if (op < 2) {
 			st2[top] = 4096 + (rand() & ((1 << 10) - 1));
 			st[top]    = pmm->alloc(st2[top]);
