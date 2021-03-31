@@ -4,6 +4,7 @@
 #define MAX_DATA_SIZE  6
 #define MAX_PAGE       2000
 #define LUCK_NUMBER    10291223
+#define MAX_LIST       50000
 
 typedef struct{
 	int flag;	
@@ -59,7 +60,10 @@ void deal_slab_free(struct page_t *now, void *ptr) {
 	_ptr[now -> belong] -> slot[now -> remain ++] = (uintptr_t)ptr;
 }
 
-
+struct node{
+	int l[MAX_LIST], r[MAX_LIST];
+	uintptr_t val[MAX_LIST];	
+}*List;
 
 
 void *slow_path() {
@@ -159,6 +163,9 @@ static void pmm_init() {
 		}		
 	}	    
   }
+  List = (struct node *)heap.start;
+  while ((uintptr_t)&(List -> l[MAX_LIST]) >= (uintptr_t)heap.start) 
+	   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
 
