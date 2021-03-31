@@ -165,6 +165,7 @@ uintptr_t lookup_right(uintptr_t left) {
 
 void deal_Slow_free(uintptr_t left) {
 	uintptr_t right = lookup_right(left);
+	printf("%p %p\n", left, right);
 	int now = List -> head1;
 	assert(now);
 	if (List -> val_next[now] == 0) {
