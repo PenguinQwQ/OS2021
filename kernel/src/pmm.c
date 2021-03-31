@@ -31,6 +31,7 @@ struct ptr_t{
 struct ptr_t *_ptr[MAX_PAGE]; 
 
 struct page_t *page_table[MAX_CPU][MAX_DATA_SIZE];
+
 spinlock_t lock[MAX_CPU];
 
 void spinlock(spinlock_t *lk) {
@@ -44,7 +45,8 @@ void unspinlock(spinlock_t *lk) {
 int judge_size(size_t size) {
 	for (int i = 0; i < MAX_DATA_SIZE; i++)
 		if (size <= DataSize[i]) return i;
-	return MAX_DATA_SIZE;
+	if (size <= 4096) return MAX_DATA_SIZE;
+	else assert(0);
 }
 
 void* deal_slab(int id, int kd) {
@@ -67,20 +69,19 @@ struct node{
 	int st[MAX_LIST];
 }*List;
 
+uintptr_t BigSlab[MAX_BIG_SLAB];
+static int BigSlab_Size = 0;
+uintptr_t lSlab, rSlab;
 
-void *slow_path() {
-	assert(0);
-	return NULL;	
-	
-	
+
+void *SlowSlab_path() {
+	if (BigSlab_Size > 0) return (void *)BigSlab[--BigSlab_Size];
+	else assert(0);
 }
 
 spinlock_t BigLock_Slow;
 spinlock_t BigLock_Slab;
 
-uintptr_t BigSlab[MAX_BIG_SLAB];
-static int BigSlab_Size = 0;
-uintptr_t lSlab, rSlab;
 
 static void *kalloc(size_t size) {
   if ((size >> 20) > 16) return NULL;
@@ -95,7 +96,7 @@ static void *kalloc(size_t size) {
   }
   else if(kd == MAX_DATA_SIZE) {
 	  spinlock(&BigLock_Slab);
-	  space = slow_path();
+	  space = SlowSlab_path();
 	  unspinlock(&BigLock_Slab);
 	  return space;
   }
@@ -180,7 +181,6 @@ static void pmm_init() {
   for (int i = 0; i < MAX_BIG_SLAB; i++)
 	BigSlab[BigSlab_Size++] = (uintptr_t)alloc_page(0, 0, 2);
   rSlab = (uintptr_t)heap.start;
-  printf("%d\n", sizeof(BigSlab));
   printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
 
