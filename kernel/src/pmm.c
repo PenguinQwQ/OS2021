@@ -2,7 +2,7 @@
 #define PAGE_SIZE      4096
 #define MAX_CPU        8
 #define MAX_DATA_SIZE  6
-#define MAX_PAGE       1000
+#define MAX_PAGE       100000
 #define LUCK_NUMBER    10291223
 
 typedef struct{
