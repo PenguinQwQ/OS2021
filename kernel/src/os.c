@@ -10,6 +10,7 @@ void test1() {
   int st2[MAXN];
   int top = 0;
   for (int i = 0; i < 1000; i++) {
+	  printf("%d\n", i);
 		int	op = rand() % 3;
 		if (top == 0) op = 0;
 		if (top == MAXN) op = 2;
