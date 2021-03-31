@@ -9,11 +9,11 @@ void test1() {
   void *st[MAXN];
   int st2[MAXN];
   int top = 0;
-  for (int i = 0; i < 500; i++) {
-		int	op = rand() % 3;
+  for (int i = 0; i < 100; i++) {
+		int	op = rand() % 2;
 		if (top == 0) op = 0;
-		if (top == MAXN) op = 2;
-		if (op < 2) {
+		if (top == MAXN) op = 1;
+		if (op == 0) {
 			st2[top] = 4096 + (rand() & ((1 << 10) - 1));
 			st[top]    = pmm->alloc(st2[top]);
 			assert(st[top] != 0); 
