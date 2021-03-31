@@ -114,7 +114,7 @@ void add_delete(int l, int r) {
 
 void *Slow_path(size_t size) {
 	int now = List -> head1;
-	if (now == 0) return NULL;
+	if (now == 0) assert(0);//return NULL;
 	int tep = 2;
     while (tep < size) tep = tep * 2;
 	uintptr_t left ,right;	
@@ -123,7 +123,7 @@ void *Slow_path(size_t size) {
 		if (right - left >= size) break;
 		now = List -> val_next[now];
 	}
-	if (now == 0) return NULL;
+	if (now == 0) assert(0);//return NULL;
 	if (left == List -> val_l[now]) {
 		List -> val_l[now] = left + size;
 		add_delete(left, left + size);
