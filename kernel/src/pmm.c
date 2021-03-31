@@ -11,7 +11,8 @@ typedef struct{
 
 static uintptr_t _ptr[MAX_PAGE][512];
 
-int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 256};
+static int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 256};
+static int power[MAX_DATA_SIZE]    = {1, 3,  7,  15, 31,  15};
 
 struct page_t{
 	spinlock_t *lock;
@@ -139,7 +140,15 @@ static void pmm_init() {
 		  page_table[i][j] = alloc_page(i, j, 1);
 	  }
   }
-
+  for (int i  = 0; i < tot; i++) {
+	for (int j = 0; j < MAX_DATA_SIZE; j++) {
+		struct page_t *now = page_table[i][j];
+		for (int k = 0; k < power[j]; k++) {
+			now -> next = alloc_page(i, j, 1);
+			now = now -> next;	
+		}		
+	}	    
+  }
 }
 
 MODULE_DEF(pmm) = {
