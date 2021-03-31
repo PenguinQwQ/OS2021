@@ -1,8 +1,8 @@
 #include <common.h>
 #define PAGE_SIZE      4096
 #define MAX_CPU        8
-#define MAX_DATA_SIZE  5
-#define MAX_PAGE       100
+#define MAX_DATA_SIZE  6
+#define MAX_PAGE       1000
 #define LUCK_NUMBER    10291223
 
 typedef struct{
@@ -11,7 +11,7 @@ typedef struct{
 
 static uintptr_t _ptr[MAX_PAGE][512];
 
-int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128};
+int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 256};
 
 struct page_t{
 	spinlock_t *lock;
@@ -36,7 +36,7 @@ void unspinlock(spinlock_t *lk) {
 int judge_size(size_t size) {
 	for (int i = 0; i < MAX_DATA_SIZE; i++)
 		if (size <= DataSize[i]) return i;
-	assert(0);
+	return MAX_DATA_SIZE;
 }
 
 void* deal_slab(int id, int kd) {
@@ -53,6 +53,15 @@ void deal_slab_free(struct page_t *now, void *ptr) {
 	_ptr[now -> belong][now -> remain ++] = (uintptr_t)ptr;
 }
 
+void *slow_path() {
+	assert(0);
+	return NULL;	
+	
+	
+}
+
+spinlock_t BigLock;
+
 static void *kalloc(size_t size) {
   if ((size >> 20) > 16) return NULL;
   int id = cpu_current();
@@ -64,11 +73,17 @@ static void *kalloc(size_t size) {
 	unspinlock(&lock[id]);	  
 	return space;
   }
-  else assert(0);
+  else if(kd == MAX_DATA_SIZE) {
+	  spinlock(&BigLock);
+	  space = slow_path();
+	  unspinlock(&BigLock);
+	  return space;
+  }
+  assert(0);
 }
 
 int judge_free(void *ptr) {
-  struct page_t *now = (struct page_t *) ((uintptr_t) ptr & (~(PAGE_SIZE - 1 )));	
+  struct page_t *now = (struct page_t *) ((uintptr_t) ptr & (~(PAGE_SIZE - 1)));	
   if (now -> magic == LUCK_NUMBER) return 1;
   assert(0);
 }
@@ -76,7 +91,7 @@ int judge_free(void *ptr) {
 static void kfree(void *ptr) {
   int kd = judge_free(ptr);
   if (kd == 1) {  
-	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1 )));
+	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1)));
 	spinlock(now->lock);
 	deal_slab_free(now, ptr);
 	unspinlock(now->lock);
@@ -93,14 +108,14 @@ int pmax(int a, int b) {
 struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 	if (kd == 1) {
 	struct page_t *page = (struct page_t *)heap.start;
-	page -> lock       = &lock[cpu_id];
-	page -> next       = NULL;
-	page -> block_size = DataSize[memory_size];
-	page -> belong     = cnt++;
-	page -> magic      = LUCK_NUMBER; 
-	page -> remain     = 0;
+	page -> lock        = &lock[cpu_id];
+	page -> next        = NULL;
+	page -> block_size  = DataSize[memory_size];
+	page -> belong      = cnt++;
+	page -> magic       = LUCK_NUMBER; 
+	page -> remain      = 0;
 	for (uintptr_t k = (uintptr_t)heap.start + pmax(128, DataSize[memory_size]); 
-		           k != (uintptr_t)heap.start +PAGE_SIZE;
+		           k != (uintptr_t)heap.start + PAGE_SIZE;
 		           k += DataSize[memory_size]) {
 		_ptr[page -> belong][page -> remain] = k;	
 		page -> remain = page -> remain + 1;
@@ -116,6 +131,7 @@ static void pmm_init() {
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
   
+  BigLock.flag = 0;
   int tot = cpu_count();
   for (int i = 0; i < tot; i++) {
 	  lock[i].flag = 0;
@@ -123,6 +139,7 @@ static void pmm_init() {
 		  page_table[i][j] = alloc_page(i, j, 1);
 	  }
   }
+
 }
 
 MODULE_DEF(pmm) = {
