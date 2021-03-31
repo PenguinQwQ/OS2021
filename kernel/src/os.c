@@ -9,7 +9,7 @@ void test1() {
   void *st[MAXN];
   int st2[MAXN];
   int top = 0;
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 10; i++) {
 		int	op = rand() % 2;
 		if (top == 0) op = 0;
 		if (top == MAXN) op = 1;
@@ -25,7 +25,6 @@ void test1() {
 		}
    }
 	printf("%d\n", top);
-	assert(0);	
 }
 
 
