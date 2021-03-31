@@ -116,13 +116,12 @@ void *Slow_path(size_t size) {
 	int now = List -> head1;
 	if (now == 0) return NULL;
 	int tep = 2;
-    while (tep < size) tep = tep * 2;
+    while (tep < size) tep = tep * 2, printf("%d\n", size);
 	uintptr_t left ,right;	
 	while(now) {
 		left = ROUNDUP(List -> val_l[now], tep), right = List -> val_r[now];	
 		if (right - left >= size) break;
 		now = List -> val_next[now];
-		printf("%d\n", now);
 	}
 	if (now == 0) return NULL;
 	if (left == List -> val_l[now]) {
