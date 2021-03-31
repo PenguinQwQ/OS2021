@@ -59,6 +59,9 @@ void deal_slab_free(struct page_t *now, void *ptr) {
 	_ptr[now -> belong] -> slot[now -> remain ++] = (uintptr_t)ptr;
 }
 
+
+
+
 void *slow_path() {
 	assert(0);
 	return NULL;	
