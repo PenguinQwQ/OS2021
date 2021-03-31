@@ -190,6 +190,7 @@ void deal_Slow_free(uintptr_t left) {
 		}
 		assert(List -> val_l[nxt] >= right);
 		assert(now);
+
 		int bj = 0;
 		if (List -> val_r[now] == left) bj = 1, List->val_r[now] = right;
 		else if (List -> val_l[nxt] == right) bj = 1, List->val_l[nxt] = left;
@@ -233,6 +234,7 @@ static void *kalloc(size_t size) {
   }
   else if (kd == MAX_DATA_SIZE + 1) {
 	spinlock(&BigLock_Slow);
+	printf("%d\n", size);
 	space = Slow_path(size);
 	spinunlock(&BigLock_Slow);	  
 	return space;  
