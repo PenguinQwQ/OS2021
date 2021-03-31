@@ -5,7 +5,7 @@ static void os_init() {
 }
 
 void test1() {	
-  #define MAXN 1001
+  #define MAXN 100
   void *st[MAXN];
   int st2[MAXN];
   int top = 0;
