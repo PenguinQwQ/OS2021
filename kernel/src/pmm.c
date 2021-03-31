@@ -62,7 +62,8 @@ void deal_slab_free(struct page_t *now, void *ptr) {
 
 struct node{
 	int l[MAX_LIST], r[MAX_LIST];
-	uintptr_t val[MAX_LIST];	
+	uintptr_t val_l[MAX_LIST], val_r[MAX_LIST];
+	int st[MAX_LIST];
 }*List;
 
 
@@ -163,10 +164,6 @@ static void pmm_init() {
 		}		
 	}	    
   }
-  List = (struct node *)heap.start;
-  while ((uintptr_t)(&List -> l[MAX_LIST - 1])   >= (uintptr_t)heap.start ||                     (uintptr_t)&(List -> r[MAX_LIST - 1])   >= (uintptr_t)heap.start ||                     (uintptr_t)&(List -> val[MAX_LIST - 1]) >= (uintptr_t)heap.start                           )
-		heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);
-
   printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
 
