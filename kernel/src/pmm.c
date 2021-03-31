@@ -128,7 +128,7 @@ void *Slow_path(size_t size) {
 	if (left == List -> val_l[now]) {
 		List -> val_l[now] = left + size;
 		add_delete(left, left + size);
-	    return (void *) left;	
+	    return (void *)left;	
 	}
 	else {
 		List -> val_r[now] = left;
@@ -163,7 +163,7 @@ static void *kalloc(size_t size) {
 	spinunlock(&BigLock_Slab);
 	return space;
   }
-  else if (kd == MAX_DATA_SIZE) {
+  else if (kd == MAX_DATA_SIZE + 1) {
 	spinlock(&BigLock_Slow);
 	space = Slow_path(size);
 	spinunlock(&BigLock_Slow);	  
