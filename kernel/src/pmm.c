@@ -165,7 +165,6 @@ uintptr_t lookup_right(uintptr_t left) {
 
 void deal_Slow_free(uintptr_t left) {
 	uintptr_t right = lookup_right(left);
-	printf("%p %p\n", left, right);
 	int now = List -> head1;
 	assert(now);
 	if (List -> val_next[now] == 0) {
@@ -191,9 +190,10 @@ void deal_Slow_free(uintptr_t left) {
 		}
 		assert(List -> val_l[nxt] >= right);
 		assert(now);
+	    printf("%p %p %p %p %p %p\n", left, right, List->val_l[now], List->val_r[now],List->val_l[nxt], List->val_r[nxt]);
 
 		int bj = 0;
-		if (List -> val_r[now] == left) printf("67\n"), bj = 1, List->val_r[now] = right;
+		if (List -> val_r[now] == left) bj = 1, List->val_r[now] = right;
 		else if (List -> val_l[nxt] == right) bj = 1, List->val_l[nxt] = left;
 		if (bj) {
 			if (List -> val_r[now] == List -> val_l[nxt]) {
