@@ -348,13 +348,14 @@ static void pmm_init() {
 		}		
 	}	    
   }
+
   lSlab = (uintptr_t)heap.start;
   for (int i = 0; i < MAX_BIG_SLAB; i++)
 	BigSlab[BigSlab_Size++] = (uintptr_t)alloc_page(0, 0, 2);
   rSlab = (uintptr_t)heap.start;
   List = (struct node *)heap.start;
   heap.start = (void *)((uintptr_t)heap.start + sizeof(struct node));
-  heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
+  heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);
   init_list();
   printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
