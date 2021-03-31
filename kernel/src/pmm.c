@@ -184,6 +184,7 @@ void deal_Slow_free(uintptr_t left) {
 			if (List -> val_r[now] <= left) {
 				nxt = List -> val_next[now];
 				assert(nxt);
+				printf("%p %p\n", List -> val_l[nxt], right);
 				assert(List -> val_l[nxt] >= right);
 				break;	
 			}
