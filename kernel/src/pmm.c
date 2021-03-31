@@ -64,14 +64,27 @@ void deal_slab_free(struct page_t *now, void *ptr) {
 }
 
 struct node{
+	int head1;
 	int val_next[MAX_LIST];
 	uintptr_t val_l[MAX_LIST], val_r[MAX_LIST];
 	int val_valid[MAX_LIST], sum1;
     
+	int head2;
 	int delete_next[MAX_LIST];
 	uintptr_t delete_l[MAX_LIST], delete_r[MAX_LIST];
 	int delete_valid[MAX_LIST], sum2;
 }*List;
+
+void init_list() {
+	List -> delete_valid[List -> sum2++] = 0;
+	for (int i = 1; i < MAX_LIST; i++) {
+		List -> val_next[i] = List -> delete_next[i] = 0;
+		List -> val_valid[List -> sum1++] = i, List -> delete_valid[List -> sum2++] = i;
+	}	
+	List -> head1 = 0, List -> head2 = -1;
+	List -> val_l[List -> head1] = (uintptr_t)heap.start;
+	List -> val_r[List -> head1] = (uintptr_t)heap.end;
+}
 
 uintptr_t BigSlab[MAX_BIG_SLAB];
 static int BigSlab_Size = 0;
@@ -204,6 +217,7 @@ static void pmm_init() {
   List = (struct node *)heap.start;
   heap.start = (void *)((uintptr_t)heap.start + sizeof(struct node));
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
+  init_list();
   printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
 
