@@ -4,7 +4,7 @@
 #define MAX_DATA_SIZE  8
 #define MAX_PAGE       3000
 #define LUCK_NUMBER    10291223
-#define MAX_LIST       100000
+#define MAX_LIST       500000
 #define MAX_BIG_SLAB   2048
 
 typedef struct{
@@ -64,9 +64,13 @@ void deal_slab_free(struct page_t *now, void *ptr) {
 }
 
 struct node{
-	int l[MAX_LIST], r[MAX_LIST];
+	int val_next[MAX_LIST];
 	uintptr_t val_l[MAX_LIST], val_r[MAX_LIST];
-	int st[MAX_LIST];
+	int val_valid[MAX_LIST], sum1;
+    
+	int delete_next[MAX_LIST];
+	uintptr_t delete_l[MAX_LIST], delete_r[MAX_LIST];
+	int delete_valid[MAX_LIST], sum2;
 }*List;
 
 uintptr_t BigSlab[MAX_BIG_SLAB];
@@ -197,6 +201,7 @@ static void pmm_init() {
   for (int i = 0; i < MAX_BIG_SLAB; i++)
 	BigSlab[BigSlab_Size++] = (uintptr_t)alloc_page(0, 0, 2);
   rSlab = (uintptr_t)heap.start;
+  printf("%d\n", sizeof(struct node));
   printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
 
