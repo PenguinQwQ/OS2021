@@ -193,10 +193,9 @@ void deal_Slow_free(uintptr_t left) {
 		assert(now);
 
 		int bj = 0;
-		if (List -> val_r[now] == left) bj = 1, List->val_r[now] = right;
+		if (List -> val_r[now] == left) printf("67\n"), bj = 1, List->val_r[now] = right;
 		else if (List -> val_l[nxt] == right) bj = 1, List->val_l[nxt] = left;
 		if (bj) {
-			printf("7979");
 			if (List -> val_r[now] == List -> val_l[nxt]) {
 				List -> val_next[now] = List -> val_next[nxt];
 				List -> val_l[nxt] = List -> val_r[nxt] = 0;
