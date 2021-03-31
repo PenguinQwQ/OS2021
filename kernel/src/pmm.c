@@ -232,7 +232,6 @@ static void *kalloc(size_t size) {
 	return space;
   }
   else if (kd == MAX_DATA_SIZE + 1) {
-	printf("%d\n", BigLock_Slow.flag); 
 	spinlock(&BigLock_Slow);
 	space = Slow_path(size);
 	spinunlock(&BigLock_Slow);
@@ -264,7 +263,7 @@ static void kfree(void *ptr) {
   else if (kd == 3) {
 	  spinlock(&BigLock_Slow);
 	  deal_Slow_free((uintptr_t)ptr);
-	  spinunlock(&BigLock_Slab);
+	  spinunlock(&BigLock_Slow);
   }
   else assert(0);
 }
