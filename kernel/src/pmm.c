@@ -119,7 +119,6 @@ void *Slow_path(size_t size) {
     while (tep < size) tep = tep * 2;
 	uintptr_t left ,right;	
 	while(now) {
-		printf("%d %p %p\n", size, List -> val_l[now], List -> val_r[now]);
 		left = ROUNDUP(List -> val_l[now], tep), right = List -> val_r[now];	
 		if (right - left >= size) break;
 		now = List -> val_next[now];
@@ -215,6 +214,20 @@ void deal_Slow_free(uintptr_t left) {
 spinlock_t BigLock_Slow;
 spinlock_t BigLock_Slab;
 
+void debug_count() {
+	int now = List -> head1, sub = 0, sup = 0;
+	while(now) {
+		sup++;
+		now = List -> val_next[now];
+	}	
+	now = List -> head2, sub = 0;
+	while(now) {
+		sub++;
+		now = List -> delete_next[now];
+	}	
+	printf("sum1:%d sum1: %d\n", sup, sub);
+}
+
 
 static void *kalloc(size_t size) {
   if ((size >> 20) > 16) return NULL;
@@ -236,6 +249,7 @@ static void *kalloc(size_t size) {
   else if (kd == MAX_DATA_SIZE + 1) {
 	spinlock(&BigLock_Slow);
 	space = Slow_path(size);
+	debug_count();
 	spinunlock(&BigLock_Slow);
 	return space;  
   }
