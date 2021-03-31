@@ -186,9 +186,9 @@ void deal_Slow_free(uintptr_t left) {
 				assert(nxt);
 				if(List -> val_l[nxt] >= right) break;	
 			}
-			assert(List -> val_l[nxt] >= right);
 			now = List -> val_next[now];
 		}
+		assert(List -> val_l[nxt] >= right);
 		assert(now);
 		int bj = 0;
 		if (List -> val_r[now] == left) bj = 1, List->val_r[now] = right;
