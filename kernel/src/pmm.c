@@ -119,7 +119,7 @@ void *Slow_path(size_t size) {
     while (tep < size) tep = tep * 2;
 	uintptr_t left ,right;	
 	while(now) {
-		printf("%d %d %d\n", now, List -> val_l[now], List -> val_r[now]);
+		printf("%d %p %p\n", now, List -> val_l[now], List -> val_r[now]);
 		left = ROUNDUP(List -> val_l[now], tep), right = List -> val_r[now];	
 		if (right - left >= size) break;
 		now = List -> val_next[now];
