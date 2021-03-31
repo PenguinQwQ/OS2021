@@ -168,7 +168,7 @@ static void pmm_init() {
   assert(sizeof(DataSize) / sizeof(int) == MAX_DATA_SIZE);
   int tep = 0;
   for (int i = 0; i < MAX_DATA_SIZE; i++) tep += power[i];
-  assert(MAX_PAGE <= tep);
+  assert(tep <= MAX_PAGE);
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
