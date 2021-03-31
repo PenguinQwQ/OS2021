@@ -142,6 +142,74 @@ void *Slow_path(size_t size) {
 	}
 }
 
+uintptr_t lookup_right(uintptr_t left) {
+	int now = List -> head2, prev = 0;
+	uintptr_t right = 0;
+	assert(now);
+	while (now) {
+		prev = now;
+		if (List -> delete_l[now] == left) {
+			right = List -> delete_r[now];
+			break;	
+		}
+		now = List -> delete_next[now];
+	}
+	assert(now);
+	List -> delete_valid[List -> sum2++] = now;
+	List -> delete_l[now] = List -> delete_r[now] = 0;
+	if (List -> head2 == now) List -> head2 = List -> delete_next[now];
+	else List -> delete_next[prev] = List -> delete_next[now];
+	List -> delete_next[now] = 0;
+	return right;	
+}
+
+void deal_Slow_free(uintptr_t left) {
+	uintptr_t right = lookup_right(left);
+	int now = List -> head1;
+	assert(now);
+	if (List -> val_next[now] == 0) {
+		assert(right <= List -> val_l[now]);
+		if (right == List -> val_l[now]) List -> val_l[now] = left;
+		else {
+			assert(List -> sum1);
+			int id = List -> val_valid[--List -> sum1];
+			List -> val_l[id] = left, List -> val_r[id] = right;
+			List -> val_next[id] = now;
+			List -> head1 = id;	
+		}
+	}
+	else {
+		int nxt = 0;
+		while(now) {
+			if (List -> val_r[now] <= left) {
+				nxt = List -> val_next[now];
+				assert(nxt);
+				assert(List -> val_l[nxt] >= right);
+				break;	
+			}
+			now = List -> val_next[now];
+		}
+		assert(now);
+		int bj = 0;
+		if (List -> val_r[now] == left) bj = 1, List->val_r[now] = right;
+		else if (List -> val_l[nxt] == right) bj = 1, List->val_l[nxt] = left;
+		if (bj) {
+			if (List -> val_r[now] == List -> val_l[nxt]) {
+				List -> val_next[now] = List -> val_next[nxt];
+				List -> val_l[nxt] = List -> val_r[nxt] = 0;
+				List -> val_next[nxt] = 0;
+				List -> val_valid[List -> sum1++] = nxt;
+			}	
+		}
+		else {
+			assert(List -> sum1);
+			int id = List -> val_valid[--List -> sum1];
+			List -> val_l[id] = left, List -> val_r[id] = right;
+			List -> val_next[id] = nxt, List -> val_next[now] = id;	
+		}
+	}	
+}
+
 spinlock_t BigLock_Slow;
 spinlock_t BigLock_Slab;
 
@@ -176,7 +244,7 @@ int judge_free(void *ptr) {
   struct page_t *now = (struct page_t *) ((uintptr_t) ptr & (~(PAGE_SIZE - 1)));	
   if (now -> magic == LUCK_NUMBER) return 1;
   else if ((uintptr_t)ptr >= lSlab && (uintptr_t)ptr < rSlab) return 2;
-  else assert(0);
+  else return 3;;
 }
 
 static void kfree(void *ptr) {
@@ -190,6 +258,11 @@ static void kfree(void *ptr) {
   else if (kd == 2) {
 	  spinlock(&BigLock_Slab);
 	  deal_SlowSlab_free(ptr);
+	  spinunlock(&BigLock_Slab);
+  }
+  else if (kd == 3) {
+	  spinlock(&BigLock_Slow);
+	  deal_Slow_free((uintptr_t)ptr);
 	  spinunlock(&BigLock_Slab);
   }
   else assert(0);
