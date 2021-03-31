@@ -5,7 +5,7 @@
 #define MAX_PAGE       2000
 #define LUCK_NUMBER    10291223
 #define MAX_LIST       100000
-#define MAX_BIG_SLAB   4000
+#define MAX_BIG_SLAB   8192
 
 typedef struct{
 	int flag;	
@@ -75,9 +75,12 @@ void *slow_path() {
 	
 }
 
-spinlock_t BigLock;
+spinlock_t BigLock_Slow;
+spinlock_t BigLock_Slab;
 
 uintptr_t BigSlab[MAX_BIG_SLAB];
+static int BigSlab_Size = 0;
+uintptr_t lSlab, rSlab;
 
 static void *kalloc(size_t size) {
   if ((size >> 20) > 16) return NULL;
@@ -91,9 +94,9 @@ static void *kalloc(size_t size) {
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
-	  spinlock(&BigLock);
+	  spinlock(&BigLock_Slab);
 	  space = slow_path();
-	  unspinlock(&BigLock);
+	  unspinlock(&BigLock_Slab);
 	  return space;
   }
   assert(0);
@@ -143,6 +146,11 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 	heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);	
 	return page;
 	}
+	else if (kd == 0) {
+		void * tep = heap.start;	
+		heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);	
+		return (struct page_t *)tep;
+	}
     else assert(0);
 }
 
@@ -150,7 +158,8 @@ static void pmm_init() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
-  BigLock.flag = 0;
+  BigLock_Slab.flag = 0;
+  BigLock_Slow.flag = 0;
   int tot = cpu_count();
   for (int i = 0; i < tot; i++) {
 	  lock[i].flag = 0;
@@ -167,6 +176,10 @@ static void pmm_init() {
 		}		
 	}	    
   }
+  lSlab = (uintptr_t)heap.start;
+  for (int i = 0; i < MAX_BIG_SLAB; i++)
+	BigSlab[BigSlab_Size++] = (uintptr_t)alloc_page(0, 0, 2);
+  rSlab = (uintptr_t)heap.start;
   printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
 
