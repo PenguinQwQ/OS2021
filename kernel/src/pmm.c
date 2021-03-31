@@ -38,7 +38,7 @@ void spinlock(spinlock_t *lk) {
 	while(atomic_xchg(&lk -> flag, 1));	
 }
 
-void unspinlock(spinlock_t *lk) {
+void spinunlock(spinlock_t *lk) {
 	atomic_xchg(&lk -> flag, 0);
 }
 
@@ -73,6 +73,9 @@ uintptr_t BigSlab[MAX_BIG_SLAB];
 static int BigSlab_Size = 0;
 uintptr_t lSlab, rSlab;
 
+void deal_SlowSlab_free(void *ptr) {
+	BigSlab[BigSlab_Size++] = (uintptr_t)ptr;	
+}
 
 void *SlowSlab_path() {
 	if (BigSlab_Size > 0) return (void *)BigSlab[--BigSlab_Size];
@@ -91,13 +94,13 @@ static void *kalloc(size_t size) {
   if (kd < MAX_DATA_SIZE) {
 	spinlock(&lock[id]);
 	space = deal_slab(id, kd);
-	unspinlock(&lock[id]);	  
+	spinunlock(&lock[id]);	  
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
 	  spinlock(&BigLock_Slab);
 	  space = SlowSlab_path();
-	  unspinlock(&BigLock_Slab);
+	  spinunlock(&BigLock_Slab);
 	  return space;
   }
   assert(0);
@@ -106,7 +109,8 @@ static void *kalloc(size_t size) {
 int judge_free(void *ptr) {
   struct page_t *now = (struct page_t *) ((uintptr_t) ptr & (~(PAGE_SIZE - 1)));	
   if (now -> magic == LUCK_NUMBER) return 1;
-  assert(0);
+  else if ((uintptr_t)ptr >= lSlab && (uintptr_t)ptr < rSlab) return 2;
+  else assert(0);
 }
 
 static void kfree(void *ptr) {
@@ -115,7 +119,12 @@ static void kfree(void *ptr) {
 	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1)));
 	spinlock(now->lock);
 	deal_slab_free(now, ptr);
-	unspinlock(now->lock);
+	spinunlock(now->lock);
+  }
+  else if (kd == 2) {
+	  spinlock(&BigLock_Slab);
+	  deal_SlowSlab_free(ptr);
+	  spinunlock(&BigLock_Slab);
   }
   else assert(0);
 }
