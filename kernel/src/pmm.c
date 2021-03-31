@@ -46,7 +46,7 @@ int judge_size(size_t size) {
 	for (int i = 0; i < MAX_DATA_SIZE; i++)
 		if (size <= DataSize[i]) return i;
 	if (size <= 4096) return MAX_DATA_SIZE;
-	else assert(0);
+	else return MAX_DATA_SIZE + 1;
 }
 
 void* deal_slab(int id, int kd) {
@@ -76,12 +76,13 @@ struct node{
 }*List;
 
 void init_list() {
-	List -> delete_valid[List -> sum2++] = 0;
-	for (int i = 1; i < MAX_LIST; i++) {
+	List -> delete_valid[List -> sum2++] = 1;
+	List -> val_next[1] = List -> delete_next[1] = 0;
+	for (int i = 2; i < MAX_LIST; i++) {
 		List -> val_next[i] = List -> delete_next[i] = 0;
 		List -> val_valid[List -> sum1++] = i, List -> delete_valid[List -> sum2++] = i;
 	}	
-	List -> head1 = 0, List -> head2 = -1;
+	List -> head1 = 1, List -> head2 = 0;
 	List -> val_l[List -> head1] = (uintptr_t)heap.start;
 	List -> val_r[List -> head1] = (uintptr_t)heap.end;
 }
@@ -97,6 +98,48 @@ void deal_SlowSlab_free(void *ptr) {
 void *SlowSlab_path() {
 	if (BigSlab_Size > 0) return (void *)BigSlab[--BigSlab_Size];
 	else assert(0);
+}
+
+void add_delete(int l, int r) {
+	assert(List -> sum2);
+	int id = List -> delete_valid[--List -> sum2];
+	if (List -> head2 == 0) List -> head2 = id;
+	else {
+		List -> delete_next[id] = List -> head2;
+	    List -> head2 = id;
+	}	
+	List -> delete_l[id] = l;
+	List -> delete_r[id] = r;
+}
+
+void *Slow_path(size_t size) {
+	int now = List -> head1;
+	if (now == 0) return NULL;
+	int tep = 2;
+    while (tep < size) tep = tep * 2;
+	uintptr_t left ,right;	
+	while(now) {
+		left = ROUNDUP(List -> val_l[now], tep), right = List -> val_r[now];	
+		if (right - left >= size) break;
+		now = List -> val_next[now];
+	}
+	if (now == 0) return NULL;
+
+	if (left == List -> val_l[now]) {
+		List -> val_l[now] = left + size;
+		add_delete(left, left + size);
+	    return (void *) left;	
+	}
+	else {
+		List -> val_r[now] = left;
+		assert(List -> sum1);	
+		int nxt = List -> val_valid[--List -> sum1];
+		List -> val_l[nxt] = left + size, List -> val_r[nxt] = right;
+		List -> val_next[nxt]  = List -> val_next[now];
+		List -> val_next[now]  = nxt;
+		add_delete(left, left + size);
+		return (void *)left; 
+	}
 }
 
 spinlock_t BigLock_Slow;
@@ -120,7 +163,13 @@ static void *kalloc(size_t size) {
 	spinunlock(&BigLock_Slab);
 	return space;
   }
-  assert(0);
+  else if (kd == MAX_DATA_SIZE) {
+	spinlock(&BigLock_Slow);
+	space = Slow_path(size);
+	spinunlock(&BigLock_Slow);	  
+	return space;  
+  }
+  else assert(0);
 }
 
 int judge_free(void *ptr) {
