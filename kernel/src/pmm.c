@@ -98,10 +98,10 @@ static void *kalloc(size_t size) {
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
-	  spinlock(&BigLock_Slab);
-	  space = SlowSlab_path();
-	  spinunlock(&BigLock_Slab);
-	  return space;
+	spinlock(&BigLock_Slab);
+	space = SlowSlab_path();
+	spinunlock(&BigLock_Slab);
+	return space;
   }
   assert(0);
 }
@@ -169,11 +169,14 @@ static void pmm_init() {
   int tep = 0;
   for (int i = 0; i < MAX_DATA_SIZE; i++) tep += power[i];
   assert(tep <= MAX_PAGE);
-  uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
+
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
+  uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
+
   BigLock_Slab.flag = 0;
   BigLock_Slow.flag = 0;
+  
   int tot = cpu_count();
   for (int i = 0; i < tot; i++) {
 	  lock[i].flag = 0;
