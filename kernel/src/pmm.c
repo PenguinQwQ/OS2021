@@ -12,8 +12,8 @@ typedef struct{
 }spinlock_t;
 
 
-static int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 512, 1024, 2048};
-static int power[MAX_DATA_SIZE]    = {7, 15, 31, 63, 128, 15, 5, 5};
+static int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 512, 1024};
+static int power[MAX_DATA_SIZE]    = {7, 15, 31, 63, 128, 15, 10};
 
 struct page_t{
 	spinlock_t *lock;
