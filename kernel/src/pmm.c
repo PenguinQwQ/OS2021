@@ -156,7 +156,7 @@ static void pmm_init() {
 		}		
 	}	    
   }
-  printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
+  printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
 
 MODULE_DEF(pmm) = {
