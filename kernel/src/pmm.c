@@ -2,7 +2,7 @@
 #define PAGE_SIZE      4096
 #define MAX_CPU        8
 #define MAX_DATA_SIZE  6
-#define MAX_PAGE       100000
+#define MAX_PAGE       10000
 #define LUCK_NUMBER    10291223
 
 typedef struct{
@@ -12,7 +12,7 @@ typedef struct{
 static uintptr_t _ptr[MAX_PAGE][512];
 
 static int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 256};
-static int power[MAX_DATA_SIZE]    = {10, 30,  70, 150, 310, 150};
+static int power[MAX_DATA_SIZE]    = {1, 3,  7, 150, 310, 15};
 
 struct page_t{
 	spinlock_t *lock;
