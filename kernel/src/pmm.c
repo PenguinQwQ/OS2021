@@ -131,7 +131,7 @@ static void pmm_init() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
-  
+  printf("%d\n", sizeof(_ptr)/1024/1024); 
   BigLock.flag = 0;
   int tot = cpu_count();
   for (int i = 0; i < tot; i++) {
