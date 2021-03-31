@@ -122,9 +122,9 @@ void *Slow_path(size_t size) {
 		left = ROUNDUP(List -> val_l[now], tep), right = List -> val_r[now];	
 		if (right - left >= size) break;
 		now = List -> val_next[now];
+		printf("%d\n", now);
 	}
 	if (now == 0) return NULL;
-	printf("%d\n", size);
 	if (left == List -> val_l[now]) {
 		List -> val_l[now] = left + size;
 		add_delete(left, left + size);
