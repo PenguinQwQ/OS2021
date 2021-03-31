@@ -232,10 +232,10 @@ static void *kalloc(size_t size) {
 	return space;
   }
   else if (kd == MAX_DATA_SIZE + 1) {
+	printf("%d\n", BigLock_Slow.flag); 
 	spinlock(&BigLock_Slow);
 	space = Slow_path(size);
 	spinunlock(&BigLock_Slow);
-	printf("%d\n", BigLock_Slow.flag); 
 	return space;  
   }
   else assert(0);
