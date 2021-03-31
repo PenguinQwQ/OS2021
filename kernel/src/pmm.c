@@ -84,32 +84,43 @@ static void kfree(void *ptr) {
   else assert(0);
 }
 
+static int cnt = 0;
 
+int pmax(int a, int b) {
+	return a > b ? a : b;
+}
+
+struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
+	if (kd == 1) {
+	struct page_t *page = (struct page_t *)heap.start;
+	page -> lock       = &lock[cpu_id];
+	page -> next       = NULL;
+	page -> block_size = DataSize[memory_size];
+	page -> belong     = cnt++;
+	page -> magic      = LUCK_NUMBER; 
+	page -> remain     = 0;
+	for (uintptr_t k = (uintptr_t)heap.start + pmax(128, DataSize[memory_size]); 
+		           k != (uintptr_t)heap.start +PAGE_SIZE;
+		           k += DataSize[memory_size]) {
+		_ptr[page -> belong][page -> remain] = k;	
+		page -> remain = page -> remain + 1;
+	}
+	heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);	
+	return page;
+	}
+    else assert(0);
+}
 
 static void pmm_init() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
   
-  int tot = cpu_count(), cnt = 0;
+  int tot = cpu_count();
   for (int i = 0; i < tot; i++) {
 	  lock[i].flag = 0;
 	  for (int j = 0; j < MAX_DATA_SIZE; j++) {
-		 struct page_t *page = (struct page_t *)heap.start;
-		 page_table[i][j] = (struct page_t *)heap.start;
-	     page -> lock       = &lock[i];
-		 page -> next       = NULL;
-		 page -> block_size = DataSize[j];
-		 page -> belong     = cnt++;
-		 page -> magic      = LUCK_NUMBER; 
-		 page -> remain     = 0;
-		 for (uintptr_t k = (uintptr_t)heap.start + 128; 
-		                k != (uintptr_t)heap.start +PAGE_SIZE;
-		                k += DataSize[j]) {
-			 _ptr[page -> belong][page -> remain] = k;	
-			 page -> remain = page -> remain + 1;
-		 }
-		 heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);
+		  page_table[i][j] = alloc_page(i, j, 1);
 	  }
   }
 }
