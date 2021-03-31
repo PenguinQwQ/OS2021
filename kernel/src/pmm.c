@@ -1,7 +1,7 @@
 #include <common.h>
 #define PAGE_SIZE      4096
 #define MAX_CPU        8
-#define MAX_DATA_SIZE  5
+#define MAX_DATA_SIZE  6
 #define MAX_PAGE       2000
 #define LUCK_NUMBER    10291223
 
@@ -10,8 +10,8 @@ typedef struct{
 }spinlock_t;
 
 
-static int DataSize[MAX_DATA_SIZE] = {16, 32, 64, 128, 256};
-static int power[MAX_DATA_SIZE]    = {7,  15, 31, 64, 5};
+static int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 256};
+static int power[MAX_DATA_SIZE]    = {3, 7, 15, 31, 64, 5};
 
 struct page_t{
 	spinlock_t *lock;
