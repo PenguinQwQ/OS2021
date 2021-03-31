@@ -146,7 +146,7 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 	heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);	
 	return page;
 	}
-	else if (kd == 0) {
+	else if (kd == 2) {
 		void * tep = heap.start;	
 		heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);	
 		return (struct page_t *)tep;
