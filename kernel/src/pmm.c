@@ -1,18 +1,19 @@
 #include <common.h>
 #define PAGE_SIZE      4096
 #define MAX_CPU        8
-#define MAX_DATA_SIZE  6
+#define MAX_DATA_SIZE  8
 #define MAX_PAGE       2000
 #define LUCK_NUMBER    10291223
 #define MAX_LIST       100000
+#define MAX_BIG_SLAB   4000
 
 typedef struct{
 	int flag;	
 }spinlock_t;
 
 
-static int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 256};
-static int power[MAX_DATA_SIZE]    = {7, 15, 31, 63, 128, 5};
+static int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 512, 1024, 2048};
+static int power[MAX_DATA_SIZE]    = {7, 15, 31, 63, 128, 15, 15, 5};
 
 struct page_t{
 	spinlock_t *lock;
@@ -75,6 +76,8 @@ void *slow_path() {
 }
 
 spinlock_t BigLock;
+
+uintptr_t BigSlab[MAX_BIG_SLAB];
 
 static void *kalloc(size_t size) {
   if ((size >> 20) > 16) return NULL;
