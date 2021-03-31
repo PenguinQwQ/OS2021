@@ -116,7 +116,7 @@ void *Slow_path(size_t size) {
 	int now = List -> head1;
 	if (now == 0) return NULL;
 	int tep = 2;
-    while (tep < size) tep = tep * 2, printf("%d\n", size);
+    while (tep < size) tep = tep * 2;
 	uintptr_t left ,right;	
 	while(now) {
 		left = ROUNDUP(List -> val_l[now], tep), right = List -> val_r[now];	
@@ -232,7 +232,7 @@ static void *kalloc(size_t size) {
 	return space;
   }
   else if (kd == MAX_DATA_SIZE + 1) {
-	spinlock(&BigLock_Slow);
+	spinlock(&BigLock_Slow);printf("111\n");
 	space = Slow_path(size);
 	spinunlock(&BigLock_Slow);	  
 	return space;  
