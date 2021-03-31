@@ -22,8 +22,8 @@ void test1() {
 		}
 	    else {
 			pmm->free(st[top - 1]);
-			printf("111\n");
 			assert(st[top - 1] == pmm->alloc(st2[top - 1]));
+			printf("111\n");
 			pmm->free(st[top - 1]);
 			top--;
 		}
