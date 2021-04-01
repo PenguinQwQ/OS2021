@@ -104,7 +104,7 @@ void add_delete(int l, int r) {
 	List -> delete_r[id] = r;
 }
 
-void *Slow_path(uintptr_t size) {
+void *Slow_path(size_t size) {
 	int now = List -> head1;
 	if (now == 0) assert(0);//return NULL;
 	int tep = 2;
@@ -113,7 +113,7 @@ void *Slow_path(uintptr_t size) {
 	while(now) {
 		left = ROUNDUP(List -> val_l[now], tep), right = List -> val_r[now];	
 		if (right - left >= size) {
-		printf("%d %d\n", right - left, size);
+		printf("%p %d\n", right - left, size);
 			break;
 		}
 		now = List -> val_next[now];
