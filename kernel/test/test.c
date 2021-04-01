@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <sys/syscall.h>
 #define smp  8
-#define MAXN 100000
+#define MAXN 20000
 
 static int ttid[smp], sum = 0;
 
@@ -62,7 +62,6 @@ void task1() { // smoke task
 		if (p <= 5)      sz = rand() % 128 + 1;
 		else if (p <= 8) sz = 4096;
 		else             sz = (rand() & ((16 << 20) - 1)) + 1;
-		sz = 128;
 		void *tep = pmm -> alloc(sz);
 		record_alloc(sz, tep);
 	}	
