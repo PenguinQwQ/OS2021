@@ -17,7 +17,7 @@ int cpu_count() {
 }
 
 void task1() { // smoke task
-	for (int i = 0; i < 10000; i++) {
+	for (int i = 0; i < 1000; i++) {
 		int p = rand() % 10;
 		if (p <= 4) pmm->alloc(rand() % 1024);	
 		else if (p <= 7) pmm -> alloc(4096);
