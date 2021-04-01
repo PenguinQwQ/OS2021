@@ -21,7 +21,7 @@ void task1() { // smoke task
 		int p = rand() % 10;
 		if (p <= 4) pmm->alloc(rand() % 1024);	
 		else if (p <= 7) pmm -> alloc(4096);
-		else pmm->alloc(rand());
+		else pmm->alloc(rand() & ((16 << 20) - 1));
 	}	
 }
 
