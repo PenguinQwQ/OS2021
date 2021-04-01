@@ -25,7 +25,7 @@ struct node{
 int compare(const void* w1, const void* w2) {
 	struct node* t1 = (struct node *)w1;
 	struct node* t2 = (struct node *)w2;
-	return t1->l < t2->l;
+	return t1->l > t2->l;
 }
 
 int cnt;
