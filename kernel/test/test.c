@@ -29,7 +29,7 @@ void entry(int tid) {
 	lock();
 	ttid[sum++] = syscall(SYS_gettid);
 	unlock();
-	task_1();
+	task1();
 	printf("task_1 success on %d!\n", cpu_current());
 } 
 
