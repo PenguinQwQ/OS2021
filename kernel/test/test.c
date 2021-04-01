@@ -12,7 +12,7 @@ int cpu_count() {
 }
 
 void entry(int pid) {
-	printf("%d\n", pid);	
+	printf("%d\n", pid -1);	
 } 
 
 int main() {
