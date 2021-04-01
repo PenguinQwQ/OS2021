@@ -5,7 +5,7 @@
 #define smp 8
 
 int cpu_current() {
-	return syscall(224);	
+	return syscall(SYS_gettid);	
 }
 
 int cpu_count() {
