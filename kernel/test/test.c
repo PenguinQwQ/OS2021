@@ -47,7 +47,8 @@ void finish() {
 		if ( !(cpu[i].l < cpu[i + 1].l  && \
 		cpu[i].r <= cpu[i + 1].l        && \
 		cpu[i].l <= cpu[i].r)){
-			printf("%d\n",i);
+			printf("%p %p %d\n",cpu[i].l, cpu[i].r, cpu[i].size);
+			printf("%p %p %d\n",cpu[i + 1].l, cpu[i + 1].r, cpu[i + 1].size);
 			return;
 		}
 	printf("Test01 Success!\n");	
