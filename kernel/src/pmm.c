@@ -267,7 +267,6 @@ spinlock_t lk;
 
 static void *kalloc(size_t size) {
   if ((size >> 20) > 16) return NULL;
-  spinlock(&lk);
   int id = cpu_current();
   int kd = judge_size(size);
   void *space;
@@ -275,21 +274,18 @@ static void *kalloc(size_t size) {
 	spinlock(&lock[id]);
 	space = deal_slab(id, kd, size);
 	spinunlock(&lock[id]);	  
-	spinunlock(&lk);
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
 	spinlock(&BigLock_Slab);
 	space = SlowSlab_path();
 	spinunlock(&BigLock_Slab);
-	spinunlock(&lk);
 	return space;
   }
   else if (kd == MAX_DATA_SIZE + 1) {
 	spinlock(&BigLock_Slow);
 	space = Slow_path(size);
 	spinunlock(&BigLock_Slow);
-	spinunlock(&lk);
 	return space;  
   }
   else assert(0);
