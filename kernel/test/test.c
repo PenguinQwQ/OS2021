@@ -6,7 +6,6 @@
 
 static int ttid[smp], sum = 0;
 
-lock
 int cpu_current() {
 	lock();
 	for (int i = 0; i < smp; i++) 
