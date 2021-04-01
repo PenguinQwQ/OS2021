@@ -401,7 +401,7 @@ static void pmm_init() {
   heap.start = (void *)((uintptr_t)heap.start + sizeof(struct node));
   heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);
   init_list();
-  printf("%p %p\n", lSlab, Rslab);
+  printf("%p %p\n", lSlab, rSlab);
   printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
 
