@@ -1,10 +1,11 @@
 #include <common.h>
 #include <threads.h>
 #include <unistd.h>
+#include <sys/syscall.h>
 #define smp 8
 
 int cpu_current() {
-	return gettid();	
+	return syscall(224);	
 }
 
 int cpu_count() {
