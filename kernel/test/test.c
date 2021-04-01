@@ -4,7 +4,7 @@
 #include <sys/syscall.h>
 #define smp 8
 
-int tid[smp], sum = 0;
+static int ttid[smp], sum = 0;
 
 int cpu_current() {
 	return syscall(SYS_gettid);	
@@ -15,7 +15,7 @@ int cpu_count() {
 }
 
 void entry(int tid) {
-	tid[sum++] = cpu_current();
+	ttid[sum++] = cpu_current();
 	printf("%d\n", sum);	
 } 
 
