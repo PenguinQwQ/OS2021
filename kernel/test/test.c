@@ -42,6 +42,8 @@ void record_alloc(int sz, void *space) {
 	unlock();
 }
 
+int ti = 0;
+
 void finish() {
 	qsort(cpu, cnt, sizeof(struct node), compare);
 	for (int i = 0; i < cnt - 1; i++)
@@ -54,7 +56,7 @@ void finish() {
 			printf("%p %p %d\n",cpu[i + 1].l, cpu[i + 1].r, cpu[i + 1].size);
 			return;
 		}
-	printf("%d\n", cnt);
+	printf("%d%d \n", cnt, ti);
 	printf("Test01 Success!\n");	
 }
 
@@ -69,7 +71,8 @@ void task1() { // smoke task
 			bj = 1;
 			int id = rand() % cnt;
 			lock();
-			if (cpu[id].l) pmm -> free((void *)cpu[id].l), 	cpu[id].l = cpu[id].r = 0;
+			if (cpu[id].l) ti++, \
+				pmm -> free((void *)cpu[id].l), 	cpu[id].l = cpu[id].r = 0;
 			unlock();
 		}
 		if (bj == 0) {
