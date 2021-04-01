@@ -22,8 +22,8 @@ struct node{
 	int r;
 }cpu[MAXN * smp];
 
-int compare(const struct node w1, const struct node w2) {
-	return w1.l < w2.l;
+int compare(const void* w1, const void* w2) {
+	return w1->l < w2->l;
 }
 
 int cnt;
