@@ -5,11 +5,11 @@ static void os_init() {
 }
 
 void test1() {	
-  #define MAXN 100
+  #define MAXN 1010
   void *st[MAXN];
   int st2[MAXN];
   int top = 0;
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < 1000; i++) {
 		int	op = rand() % 2;
 		if (top == 0) op = 0;
 		if (top == MAXN) op = 1;
@@ -20,7 +20,7 @@ void test1() {
 			top++;
 		}
 	    else {
-			pmm->free(st[top - 1]);
+	//		pmm->free(st[top - 1]);
 			top--;
 		}
    }
