@@ -13,6 +13,7 @@ void test1() {
 		int	op = rand() % 2;
 		if (top == 0) op = 0;
 		if (top == MAXN) op = 1;
+		op = 0;
 		if (op == 0) {
 			st2[top] = 4096 + (rand() & ((1 << 10) - 1));
 			st[top]    = pmm->alloc(st2[top]);
