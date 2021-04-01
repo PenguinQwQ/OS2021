@@ -14,7 +14,7 @@ int cpu_current() {
 			unlock();
 			return i;	
 		}
-	asseet(0);
+	assert(0);
 }
 
 int cpu_count() {
