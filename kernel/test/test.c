@@ -2,7 +2,8 @@
 #include <threads.h>
 #include <unistd.h>
 #include <sys/syscall.h>
-#define smp 8
+#define smp  8
+#define MAXN 100000
 
 static int ttid[smp], sum = 0;
 
@@ -16,12 +17,29 @@ int cpu_count() {
 	return smp;	
 }
 
+struct node{
+	int l;
+	int r;	
+}cpu[smp][MAXN];
+
+int cnt[smp];
+
+void record_alloc(int sz, void *space) {
+	int id = cpu_current();
+	cpu[id][cnt[id]].l = (uintptr_t)space;
+	cpu[id][cnt[id]].r = (uintptr_t)space + sz;
+	cnt[id]++;
+}
+
 void task1() { // smoke task
-	for (int i = 0; i < 100000; i++) {
-		int p = rand() % 10;
-		if (p <= 4) pmm->alloc(rand() % 1024);	
-		else if (p <= 7) pmm -> alloc(4096);
-		else pmm->alloc(rand() & ((16 << 20) - 1));
+	for (int i = 0; i < MAXN; i++) {
+		int p = rand() % 10, sz;
+		void *tep;
+		if (p <= 5)      sz = rand() % 128;
+		else if (p <= 8) sz = 4096;
+		else             sz = rand() & ((16 << 20) - 1);
+		void *tep = pmm -> alloc()
+		record_alloc(sz, tep);
 	}	
 }
 
