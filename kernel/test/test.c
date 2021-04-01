@@ -13,7 +13,7 @@ int cpu_count() {
 }
 
 void entry(int tid) {
-	cpu_current();	
+	printf("%d\n", cpu_current());	
 } 
 
 int main(int argc, char *argv[]) {
