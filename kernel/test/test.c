@@ -11,8 +11,8 @@ int cpu_count() {
 	return smp;	
 }
 
-void entry() {
-	printf("%d\n", cpu_current());	
+void entry(int pid) {
+	printf("%d\n", pid);	
 } 
 
 int main() {
