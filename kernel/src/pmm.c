@@ -12,6 +12,7 @@ struct Area{
 	void *start;
 	void *end;
 }heap;
+#define Heap_Size 128 << 20
 #endif
 
 typedef struct{
@@ -340,11 +341,10 @@ static void pmm_init() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
   #else
-  int Heap_size = 128 << 20;
-  char *ptr = malloc(128 << 20);
+  char *ptr = malloc(Heap_Size);
   heap.start = ptr;
-  heap.end   = ptr + HEAP_SIZE;
-  printf("Got %d MiB heap: [%p, %p)\n", Heap_size >> 20, heap.start, heap.end);
+  heap.end   = ptr + Heap_Size;
+  printf("Got %d MiB heap: [%p, %p)\n", Heap_Size >> 20, heap.start, heap.end);
   #endif
   BigLock_Slab.flag = 0;
   BigLock_Slow.flag = 0;
