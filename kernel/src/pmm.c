@@ -23,6 +23,7 @@ typedef struct{
 
 static int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 512, 1024, 2048};
 static int power[MAX_DATA_SIZE]    = {7, 15, 31, 63, 127, 15, 7, 7};
+static int remain_cnt[MAX_CPU][MAX_DATA_SIZE];
 
 struct page_t{
 	spinlock_t *lock;
@@ -31,6 +32,7 @@ struct page_t{
 	int magic;
 	int belong;
 	int remain;
+	int id;
 };
 
 struct ptr_t{
@@ -57,18 +59,62 @@ int judge_size(size_t size) {
 	if (size <= 4096) return MAX_DATA_SIZE;
 	else return MAX_DATA_SIZE + 1;
 }
+void add_delete(int l, int r) {
+	assert(List -> sum2);
+	int id = List -> delete_valid[--List -> sum2];
+	if (List -> head2 == 0) List -> head2 = id;
+	else {
+		List -> delete_next[id] = List -> head2;
+	    List -> head2 = id;
+	}	
+	List -> delete_l[id] = l;
+	List -> delete_r[id] = r;
+}
 
-void* deal_slab(int id, int kd) {
+void *Slow_path(size_t size) {
+	int now = List -> head1;
+	if (now == 0) assert(0);//return NULL;
+	int tep = 2;
+    while (tep < size) tep = tep * 2;
+	uintptr_t left ,right;	
+	while(now) {
+		left = ROUNDUP(List -> val_l[now], tep), right = List -> val_r[now];	
+		if (right - left >= size) break;
+		now = List -> val_next[now];
+	}
+	if (now == 0) assert(0);//return NULL;
+	if (left == List -> val_l[now]) {
+		List -> val_l[now] = left + size;
+		add_delete(left, left + size);
+	    return (void *)left;	
+	}
+	else {
+		List -> val_r[now] = left;
+		assert(List -> sum1);	
+		int nxt = List -> val_valid[--List -> sum1];
+		List -> val_l[nxt] = left + size, List -> val_r[nxt] = right;
+		List -> val_next[nxt]  = List -> val_next[now];
+		List -> val_next[now]  = nxt;
+		add_delete(left, left + size);
+		return (void *)left; 
+	}
+}
+
+void* deal_slab(int id, int kd, int sz) {
+	if (kd == MAX_DATA_SIZE) return Slow_path(sz);
+	if (remain_cnt[id][kd] == 0) return deal_slab(id, kd + 1, sz);
 	struct page_t *now;
 	now = page_table[id][kd];
 	while (now != NULL && now -> remain == 0) now = now ->next;
 	assert(now != NULL);
 	assert(now -> remain != 0);
+	remain_cnt[id][kd]--;
     return (void *)_ptr[now -> belong] -> slot[--now -> remain];	
 }
 
 void deal_slab_free(struct page_t *now, void *ptr) {
 	assert(now -> magic == LUCK_NUMBER);
+	remain_cnt[now -> id][now -> block_size]++;
 	_ptr[now -> belong] -> slot[now -> remain ++] = (uintptr_t)ptr;
 }
 
@@ -112,46 +158,7 @@ void *SlowSlab_path() {
 	else assert(0);
 }
 
-void add_delete(int l, int r) {
-	assert(List -> sum2);
-	int id = List -> delete_valid[--List -> sum2];
-	if (List -> head2 == 0) List -> head2 = id;
-	else {
-		List -> delete_next[id] = List -> head2;
-	    List -> head2 = id;
-	}	
-	List -> delete_l[id] = l;
-	List -> delete_r[id] = r;
-}
 
-void *Slow_path(size_t size) {
-	int now = List -> head1;
-	if (now == 0) assert(0);//return NULL;
-	int tep = 2;
-    while (tep < size) tep = tep * 2;
-	uintptr_t left ,right;	
-	while(now) {
-		left = ROUNDUP(List -> val_l[now], tep), right = List -> val_r[now];	
-		if (right - left >= size) break;
-		now = List -> val_next[now];
-	}
-	if (now == 0) assert(0);//return NULL;
-	if (left == List -> val_l[now]) {
-		List -> val_l[now] = left + size;
-		add_delete(left, left + size);
-	    return (void *)left;	
-	}
-	else {
-		List -> val_r[now] = left;
-		assert(List -> sum1);	
-		int nxt = List -> val_valid[--List -> sum1];
-		List -> val_l[nxt] = left + size, List -> val_r[nxt] = right;
-		List -> val_next[nxt]  = List -> val_next[now];
-		List -> val_next[now]  = nxt;
-		add_delete(left, left + size);
-		return (void *)left; 
-	}
-}
 
 uintptr_t lookup_right(uintptr_t left) {
 	int now = List -> head2, prev = 0;
@@ -247,7 +254,7 @@ static void *kalloc(size_t size) {
   void *space;
   if (kd < MAX_DATA_SIZE) {
 	spinlock(&lock[id]);
-	space = deal_slab(id, kd);
+	space = deal_slab(id, kd, kd);
 	spinunlock(&lock[id]);	  
 	return space;
   }
@@ -308,15 +315,17 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 		struct page_t *page = (struct page_t *)heap.start;
 		page -> lock        = &lock[cpu_id];
 		page -> next        = NULL;
-		page -> block_size  = DataSize[memory_size];
+		page -> block_size  = memory_size;
 		page -> belong      = cnt++;
 		page -> magic       = LUCK_NUMBER; 
 		page -> remain      = 0;
+		page -> id          = cpu_id;
 		for (uintptr_t k = (uintptr_t)heap.start + pmax(128, DataSize[memory_size]); 
 					   k != (uintptr_t)heap.start + PAGE_SIZE;
 					   k += DataSize[memory_size]) {
 			_ptr[page -> belong] -> slot[page -> remain] = k;	
 			page -> remain = page -> remain + 1;
+			remain_cnt[cpu_id][memory_size]++;
 	}
 	assert(page->remain <= 512);
 	assert(sizeof(_ptr[cnt - 1]) <= 4096);
