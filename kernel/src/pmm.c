@@ -112,7 +112,10 @@ void *Slow_path(size_t size) {
 	uintptr_t left ,right;	
 	while(now) {
 		left = ROUNDUP(List -> val_l[now], tep), right = List -> val_r[now];	
-		if (right - left >= size) break;
+		if (right - left >= size) {
+		printf("%d %d\n", right - left, size);
+			break;
+		}
 		now = List -> val_next[now];
 	}
 	if (now == 0) {
@@ -125,7 +128,6 @@ void *Slow_path(size_t size) {
 	}
 	else {
 		printf("%p %p %p\n", left, List -> val_l[now], right);
-		printf("%d %d\n", right - left, size);
 		List -> val_r[now] = left;
 		assert(List -> sum1);	
 		int nxt = List -> val_valid[--List -> sum1];
