@@ -45,7 +45,7 @@ void task1() { // smoke task
 		else if (p <= 8) sz = 4096;
 		else             sz = rand() & ((16 << 20) - 1) + 1;
 		void *tep = pmm -> alloc(sz);
-		record_alloc(sz, tep);
+		//record_alloc(sz, tep);
 	}	
 }
 

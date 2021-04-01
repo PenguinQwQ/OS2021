@@ -116,7 +116,6 @@ void *Slow_path(size_t size) {
 	if (now == 0) {
 		return NULL;
 	}
-		assert(List -> val_l[now] != NULL);
 	if (left == List -> val_l[now]) {
 		List -> val_l[now] = left + size;
 		add_delete(left, left + size);
