@@ -6,8 +6,15 @@
 
 static int ttid[smp], sum = 0;
 
+lock
 int cpu_current() {
-	return syscall(SYS_gettid);	
+	lock();
+	for (int i = 0; i < smp; i++) 
+		if (syscall(SYS_gettid) == ttid[i]) {
+			unlock();
+			return i;	
+		}
+	asseet(0);
 }
 
 int cpu_count() {
@@ -15,7 +22,9 @@ int cpu_count() {
 }
 
 void entry(int tid) {
+	lock();
 	ttid[sum++] = cpu_current();
+	unlock();
 	printf("%d\n", sum);	
 } 
 
