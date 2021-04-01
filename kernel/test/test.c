@@ -25,9 +25,11 @@ struct node{
 int cnt;
 
 void record_alloc(int sz, void *space) {
+	lock();
 	cpu[cnt].l = (uintptr_t)space;
 	cpu[cnt].r = (uintptr_t)space + sz;
 	cnt++;
+	unlock();
 }
 
 void finish() {
