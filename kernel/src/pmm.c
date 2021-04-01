@@ -112,7 +112,7 @@ void *Slow_path(size_t size) {
 	uintptr_t left ,right;	
 	while(now) {
 		left = ROUNDUP(List -> val_l[now], tep), right = List -> val_r[now];	
-		if (right - left >= size) {
+		if (right - left >= size && left <= right) {
 		printf("%p %d\n", right - left, size);
 			break;
 		}
