@@ -105,7 +105,7 @@ void add_delete(int l, int r) {
 }
 
 void *Slow_path(size_t size) {
-	printf("%d\n", size);
+	printf("#%d\n", size);
 	int now = List -> head1;
 	if (now == 0) assert(0);//return NULL;
 	int tep = 2;
