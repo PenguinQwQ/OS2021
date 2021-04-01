@@ -292,7 +292,7 @@ static void *kalloc(size_t size) {
 }
 
 int judge_free(void *ptr) {
-	assert((uintptr_t)ptr >= heap.start && (uintptr_t) pre < heap.end);
+	assert((uintptr_t)ptr >= heap.start && (uintptr_t) ptr < heap.end);
 	printf("%p\n", (uintptr_t)ptr);
   struct page_t *now = (struct page_t *) ((uintptr_t) ptr & (~(PAGE_SIZE - 1)));	
   if (now -> magic == LUCK_NUMBER) return 1;
