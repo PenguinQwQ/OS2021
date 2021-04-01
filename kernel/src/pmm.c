@@ -202,9 +202,6 @@ uintptr_t lookup_right(uintptr_t left) {
 }
 
 void deal_Slow_free(uintptr_t left) {
-	uintptr_t right = lookup_right(left);
-	int now = List -> head1;
-	assert(now);
 	if (right <= List -> val_l[now]) {
 		if (right == List -> val_l[now]) List -> val_l[now] = left;
 		else {
@@ -404,6 +401,7 @@ static void pmm_init() {
   heap.start = (void *)((uintptr_t)heap.start + sizeof(struct node));
   heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);
   init_list();
+  printf("%p %p\n", lSlab, Rslab);
   printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
 
