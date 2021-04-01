@@ -366,6 +366,7 @@ static void pmm_init() {
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
   #else
   char *ptr = malloc(Heap_Size);
+  assert(ptr != NULL);
   heap.start = ptr;
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   heap.end   = heap.start + Heap_Size;
