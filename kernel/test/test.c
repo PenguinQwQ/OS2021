@@ -4,18 +4,18 @@
 #define smp 8
 
 int cpu_current() {
-	return getpid();	
+	return gettid();	
 }
 
 int cpu_count() {
 	return smp;	
 }
 
-void entry(int pid) {
-	printf("%d\n", pid -1);	
+void entry(int tid) {
+	cpu_current();	
 } 
 
-int main() {
+int main(int argc, char *argv[]) {
 	pmm -> init();
 	for (int i = 0; i < smp; i++)
 		create(entry);	

@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <kernel.h>
 #include <stdint.h>
+#include <string.h>
 #include <unistd.h>
 #define ROUNDUP(a, sz) ((((uintptr_t)a) + (sz) - 1) & ~((sz)- 1))
 
