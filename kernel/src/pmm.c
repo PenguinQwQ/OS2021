@@ -76,10 +76,13 @@ struct node{
 }*List;
 
 void init_list() {
+	List -> sum1 = List -> sum2 = 0;
 	List -> delete_valid[List -> sum2++] = 1;
-	List -> val_next[1] = List -> delete_next[1] = 0;
-	for (int i = 2; i < MAX_LIST; i++) {
+	for (int i = 0; i < MAX_LIST; i++) {
 		List -> val_next[i] = List -> delete_next[i] = 0;
+		List -> val_l[i] = List -> val_r[i] = 0;
+		List -> delete_l[i] = List -> delete_r[i] = 0;
+		if (i < 2) continue;
 		List -> val_valid[List -> sum1++] = i, List -> delete_valid[List -> sum2++] = i;
 	}	
 	List -> head1 = 1, List -> head2 = 0;
