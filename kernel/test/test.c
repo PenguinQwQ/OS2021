@@ -31,7 +31,7 @@ void record_alloc(int sz, void *space) {
 }
 
 void finish() {
-	prinf("%d\n", cnt);	
+	printf("%d\n", cnt);	
 	
 }
 
