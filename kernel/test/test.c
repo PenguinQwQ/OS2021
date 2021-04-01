@@ -65,6 +65,7 @@ void task1() { // smoke task
 		else if (p <= 8) sz = 4096;
 		else if (p <= 9) sz = (rand() & ((16 << 20) - 1)) + 1;
 		else {
+			printf("121\n");
 			bj = 1;
 			int id = rand() % cnt;
 			lock();
