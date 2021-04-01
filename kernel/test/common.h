@@ -10,3 +10,5 @@ int cpu_count();
 int cpu_current();
 
 int atomic_xchg(int *addr, int newval);
+
+int cpu_count();
