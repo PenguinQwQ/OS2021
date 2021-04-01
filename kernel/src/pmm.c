@@ -264,7 +264,7 @@ void debug_count() {
 }
 
 
-spinlock_t lk;
+spinlock_t lpk;
 
 static void *kalloc(size_t size) {
   if ((size >> 20) > 16) return NULL;
