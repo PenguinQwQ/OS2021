@@ -114,7 +114,7 @@ void *Slow_path(size_t size) {
 		now = List -> val_next[now];
 	}
 	if (now == 0) {
-		printf("%d\n",size);
+		printf("%d\n",size);assert(0);
 		return NULL;
 	}
 	if (left == List -> val_l[now]) {
