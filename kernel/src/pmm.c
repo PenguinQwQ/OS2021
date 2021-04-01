@@ -13,7 +13,7 @@ struct Area{
 	void *start;
 	void *end;
 }heap;
-#define Heap_Size (4 << 30)
+#define Heap_Size ((ll)4 << 30)
 #endif
 
 typedef struct{
