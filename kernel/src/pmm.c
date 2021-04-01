@@ -7,6 +7,13 @@
 #define MAX_LIST       100000
 #define MAX_BIG_SLAB   2048
 
+#ifdef TEST
+struct Area{
+	void *start;
+	void *end;
+}heap;
+#endif
+
 typedef struct{
 	int flag;	
 }spinlock_t;
@@ -328,13 +335,17 @@ static void pmm_init() {
   for (int i = 0; i < MAX_DATA_SIZE; i++) tep += power[i];
   assert(tep <= MAX_PAGE);
   
-//  #ifndef TEST
+  #ifndef TEST
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
- // #else
-  //char *ptr = malloc(128 << 20);
-
+  #else
+  int Heap_size = 128 << 20;
+  char *ptr = malloc(128 << 20);
+  heap.start = ptr;
+  heap.end   = ptr + HEAP_SIZE;
+  printf("Got %d MiB heap: [%p, %p)\n", Heap_size >> 20, heap.start, heap.end);
+  #endif
   BigLock_Slab.flag = 0;
   BigLock_Slow.flag = 0;
   
