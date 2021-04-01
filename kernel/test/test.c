@@ -77,7 +77,7 @@ void task1() { // smoke task
 		}
 		if (bj == 0) {
 			void *tep = pmm -> alloc(sz);
-			record_alloc(sz, tep);
+	//		record_alloc(sz, tep);
 		}
 	}	
 }
