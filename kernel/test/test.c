@@ -56,7 +56,7 @@ void finish() {
 			printf("%p %p %d\n",cpu[i + 1].l, cpu[i + 1].r, cpu[i + 1].size);
 			return;
 		}
-	printf("%d%d \n", cnt, ti);
+	printf("%d %d\n", cnt, ti);
 	printf("Test01 Success!\n");	
 }
 
