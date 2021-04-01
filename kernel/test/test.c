@@ -22,7 +22,7 @@ struct node{
 	int r;
 }cpu[MAXN * smp];
 
-int compare(const node w1, const node w2) {
+int compare(const struct node w1, const struct node w2) {
 	return w1.l < w2.l;
 }
 
@@ -38,7 +38,7 @@ void record_alloc(int sz, void *space) {
 }
 
 void finish() {
-	qsort(cpu, cnt, sizeof(node), compare);
+	qsort(cpu, cnt, sizeof(struct node), compare);
 	printf("Test01 Success!\n");	
 }
 
