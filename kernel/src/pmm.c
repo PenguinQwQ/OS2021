@@ -202,6 +202,9 @@ uintptr_t lookup_right(uintptr_t left) {
 }
 
 void deal_Slow_free(uintptr_t left) {
+	uintptr_t right = lookup_right(left);
+	int now = List -> head1;
+	assert(now);
 	if (right <= List -> val_l[now]) {
 		if (right == List -> val_l[now]) List -> val_l[now] = left;
 		else {
