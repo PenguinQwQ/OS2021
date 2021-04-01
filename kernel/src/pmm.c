@@ -8,6 +8,7 @@
 #define MAX_BIG_SLAB   2048
 
 #ifdef TEST
+#include <test.h>
 struct Area{
 	void *start;
 	void *end;
