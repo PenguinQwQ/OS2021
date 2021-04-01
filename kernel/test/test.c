@@ -19,16 +19,20 @@ int cpu_count() {
 
 struct node{
 	int l;
-	int r;	
-}cpu[smp][MAXN];
+	int r;
+}cpu[MAXN * smp];
 
-int cnt[smp];
+int cnt;
 
 void record_alloc(int sz, void *space) {
-	int id = cpu_current();
-	cpu[id][cnt[id]].l = (uintptr_t)space;
-	cpu[id][cnt[id]].r = (uintptr_t)space + sz;
-	cnt[id]++;
+	cpu[cnt].l = (uintptr_t)space;
+	cpu[cnt].r = (uintptr_t)space + sz;
+	cnt++;
+}
+
+void finish() {
+	prinf("%d\n", cnt);	
+	
 }
 
 void task1() { // smoke task
@@ -47,7 +51,7 @@ void entry(int tid) {
 	ttid[sum++] = syscall(SYS_gettid);
 	unlock();
 	task1();
-	printf("task_1 success on thread#%d!\n", cpu_current());
+	join(finish);
 } 
 
 int main(int argc, char *argv[]) {
