@@ -31,7 +31,9 @@ void test1() {
 
 static void os_run() {
   for (const char *s = "Hello World from CPU #*\n"; *s; s++) {
+	#ifndef TEST
     putch(*s == '*' ? '0' + cpu_current() : *s);
+	#endif
   }
   test1();
   while(1);
