@@ -16,6 +16,15 @@ int cpu_count() {
 	return smp;	
 }
 
+void task1() { // smoke task
+	for (int i = 0; i < 100000; i++) {
+		int p = rand() % 10;
+		if (p <= 4) pmm->alloc(rand() % 1024);	
+		else if (p <= 7) pmm -> alloc(4096);
+		else pmm->alloc(rand());
+	}	
+}
+
 void entry(int tid) {
 	lock();
 	ttid[sum++] = syscall(SYS_gettid);
