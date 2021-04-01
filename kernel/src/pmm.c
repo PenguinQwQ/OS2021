@@ -25,7 +25,7 @@ struct page_t{
 };
 
 struct ptr_t{
-  uintptr_t slot[256];
+  uintptr_t slot[512];
 };
 
 struct ptr_t *_ptr[MAX_PAGE]; 
@@ -308,7 +308,7 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 			_ptr[page -> belong] -> slot[page -> remain] = k;	
 			page -> remain = page -> remain + 1;
 	}
-	assert(page->remain <= 256);
+	assert(page->remain <= 512);
 	assert(sizeof(_ptr[cnt - 1]) <= 4096);
 	heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);	
 	return page;
