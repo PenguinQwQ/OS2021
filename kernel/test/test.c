@@ -15,7 +15,7 @@ int cpu_count() {
 }
 
 void entry(int tid) {
-	pid[sum++] = cpu_current();
+	tid[sum++] = cpu_current();
 	printf("%d\n", sum);	
 } 
 
