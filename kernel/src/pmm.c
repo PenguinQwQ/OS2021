@@ -327,10 +327,13 @@ static void pmm_init() {
   int tep = 0;
   for (int i = 0; i < MAX_DATA_SIZE; i++) tep += power[i];
   assert(tep <= MAX_PAGE);
-
+  
+//  #ifndef TEST
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
+ // #else
+  //char *ptr = malloc(128 << 20);
 
   BigLock_Slab.flag = 0;
   BigLock_Slow.flag = 0;
