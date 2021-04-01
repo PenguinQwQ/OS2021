@@ -163,7 +163,6 @@ void deal_slab_free(struct page_t *now, void *ptr) {
 uintptr_t BigSlab[MAX_BIG_SLAB];
 static int BigSlab_Size = 0;
 uintptr_t lSlab, rSlab;
-
 void deal_SlowSlab_free(void *ptr) {
 	BigSlab[BigSlab_Size++] = (uintptr_t)ptr;	
 }
@@ -264,9 +263,11 @@ void debug_count() {
 	printf("sum1:%d sum1: %d\n", sup, sub);
 }
 
+spinlock_t lk;
 
 static void *kalloc(size_t size) {
   if ((size >> 20) > 16) return NULL;
+  spinlock(&lk);
   int id = cpu_current();
   int kd = judge_size(size);
   void *space;
@@ -274,18 +275,21 @@ static void *kalloc(size_t size) {
 	spinlock(&lock[id]);
 	space = deal_slab(id, kd, size);
 	spinunlock(&lock[id]);	  
+	spinunlock(&lk);
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
 	spinlock(&BigLock_Slab);
 	space = SlowSlab_path();
 	spinunlock(&BigLock_Slab);
+	spinunlock(&lk);
 	return space;
   }
   else if (kd == MAX_DATA_SIZE + 1) {
 	spinlock(&BigLock_Slow);
 	space = Slow_path(size);
 	spinunlock(&BigLock_Slow);
+	spinunlock(&lk);
 	return space;  
   }
   else assert(0);
@@ -299,6 +303,7 @@ int judge_free(void *ptr) {
 }
 
 static void kfree(void *ptr) {
+  spinlock(&lk);
   int kd = judge_free(ptr);
   if (kd == 1) {  
 	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1)));
@@ -317,6 +322,7 @@ static void kfree(void *ptr) {
 	  spinunlock(&BigLock_Slow);
   }
   else assert(0);
+  spinunlock(&lk);
 }
 
 
@@ -395,7 +401,7 @@ static void pmm_init() {
 		}		
 	}	    
   }
-
+  lk.flag = 0;
   lSlab = (uintptr_t)heap.start;
   for (int i = 0; i < MAX_BIG_SLAB; i++)
 	BigSlab[BigSlab_Size++] = (uintptr_t)alloc_page(0, 0, 2);
