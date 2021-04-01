@@ -46,7 +46,10 @@ void finish() {
 	for (int i = 0; i < cnt - 1; i++)
 		if ( !(cpu[i].l < cpu[i + 1].l  && \
 		cpu[i].r <= cpu[i + 1].l        && \
-		cpu[i].l <= cpu[i].r))printf("%d\n",i);
+		cpu[i].l <= cpu[i].r)){
+			printf("%d\n",i);
+			return;
+		}
 	printf("Test01 Success!\n");	
 }
 
