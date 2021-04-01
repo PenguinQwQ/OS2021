@@ -113,7 +113,10 @@ void *Slow_path(size_t size) {
 		if (right - left >= size) break;
 		now = List -> val_next[now];
 	}
-	if (now == 0) return NULL;
+	if (now == 0) {
+		printf("%d\n",sz);
+		return NULL;
+	}
 	if (left == List -> val_l[now]) {
 		List -> val_l[now] = left + size;
 		add_delete(left, left + size);
@@ -260,7 +263,7 @@ void debug_count() {
 
 
 static void *kalloc(size_t size) {
-  if ((size >> 20) > 16) assert(0);//return NULL;
+  if ((size >> 20) > 16) return NULL;
   int id = cpu_current();
   int kd = judge_size(size);
   void *space;
