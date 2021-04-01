@@ -30,7 +30,7 @@ void entry(int tid) {
 	ttid[sum++] = syscall(SYS_gettid);
 	unlock();
 	task1();
-	printf("task_1 success on %d!\n", cpu_current());
+	printf("task_1 success on thread#%d!\n", cpu_current());
 } 
 
 int main(int argc, char *argv[]) {
