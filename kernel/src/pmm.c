@@ -126,7 +126,7 @@ void *Slow_path(size_t size) {
 		add_delete(left, left + size);
 	    return (void *)left;	
 	}
-	else {assert(0);
+	else {
 		List -> val_r[now] = left;
 		assert(List -> sum1);	
 		int nxt = List -> val_valid[--List -> sum1];
@@ -138,7 +138,7 @@ void *Slow_path(size_t size) {
 	}
 }
 
-void* deal_slab(int id, int kd, int sz) {
+void* deal_slab(int id, int kd, size_t sz) {
 	if (kd == MAX_DATA_SIZE) {
 		spinlock(&BigLock_Slow);
 		void *tep = Slow_path(sz);
@@ -273,7 +273,7 @@ static void *kalloc(size_t size) {
   void *space;
   if (kd < MAX_DATA_SIZE) {
 	spinlock(&lock[id]);
-	space = deal_slab(id, kd, kd);
+	space = deal_slab(id, kd, size);
 	spinunlock(&lock[id]);	  
 	return space;
   }
