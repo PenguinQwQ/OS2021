@@ -315,8 +315,6 @@ static void kfree(void *ptr) {
 	  spinunlock(&BigLock_Slow);
   }
   else assert(0);
-//  spinlock(&lk);
- // spinunlock(&lk);
 }
 
 
