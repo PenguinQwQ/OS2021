@@ -68,7 +68,7 @@ void task1() { // smoke task
 			bj = 1;
 			int id = rand() % cnt;
 			lock();
-			if (cpu[id].l) pmm -> free(cpu[id].l), 	cpu[id].l = cpu[id].r = 0;
+			if (cpu[id].l) pmm -> free((void *)cpu[id].l), 	cpu[id].l = cpu[id].r = 0;
 			unlock();
 		}
 		if (bj == 0) {
