@@ -125,6 +125,7 @@ void *Slow_path(size_t size) {
 	}
 	else {
 		List -> val_r[now] = left;
+		printf("%p\n", left);
 		assert(List -> sum1);	
 		int nxt = List -> val_valid[--List -> sum1];
 		List -> val_l[nxt] = left + size, List -> val_r[nxt] = right;
