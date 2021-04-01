@@ -149,18 +149,18 @@ uintptr_t lookup_right(uintptr_t left) {
 	uintptr_t right = 0;
 	assert(now);
 	while (now) {
-		prev = now;
 		if (List -> delete_l[now] == left) {
 			right = List -> delete_r[now];
 			break;	
 		}
+		prev = now;
 		now = List -> delete_next[now];
 	}
 	assert(now);
 	List -> delete_valid[List -> sum2++] = now;
 	List -> delete_l[now] = List -> delete_r[now] = 0;
 	if (List -> head2 == now) List -> head2 = List -> delete_next[now];
-	else List -> delete_next[prev] = List -> delete_next[now];
+	else if(prev) List -> delete_next[prev] = List -> delete_next[now];
 	List -> delete_next[now] = 0;
 	return right;	
 }
@@ -169,8 +169,7 @@ void deal_Slow_free(uintptr_t left) {
 	uintptr_t right = lookup_right(left);
 	int now = List -> head1;
 	assert(now);
-	if (List -> val_next[now] == 0) {
-		assert(right <= List -> val_l[now]);
+	if (right <= List -> val_l[now]) {
 		if (right == List -> val_l[now]) List -> val_l[now] = left;
 		else {
 			assert(List -> sum1);
@@ -252,7 +251,6 @@ static void *kalloc(size_t size) {
   else if (kd == MAX_DATA_SIZE + 1) {
 	spinlock(&BigLock_Slow);
 	space = Slow_path(size);
-	//debug_count();
 	spinunlock(&BigLock_Slow);
 	return space;  
   }
@@ -263,7 +261,7 @@ int judge_free(void *ptr) {
   struct page_t *now = (struct page_t *) ((uintptr_t) ptr & (~(PAGE_SIZE - 1)));	
   if (now -> magic == LUCK_NUMBER) return 1;
   else if ((uintptr_t)ptr >= lSlab && (uintptr_t)ptr < rSlab) return 2;
-  else return 3;;
+  else return 3;
 }
 
 static void kfree(void *ptr) {
