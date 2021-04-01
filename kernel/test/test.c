@@ -34,7 +34,6 @@ void record_alloc(int sz, void *space) {
 void task1() { // smoke task
 	for (int i = 0; i < MAXN; i++) {
 		int p = rand() % 10, sz;
-		void *tep;
 		if (p <= 5)      sz = rand() % 128;
 		else if (p <= 8) sz = 4096;
 		else             sz = rand() & ((16 << 20) - 1);
