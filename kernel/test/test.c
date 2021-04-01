@@ -72,7 +72,6 @@ void task1() { // smoke task
 			int id = rand() % cnt;
 			lock();
 			if (cpu[id].l) ti++, \
-				printf("%d\n", id),\
 				pmm -> free((void *)cpu[id].l),	cpu[id].l = cpu[id].r = 0;
 			unlock();
 		}
