@@ -263,6 +263,7 @@ void debug_count() {
 	printf("sum1:%d sum1: %d\n", sup, sub);
 }
 
+spinlock_t lk;
 
 static void *kalloc(size_t size) {
   if ((size >> 20) > 16) return NULL;
