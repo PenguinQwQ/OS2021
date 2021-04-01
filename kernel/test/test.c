@@ -2,7 +2,7 @@
 #include <threads.h>
 #include <unistd.h>
 #include <sys/syscall.h>
-#define smp  8
+#define smp  1
 #define MAXN 100
 
 static int ttid[smp], sum = 0;
@@ -58,7 +58,7 @@ void entry(int tid) {
 } 
 
 int main(int argc, char *argv[]) {
-	pmm -> init();
+	pmm -> init();return 0;
 	for (int i = 0; i < smp; i++)
 		create(entry);	
 	return 0;
