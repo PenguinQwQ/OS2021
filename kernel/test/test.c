@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <sys/syscall.h>
 #define smp  8
-#define MAXN 100
+#define MAXN 2000
 
 static int ttid[smp], sum = 0;
 
