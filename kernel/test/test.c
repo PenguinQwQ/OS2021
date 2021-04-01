@@ -20,6 +20,7 @@ int cpu_count() {
 struct node{
 	uintptr_t l;
 	uintptr_t r;
+	int size;
 }cpu[MAXN * smp];
 
 int compare(const void* w1, const void* w2) {
@@ -34,6 +35,7 @@ void record_alloc(int sz, void *space) {
 	if (space == NULL) return;
 	lock();
 	cpu[cnt].l = (uintptr_t)space;
+	cpu[cnt].size = sz;
 	cpu[cnt].r = (uintptr_t)space + sz;
 	cnt++;
 	unlock();
@@ -42,7 +44,7 @@ void record_alloc(int sz, void *space) {
 void finish() {
 	qsort(cpu, cnt, sizeof(struct node), compare);
 	for (int i = 0; i < cnt - 1; i++)
-		printf("%p %p\n", cpu[i].l, cpu[i].r);
+		printf("%p %p %d\n", cpu[i].l, cpu[i].r, cpu[i].size);
 		/*
 		assert(cpu[i].l < cpu[i + 1].l  && \
 		cpu[i].r <= cpu[i + 1].l        && \
