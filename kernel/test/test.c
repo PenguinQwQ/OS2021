@@ -18,8 +18,8 @@ int cpu_count() {
 }
 
 struct node{
-	int l;
-	int r;
+	uintptr_t l;
+	uintptr_t r;
 }cpu[MAXN * smp];
 
 int compare(const void* w1, const void* w2) {
