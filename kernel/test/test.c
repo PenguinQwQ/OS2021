@@ -39,6 +39,10 @@ void record_alloc(int sz, void *space) {
 
 void finish() {
 	qsort(cpu, cnt, sizeof(struct node), compare);
+	for (int i = 0; i < cnt - 1; i++)
+		assert(cpu[i].l < cpu[i + 1].l  && \
+		cpu[i].r <= cpu[i + 1].l        && \
+		cpu[i].l <= cpu[i].r);
 	printf("Test01 Success!\n");	
 }
 
