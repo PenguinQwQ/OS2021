@@ -2,7 +2,7 @@
 #include <threads.h>
 #include <unistd.h>
 #include <sys/syscall.h>
-#define smp 1
+#define smp 2
 
 static int ttid[smp], sum = 0;
 
