@@ -20,7 +20,7 @@ int cpu_count() {
 struct node{
 	uintptr_t l;
 	uintptr_t r;
-	int size;
+	size_t size;
 }cpu[MAXN * smp];
 
 int compare(const void* w1, const void* w2) {
@@ -46,7 +46,8 @@ void finish() {
 	for (int i = 0; i < cnt - 1; i++)
 		if ( !(cpu[i].l < cpu[i + 1].l  && \
 		cpu[i].r <= cpu[i + 1].l        && \
-		cpu[i].l <= cpu[i].r)){
+		cpu[i].l <= cpu[i].r)           && \
+		cpu[i].r - cpu[i].l >= cpu[i].size){
 			printf("%d\n", i);
 			printf("%p %p %d\n",cpu[i].l, cpu[i].r, cpu[i].size);
 			printf("%p %p %d\n",cpu[i + 1].l, cpu[i + 1].r, cpu[i + 1].size);
@@ -58,11 +59,9 @@ void finish() {
 void task1() { // smoke task
 	for (int i = 0; i < MAXN; i++) {
 		int p = rand() % 10, sz;
-		p = 5;
 		if (p <= 5)      sz = rand() % 128 + 1;
 		else if (p <= 8) sz = 4096;
 		else             sz = (rand() & ((16 << 20) - 1)) + 1;
-		sz = 128;
 		void *tep = pmm -> alloc(sz);
 		record_alloc(sz, tep);
 	}	

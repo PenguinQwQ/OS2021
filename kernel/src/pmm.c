@@ -121,7 +121,6 @@ void *Slow_path(size_t size) {
 		return NULL;
 	}
 	if (left == List -> val_l[now]) {
-		printf("%p %d\n", left, size);
 		List -> val_l[now] = left + size;
 		add_delete(left, left + size);
 	    return (void *)left;	
