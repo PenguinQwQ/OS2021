@@ -263,7 +263,6 @@ void debug_count() {
 	printf("sum1:%d sum1: %d\n", sup, sub);
 }
 
-spinlock_t lk;
 
 static void *kalloc(size_t size) {
   if ((size >> 20) > 16) return NULL;
@@ -397,7 +396,6 @@ static void pmm_init() {
 		}		
 	}	    
   }
-  lk.flag = 0;
   lSlab = (uintptr_t)heap.start;
   for (int i = 0; i < MAX_BIG_SLAB; i++)
 	BigSlab[BigSlab_Size++] = (uintptr_t)alloc_page(0, 0, 2);
