@@ -58,7 +58,7 @@ void entry(int tid) {
 } 
 
 int main(int argc, char *argv[]) {
-	pmm -> init();return 0;
+	pmm -> init();
 	for (int i = 0; i < smp; i++)
 		create(entry);	
 	return 0;
