@@ -2,8 +2,8 @@
 #include <threads.h>
 #include <unistd.h>
 #include <sys/syscall.h>
-#define smp  2
-#define MAXN 30000
+#define smp  8
+#define MAXN 3000
 
 static int ttid[smp], sum = 0;
 
