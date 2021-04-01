@@ -157,7 +157,7 @@ void deal_SlowSlab_free(void *ptr) {
 
 void *SlowSlab_path() {
 	if (BigSlab_Size > 0) return (void *)BigSlab[--BigSlab_Size];
-	else assert(0);
+	else return Slow_path(PAGE_SIZE);
 }
 
 
