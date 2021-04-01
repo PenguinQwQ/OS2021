@@ -21,6 +21,7 @@ struct node{
 	uintptr_t l;
 	uintptr_t r;
 	size_t size;
+	struct node* nxt;
 }cpu[MAXN * smp];
 
 int compare(const void* w1, const void* w2) {
@@ -59,12 +60,21 @@ void finish() {
 
 void task1() { // smoke task
 	for (int i = 0; i < MAXN; i++) {
-		int p = rand() % 10, sz;
+		int p = rand() % 15, sz, bj = 0;;
 		if (p <= 5)      sz = rand() % 128 + 1;
 		else if (p <= 8) sz = 4096;
-		else             sz = (rand() & ((16 << 20) - 1)) + 1;
-		void *tep = pmm -> alloc(sz);
-		record_alloc(sz, tep);
+		else if (p <= 9) sz = (rand() & ((16 << 20) - 1)) + 1;
+		else {
+			bj = 1;
+			int id = rand() % cnt;
+			lock();
+			if (cpu[id].l) pmm -> free(cpu[id].l), 	cpu[id].l = cpu[id].r = 0;
+			unlock();
+		}
+		if (bj == 0) {
+			void *tep = pmm -> alloc(sz);
+			record_alloc(sz, tep);
+		}
 	}	
 }
 
