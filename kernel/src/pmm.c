@@ -44,6 +44,8 @@ struct ptr_t *_ptr[MAX_PAGE];
 struct page_t *page_table[MAX_CPU][MAX_DATA_SIZE];
 
 spinlock_t lock[MAX_CPU];
+spinlock_t BigLock_Slow;
+spinlock_t BigLock_Slab;
 
 struct node{
 	int head1;
@@ -130,7 +132,12 @@ void *Slow_path(size_t size) {
 }
 
 void* deal_slab(int id, int kd, int sz) {
-	if (kd == MAX_DATA_SIZE) return Slow_path(sz);
+	if (kd == MAX_DATA_SIZE) {
+		spinlock(&BigLock_Slow);
+		void *tep = Slow_path(sz);
+		spinunlock(&BigLock_Slow);
+		return tep;
+	}
 	if (remain_cnt[id][kd] == 0) return deal_slab(id, kd + 1, sz);
 	struct page_t *now;
 	now = page_table[id][kd];
@@ -157,7 +164,12 @@ void deal_SlowSlab_free(void *ptr) {
 
 void *SlowSlab_path() {
 	if (BigSlab_Size > 0) return (void *)BigSlab[--BigSlab_Size];
-	else return Slow_path(PAGE_SIZE);
+	else {
+		spinlock(&BigLock_Slow);
+		void *tep = Slow_path(PAGE_SIZE);
+		spinunlock(&BigLock_Slow);
+		return tep;
+	}
 }
 
 
@@ -231,8 +243,6 @@ void deal_Slow_free(uintptr_t left) {
 	}	
 }
 
-spinlock_t BigLock_Slow;
-spinlock_t BigLock_Slab;
 
 void debug_count() {
 	int now = List -> head1, sub = 0, sup = 0;
