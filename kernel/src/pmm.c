@@ -92,7 +92,7 @@ int judge_size(size_t size) {
 	else return MAX_DATA_SIZE + 1;
 }
 
-void add_delete(int l, int r) {
+void add_delete(uintptr_t l, uintptr_t r) {
 	assert(List -> sum2);
 	int id = List -> delete_valid[--List -> sum2];
 	if (List -> head2 == 0) List -> head2 = id;
@@ -105,7 +105,6 @@ void add_delete(int l, int r) {
 }
 
 void *Slow_path(size_t size) {
-	printf("#%d\n", size);
 	int now = List -> head1;
 	if (now == 0) assert(0);//return NULL;
 	int tep = 2;
