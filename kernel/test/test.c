@@ -34,8 +34,7 @@ void record_alloc(int sz, void *space) {
 }
 
 void finish() {
-	printf("%d\n", cnt);	
-	
+	printf("Test01 Success!\n");	
 }
 
 void task1() { // smoke task
