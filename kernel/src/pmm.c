@@ -264,6 +264,7 @@ void debug_count() {
 }
 
 
+spinlock_t lsdk;
 static void *kalloc(size_t size) {
   if ((size >> 20) > 16) return NULL;
   int id = cpu_current();
