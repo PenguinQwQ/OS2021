@@ -104,7 +104,7 @@ void add_delete(int l, int r) {
 	List -> delete_r[id] = r;
 }
 
-void *Slow_path(size_t size) {
+void *Slow_path(uintptr_t size) {
 	int now = List -> head1;
 	if (now == 0) assert(0);//return NULL;
 	int tep = 2;
