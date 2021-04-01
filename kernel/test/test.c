@@ -1,4 +1,5 @@
 #include <common.h>
+#include <thread.h>
 #define smp 8
 
 int cpu_count() {
