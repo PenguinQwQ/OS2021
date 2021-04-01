@@ -343,7 +343,8 @@ static void pmm_init() {
   #else
   char *ptr = malloc(Heap_Size);
   heap.start = ptr;
-  heap.end   = ptr + Heap_Size;
+  heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
+  heap.end   = heap.start + Heap_Size;
   printf("Got %d MiB heap: [%p, %p)\n", Heap_Size >> 20, heap.start, heap.end);
   #endif
   BigLock_Slab.flag = 0;
