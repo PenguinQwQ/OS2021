@@ -1,5 +1,6 @@
 #include <common.h>
 #include <stdatomic.h>
+#include <unistd.h>
 
 int cpu_current() {
 	return getpid();	
