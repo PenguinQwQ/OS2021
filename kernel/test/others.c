@@ -2,7 +2,7 @@
 #include <stdatomic.h>
 
 int cpu_current() {
-	return get_pid();	
+	return getpid();	
 }
 
 int atomic_xchg(int *addr, int newval) {
