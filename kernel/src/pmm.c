@@ -299,8 +299,8 @@ int judge_free(void *ptr) {
 }
 
 static void kfree(void *ptr) {
-  spinlock(&lk);
   int kd = judge_free(ptr);
+  spinlock(&lk);
   if (kd == 1) {  
 	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1)));
 	spinlock(now->lock);
