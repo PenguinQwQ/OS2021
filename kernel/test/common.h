@@ -3,6 +3,8 @@
 #include <assert.h>
 #include <kernel.h>
 #include <stdint.h>
+#include <unistd.h>
+#include <threads.h>
 #define ROUNDUP(a, sz) ((((uintptr_t)a) + (sz) - 1) & ~((sz)- 1))
 
 int cpu_count();
