@@ -163,6 +163,7 @@ void deal_slab_free(struct page_t *now, void *ptr) {
 uintptr_t BigSlab[MAX_BIG_SLAB];
 static int BigSlab_Size = 0;
 uintptr_t lSlab, rSlab;
+
 void deal_SlowSlab_free(void *ptr) {
 	BigSlab[BigSlab_Size++] = (uintptr_t)ptr;	
 }
@@ -264,6 +265,7 @@ void debug_count() {
 }
 
 static void *kalloc(size_t size) {
+  assert(size);
   if ((size >> 20) > 16) return NULL;
   int id = cpu_current();
   int kd = judge_size(size);
@@ -290,6 +292,7 @@ static void *kalloc(size_t size) {
 }
 
 int judge_free(void *ptr) {
+  assert(ptr != NULL);
   struct page_t *now = (struct page_t *) ((uintptr_t) ptr & (~(PAGE_SIZE - 1)));	
   if (now -> magic == LUCK_NUMBER) return 1;
   else if ((uintptr_t)ptr >= lSlab && (uintptr_t)ptr < rSlab) return 2;
@@ -359,8 +362,8 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 static void pmm_init() {
   assert(sizeof(DataSize) / sizeof(int) == MAX_DATA_SIZE);
   int tep = 0;
-  for (int i = 0; i < MAX_DATA_SIZE; i++) tep += power[i];
-  assert(tep <= MAX_PAGE);
+  for (int i = 0; i < MAX_DATA_SIZE; i++) tep += power[i] + 1;
+  assert(tep * cpu_count() <= MAX_PAGE);
   
   #ifndef TEST
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
