@@ -63,9 +63,9 @@ void finish() {
 void task1() { // smoke task
 	for (int i = 0; i < MAXN; i++) {
 		int p = rand() % 15, sz, bj = 0;
-		if (p <= 5)      sz = rand() % 128 + 1;
-		else if (p <= 8) sz = 4096;
-		else if (p <= 9) sz = (rand() & ((16 << 20) - 1)) + 1;
+		if (p <= 6)      sz = rand() % 128 + 1;
+		else if (p <= 9) sz = 4096;
+		else if (p <= 10) sz = (rand() & ((16 << 20) - 1)) + 1;
 		else {
 			if (cnt == 0) continue;
 			bj = 1;
