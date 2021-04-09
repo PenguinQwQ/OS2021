@@ -1,7 +1,7 @@
 #include <common.h>
 #define PAGE_SIZE      4096
 #define MAX_CPU        8
-#define MAX_DATA_SIZE  4
+#define MAX_DATA_SIZE  3
 #define MAX_PAGE       9000
 #define LUCK_NUMBER    10291223
 #define MAX_BIG_SLAB   4096
