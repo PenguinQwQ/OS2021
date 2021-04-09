@@ -4,7 +4,7 @@
 #define MAX_DATA_SIZE  8
 #define MAX_PAGE       3000
 #define LUCK_NUMBER    10291223
-#define MAX_BIG_SLAB   2048
+#define MAX_BIG_SLAB   4096
 
 #ifdef TEST
 #include <test.h>
