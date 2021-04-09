@@ -172,6 +172,7 @@ void *SlowSlab_path() {
 	if (BigSlab_Size > 0) return (void *)BigSlab[--BigSlab_Size];
 	else {
 		spinlock(&BigLock_Slow);
+		assert(0);
 		void *tep = Slow_path(PAGE_SIZE);
 		spinunlock(&BigLock_Slow);
 		return tep;
@@ -283,7 +284,7 @@ static void *kalloc(size_t size) {
 	spinunlock(&BigLock_Slab);
 	return space;
   }
-  else if (kd == MAX_DATA_SIZE + 1) {return NULL;
+  else if (kd == MAX_DATA_SIZE + 1) {
 	spinlock(&BigLock_Slow);
 	space = Slow_path(size);
 	spinunlock(&BigLock_Slow);
