@@ -149,8 +149,20 @@ int pmax(int a, int b) {
 	return a > b ? a : b;
 }
 
+void *SlowSlab_path(int id, size_t sz) {
+	if (sz <= 4096 && 
+		BigSlab_Size[id] > 0) return (void *)BigSlab[id][--BigSlab_Size[id]];
+	else {
+		spinlock(&BigLock_Slow);
+		void *tep = Slow_path(sz);
+		spinunlock(&BigLock_Slow);
+		return tep;
+	}
+}
+
 void* deal_slab(int id, int kd, size_t sz) {
 	if (kd == MAX_DATA_SIZE) {
+		return SlowSlab_path(id, sz);
 		spinlock(&BigLock_Slow);
 		sz = pmax(sz, 128);
 		void *tep = Slow_path(sz);
@@ -180,17 +192,6 @@ uintptr_t lSlab[MAX_CPU], rSlab[MAX_CPU];
 void deal_SlowSlab_free(int id, void *ptr) {
 	BigSlab[id][BigSlab_Size[id]++] = (uintptr_t)ptr;	
 }
-
-void *SlowSlab_path(int id) {
-	if (BigSlab_Size[id] > 0) return (void *)BigSlab[id][--BigSlab_Size[id]];
-	else {
-		spinlock(&BigLock_Slow);
-		void *tep = Slow_path(PAGE_SIZE);
-		spinunlock(&BigLock_Slow);
-		return tep;
-	}
-}
-
 
 
 uintptr_t lookup_right(uintptr_t left) {
@@ -294,7 +295,7 @@ static void *kalloc(size_t size) {
   }
   else if(kd == MAX_DATA_SIZE) {
 	spinlock(&lock[id]);
-	space = SlowSlab_path(id);
+	space = SlowSlab_path(id, size);
 	spinunlock(&lock[id]);	  
 	return space;
   }
