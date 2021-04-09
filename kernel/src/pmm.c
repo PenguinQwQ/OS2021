@@ -15,7 +15,7 @@ struct Area{
 #define Heap_Size (128 << 20)
 #define MAX_LIST       1000000
 #else
-#define MAX_LIST       500000
+#define MAX_LIST       1000000
 #endif
 
 typedef struct{
