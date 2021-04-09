@@ -108,18 +108,18 @@ void add_delete(uintptr_t l, uintptr_t r) {
 
 
 void *Slow_path(size_t size) {
-	size_t tep = 2;
+/*	size_t tep = 2;
     while (tep < size) tep = tep * 2;
 	void *ttep = (void *)st;
     ttep = (void *)ROUNDUP(ttep, tep);
 	if (ttep + (uintptr_t)size >= heap.end) return NULL;
     st = (uintptr_t)ttep + size;
 	return ttep;
-
+*/
 
     int now = List -> head1;
-	if (now == 0) assert(0);//return NULL;
-//	int tep = 2;
+	if (now == 0) assert(0);
+	int tep = 2;
     while (tep < size) tep = tep * 2;
 	uintptr_t left ,right;	
 	while(now) {
@@ -279,13 +279,8 @@ void debug_count() {
 static void *kalloc(size_t size) {  
   assert(size);
   if ((size >> (size_t)20) >= (size_t)16) return NULL;
+  
   void *space;
-
-  spinlock(&BigLock_Slab);
-  space = Slow_path(size);
-  spinunlock(&BigLock_Slab);
-  return space;
-
   int id = cpu_current();
   int kd = judge_size(size);
 
@@ -319,7 +314,6 @@ int judge_free(void *ptr) {
 }
 
 static void kfree(void *ptr) {
-  return;
   int kd = judge_free(ptr);
   if (kd == 1) {  
 	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1)));
