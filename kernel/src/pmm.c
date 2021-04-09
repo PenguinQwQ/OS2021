@@ -149,6 +149,10 @@ int pmax(int a, int b) {
 	return a > b ? a : b;
 }
 
+uintptr_t BigSlab[MAX_CPU][MAX_BIG_SLAB];
+static int BigSlab_Size[MAX_CPU] = {0};
+uintptr_t lSlab[MAX_CPU], rSlab[MAX_CPU];
+
 void *SlowSlab_path(int id, size_t sz) {
 	if (sz <= 4096 && 
 		BigSlab_Size[id] > 0) return (void *)BigSlab[id][--BigSlab_Size[id]];
@@ -185,9 +189,6 @@ void deal_slab_free(struct page_t *now, void *ptr) {
 	_ptr[now -> belong] -> slot[now -> remain ++] = (uintptr_t)ptr;
 }
 
-uintptr_t BigSlab[MAX_CPU][MAX_BIG_SLAB];
-static int BigSlab_Size[MAX_CPU] = {0};
-uintptr_t lSlab[MAX_CPU], rSlab[MAX_CPU];
 
 void deal_SlowSlab_free(int id, void *ptr) {
 	BigSlab[id][BigSlab_Size[id]++] = (uintptr_t)ptr;	
