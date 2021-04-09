@@ -284,6 +284,7 @@ static void *kalloc(size_t size) {
 	return space;
   }
   else if (kd == MAX_DATA_SIZE + 1) {
+	assert(0);
 	spinlock(&BigLock_Slow);
 	space = Slow_path(size);
 	spinunlock(&BigLock_Slow);
