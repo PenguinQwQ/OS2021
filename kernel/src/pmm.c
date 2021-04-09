@@ -288,11 +288,9 @@ static void *kalloc(size_t size) {
   int kd = judge_size(size);
 
   if (kd < MAX_DATA_SIZE) {
-	spinlock(&a);
 	spinlock(&lock[id]);
 	space = deal_slab(id, kd, size);
 	spinunlock(&lock[id]);	  
-  spinunlock(&a);
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
