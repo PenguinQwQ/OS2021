@@ -106,14 +106,11 @@ void add_delete(uintptr_t l, uintptr_t r) {
 	List -> delete_r[id] = r;
 }
 
-int lst = 0;
 
 void *Slow_path(size_t size) {
 
     int now = List -> head1;
 	if (now == 0) assert(0);
-
-	if (lst && List -> val_next[lst]) now = lst;
 
 
 	int tep = 2;
@@ -127,13 +124,9 @@ void *Slow_path(size_t size) {
 		now = List -> val_next[now];
 	}
 	if (now == 0) {
-
-		lst = 0;
-
 		return NULL;
 	}
 
-	lst = now;
 
 
 	if (left == List -> val_l[now]) {
