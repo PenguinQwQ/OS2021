@@ -173,16 +173,16 @@ void deal_slab_free(struct page_t *now, void *ptr) {
 	_ptr[now -> belong] -> slot[now -> remain ++] = (uintptr_t)ptr;
 }
 
-uintptr_t BigSlab[MAX_BIG_SLAB];
-static int BigSlab_Size = 0;
-uintptr_t lSlab, rSlab;
+uintptr_t BigSlab[MAX_CPU][MAX_BIG_SLAB];
+static int BigSlab_Size[MAX_CPU] = {0};
+uintptr_t lSlab[MAX_CPU], rSlab[MAX_CPU];
 
-void deal_SlowSlab_free(void *ptr) {
-	BigSlab[BigSlab_Size++] = (uintptr_t)ptr;	
+void deal_SlowSlab_free(int id, void *ptr) {
+	BigSlab[id][BigSlab_Size[id]++] = (uintptr_t)ptr;	
 }
 
-void *SlowSlab_path() {
-	if (BigSlab_Size > 0) return (void *)BigSlab[--BigSlab_Size];
+void *SlowSlab_path(int id) {
+	if (BigSlab_Size[id] > 0) return (void *)BigSlab[id][--BigSlab_Size[id]];
 	else {
 		spinlock(&BigLock_Slow);
 		void *tep = Slow_path(PAGE_SIZE);
@@ -293,9 +293,9 @@ static void *kalloc(size_t size) {
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
-	spinlock(&BigLock_Slab);
-	space = SlowSlab_path();
-	spinunlock(&BigLock_Slab);
+	spinlock(&lock[id]);
+	space = SlowSlab_path(id);
+	spinunlock(&lock[id]);	  
 	return space;
   }
   else if (kd == MAX_DATA_SIZE + 1) {
@@ -311,8 +311,12 @@ int judge_free(void *ptr) {
   assert(ptr != NULL);
   struct page_t *now = (struct page_t *) ((uintptr_t) ptr & (~(PAGE_SIZE - 1)));	
   if (now -> magic == LUCK_NUMBER) return 1;
-  else if ((uintptr_t)ptr >= lSlab && (uintptr_t)ptr < rSlab) return 2;
-  else return 3;
+  
+  int tot = cpu_count();
+  for (int i = 0; i < tot; i++)
+   if ((uintptr_t)ptr >= lSlab[i] && (uintptr_t)ptr < rSlab[i]) return 3 + i;
+  
+  return 2;
 }
 
 static void kfree(void *ptr) {
@@ -324,16 +328,15 @@ static void kfree(void *ptr) {
 	spinunlock(now->lock);
   }
   else if (kd == 2) {
-	  spinlock(&BigLock_Slab);
-	  deal_SlowSlab_free(ptr);
-	  spinunlock(&BigLock_Slab);
-  }
-  else if (kd == 3) {
 	  spinlock(&BigLock_Slow);
 	  deal_Slow_free((uintptr_t)ptr);
 	  spinunlock(&BigLock_Slow);
   }
-  else assert(0);
+  else{	 
+	 spinlock(&lock[kd - 3]);
+	 deal_SlowSlab_free(kd - 3, ptr);
+	 spinunlock(&lock[kd - 3]);
+  }
 }
 
 
@@ -407,10 +410,14 @@ static void pmm_init() {
 		}		
 	}	    
   }
-  lSlab = st;
-  for (int i = 0; i < MAX_BIG_SLAB; i++)
-	BigSlab[BigSlab_Size++] = (uintptr_t)alloc_page(0, 0, 2);
-  rSlab = st;
+
+  for (int i = 0; i < tot; i++) {
+	  lSlab[i] = st;
+	  for (int j = 0; j < MAX_BIG_SLAB / tot; j++)
+		BigSlab[i][BigSlab_Size[i]++] = (uintptr_t)alloc_page(0, 0, 2);
+	  rSlab[i] = st;
+  }
+
   List = (struct node *)st;
   st = ((uintptr_t)st + sizeof(struct node));
   st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);
