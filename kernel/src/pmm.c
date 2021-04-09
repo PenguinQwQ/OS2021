@@ -109,7 +109,7 @@ void *Slow_path(size_t size) {
     while (tep < size) tep = tep * 2;
     heap.start = (void *)ROUNDUP(heap.start, tep);
 	void *ttep = heap.start;
-    heap.start = heap.start + tep;
+    heap.start = heap.start + size;
 	if (heap.start > heap.end) return NULL;
 	return ttep;
 
