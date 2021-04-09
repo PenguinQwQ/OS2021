@@ -105,9 +105,18 @@ void add_delete(uintptr_t l, uintptr_t r) {
 }
 
 void *Slow_path(size_t size) {
-	int now = List -> head1;
-	if (now == 0) assert(0);//return NULL;
 	int tep = 2;
+    while (tep < size) tep = tep * 2;
+    heap.start = (void *)ROUNDUP(heap.start, tep);
+	void *ttep = heap.start;
+    heap.start = (void *)((uintptr_t)heap.start + size);
+	if (heap.start > heap.end) return NULL;
+	return ttep;
+
+
+    int now = List -> head1;
+	if (now == 0) assert(0);//return NULL;
+//	int tep = 2;
     while (tep < size) tep = tep * 2;
 	uintptr_t left ,right;	
 	while(now) {
