@@ -316,7 +316,6 @@ int judge_free(void *ptr) {
 static void kfree(void *ptr) {
   int kd = judge_free(ptr);
   if (kd == 1) {  
-	spinlock(&a);
 	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1)));
 	spinlock(now->lock);
 	deal_slab_free(now, ptr);
@@ -328,14 +327,14 @@ static void kfree(void *ptr) {
 	  spinlock(&BigLock_Slab);
 	  deal_SlowSlab_free(ptr);
 	  spinunlock(&BigLock_Slab);
-	spinlock(&a);
+	spinunlock(&a);
   }
   else if (kd == 3) {
 	spinlock(&a);
 	  spinlock(&BigLock_Slow);
 	  deal_Slow_free((uintptr_t)ptr);
 	  spinunlock(&BigLock_Slow);
-	spinlock(&a);
+	spinunlock(&a);
   }
   else assert(0);
 }
