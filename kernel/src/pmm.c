@@ -167,7 +167,7 @@ void *SlowSlab_path(int id, size_t sz) {
 void* deal_slab(int id, int kd, size_t sz) {
 	if (kd == MAX_DATA_SIZE) {
 //		return SlowSlab_path(id, sz);
-		sz = pmax(sz, PAGE_SIZE);
+		sz = pmax(sz, 128);
 		spinlock(&BigLock_Slow);
 		void *tep = Slow_path(sz);
 		spinunlock(&BigLock_Slow);
