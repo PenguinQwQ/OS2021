@@ -277,15 +277,12 @@ static void *kalloc(size_t size) {
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
-	assert(0);
 	spinlock(&BigLock_Slab);
 	space = SlowSlab_path();
 	spinunlock(&BigLock_Slab);
 	return space;
   }
   else if (kd == MAX_DATA_SIZE + 1) {
-	return NULL;
-	assert(0);
 	spinlock(&BigLock_Slow);
 	space = Slow_path(size);
 	spinunlock(&BigLock_Slow);
@@ -302,7 +299,7 @@ int judge_free(void *ptr) {
   else return 3;
 }
 
-static void kfree(void *ptr) {
+static void kfree(void *ptr) {return;
   int kd = judge_free(ptr);
   if (kd == 1) {  
 	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1)));
@@ -316,7 +313,6 @@ static void kfree(void *ptr) {
 	  spinunlock(&BigLock_Slab);
   }
   else if (kd == 3) {
-	  return;
 	  spinlock(&BigLock_Slow);
 	  deal_Slow_free((uintptr_t)ptr);
 	  spinunlock(&BigLock_Slow);
