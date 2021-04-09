@@ -321,7 +321,7 @@ static void kfree(void *ptr) {
 	spinlock(now->lock);
 	deal_slab_free(now, ptr);
 	spinunlock(now->lock);
-  spinunlock(&a);
+    spinunlock(&a);
   }
   else if (kd == 2) {
 	  spinlock(&BigLock_Slab);
@@ -329,9 +329,11 @@ static void kfree(void *ptr) {
 	  spinunlock(&BigLock_Slab);
   }
   else if (kd == 3) {
+	spinlock(&a);
 	  spinlock(&BigLock_Slow);
 	  deal_Slow_free((uintptr_t)ptr);
 	  spinunlock(&BigLock_Slow);
+	spinlock(&a);
   }
   else assert(0);
 }
