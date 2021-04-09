@@ -172,7 +172,6 @@ void *SlowSlab_path() {
 	if (BigSlab_Size > 0) return (void *)BigSlab[--BigSlab_Size];
 	else {
 		spinlock(&BigLock_Slow);
-		assert(0);
 		void *tep = Slow_path(PAGE_SIZE);
 		spinunlock(&BigLock_Slow);
 		return tep;
@@ -360,10 +359,7 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 	}
     else assert(0);
 }
-int tii = 0;
 static void pmm_init() {
-  tii++;
-  assert(tii == 1);
   assert(sizeof(DataSize) / sizeof(int) == MAX_DATA_SIZE);
   int tep = 0;
   for (int i = 0; i < MAX_DATA_SIZE; i++) tep += power[i] + 1;
