@@ -2,7 +2,7 @@
 #define PAGE_SIZE      4096
 #define MAX_CPU        8
 #define MAX_DATA_SIZE  8
-#define MAX_PAGE       7000
+#define MAX_PAGE       5000
 #define LUCK_NUMBER    10291223
 #define MAX_BIG_SLAB   2048
 
