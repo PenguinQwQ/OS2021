@@ -315,7 +315,8 @@ int judge_free(void *ptr) {
 
 static void kfree(void *ptr) {
   int kd = judge_free(ptr);
-  if (kd == 1) {  
+  if (kd == 1) { 
+	spinlock(&a); 
 	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1)));
 	spinlock(now->lock);
 	deal_slab_free(now, ptr);
