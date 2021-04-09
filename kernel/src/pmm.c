@@ -2,7 +2,7 @@
 #define PAGE_SIZE      4096
 #define MAX_CPU        8
 #define MAX_DATA_SIZE  4
-#define MAX_PAGE       9000
+#define MAX_PAGE       10000
 #define LUCK_NUMBER    10291223
 #define MAX_BIG_SLAB   4096
 
@@ -24,7 +24,7 @@ typedef struct{
 
 
 static int DataSize[MAX_DATA_SIZE] = {64, 128, 1024, 2048};
-static int power[MAX_DATA_SIZE]    = {127, 511, 255, 255};
+static int power[MAX_DATA_SIZE]    = {255, 511, 255, 255};
 static int remain_cnt[MAX_CPU][MAX_DATA_SIZE];
 uintptr_t st = 0;
 
