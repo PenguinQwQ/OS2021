@@ -110,7 +110,7 @@ void *Slow_path(size_t size) {
     heap.start = (void *)ROUNDUP(heap.start, tep);
 	void *ttep = heap.start;
     heap.start = heap.start + size;
-	if (heap.start > heap.end) return NULL;
+	if (heap.start >= heap.end) return NULL;
 	return ttep;
 
 
@@ -277,7 +277,7 @@ void debug_count() {
 
 static void *kalloc(size_t size) {
   assert(size);
-  if ((size >> (size_t)20) > (size_t)16) return NULL;
+  if ((size >> (size_t)20) >= (size_t)16) return NULL;
   void *space;
 
   spinlock(&BigLock_Slab);
@@ -378,6 +378,7 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 	}
     else assert(0);
 }
+
 static void pmm_init() {
   BigLock_Slab.flag = 0;
   BigLock_Slow.flag = 0;
@@ -389,7 +390,6 @@ static void pmm_init() {
   #ifndef TEST
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   #else
-  assert(0);
   char *ptr = malloc(Heap_Size);
   assert(ptr != NULL);
   heap.start = ptr;
