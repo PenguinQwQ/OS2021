@@ -38,7 +38,6 @@ void record_alloc(int sz, void *space) {
 	cpu[cnt].l = (uintptr_t)space;
 	cpu[cnt].size = sz;
 	cpu[cnt].r = (uintptr_t)space + sz;
-	printf("%p %p\n", space, space + sz);
 	cnt++;
 	unlock();
 }
