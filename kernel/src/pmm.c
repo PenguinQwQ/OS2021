@@ -107,10 +107,10 @@ void add_delete(uintptr_t l, uintptr_t r) {
 void *Slow_path(size_t size) {
 	size_t tep = 2;
     while (tep < size) tep = tep * 2;
-    heap.start = (void *)ROUNDUP(heap.start, tep);
 	void *ttep = heap.start;
-    heap.start = heap.start + size;
-	if (heap.start >= heap.end) return NULL;
+    ttep = (void *)ROUNDUP(ttep, tep);
+	if (ttep + (uintptr_t)size >= heap.end) return NULL;
+    heap.start = ttep + size;
 	return ttep;
 
 
@@ -275,7 +275,7 @@ void debug_count() {
 //	printf("sum1:%d sum1: %d\n", sup, sub);
 }
 
-static void *kalloc(size_t size) {return NULL;
+static void *kalloc(size_t size) {  
   assert(size);
   if ((size >> (size_t)20) >= (size_t)16) return NULL;
   void *space;
