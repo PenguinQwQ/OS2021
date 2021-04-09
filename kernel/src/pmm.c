@@ -414,6 +414,7 @@ static void pmm_init() {
   List = (struct node *)st;
   st = ((uintptr_t)st + sizeof(struct node));
   st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);
+  printf("%d\n", (uintptr_t)(heap.end - st) >> 20);
   init_list();
 }
 
