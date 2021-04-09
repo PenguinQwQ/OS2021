@@ -389,13 +389,13 @@ static void pmm_init() {
   #ifndef TEST
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   #else
+  assert(0);
   char *ptr = malloc(Heap_Size);
   assert(ptr != NULL);
   heap.start = ptr;
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   heap.end   = heap.start + Heap_Size;
   #endif
-  return;
   
   int tot = cpu_count();
   for (int i = 0; i < tot; i++) {
