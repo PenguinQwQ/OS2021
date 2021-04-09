@@ -26,6 +26,8 @@ typedef struct{
 static int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 512, 1024, 2048};
 static int power[MAX_DATA_SIZE]    = {7, 15, 31, 63, 127, 15, 7, 7};
 static int remain_cnt[MAX_CPU][MAX_DATA_SIZE];
+uintptr_t st = 0;
+
 
 struct page_t{
 	spinlock_t *lock;
@@ -72,7 +74,7 @@ void init_list() {
 		List -> val_valid[List -> sum1++] = i, List -> delete_valid[List -> sum2++] = i;
 	}	
 	List -> head1 = 1, List -> head2 = 0;
-	List -> val_l[List -> head1] = (uintptr_t)heap.start;
+	List -> val_l[List -> head1] = (uintptr_t)st;
 	List -> val_r[List -> head1] = (uintptr_t)heap.end;
 }
 
@@ -104,13 +106,14 @@ void add_delete(uintptr_t l, uintptr_t r) {
 	List -> delete_r[id] = r;
 }
 
+
 void *Slow_path(size_t size) {
 	size_t tep = 2;
     while (tep < size) tep = tep * 2;
-	void *ttep = heap.start;
+	void *ttep = (void *)st;
     ttep = (void *)ROUNDUP(ttep, tep);
 	if (ttep + (uintptr_t)size >= heap.end) return NULL;
-    heap.start = ttep + size;
+    st = (uintptr_t)ttep + size;
 	return ttep;
 
 
@@ -148,7 +151,6 @@ void *Slow_path(size_t size) {
 
 void* deal_slab(int id, int kd, size_t sz) {
 	if (kd == MAX_DATA_SIZE) {
-		assert(0);
 		spinlock(&BigLock_Slow);
 		void *tep = Slow_path(sz);
 		spinunlock(&BigLock_Slow);
@@ -181,7 +183,6 @@ void deal_SlowSlab_free(void *ptr) {
 void *SlowSlab_path() {
 	if (BigSlab_Size > 0) return (void *)BigSlab[--BigSlab_Size];
 	else {
-		assert(0);
 		spinlock(&BigLock_Slow);
 		void *tep = Slow_path(PAGE_SIZE);
 		spinunlock(&BigLock_Slow);
@@ -295,7 +296,6 @@ static void *kalloc(size_t size) {
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
-	assert(0);
 	spinlock(&BigLock_Slab);
 	space = SlowSlab_path();
 	spinunlock(&BigLock_Slab);
@@ -349,9 +349,9 @@ static int cnt = 0;
 
 struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 	if (kd == 1) {
-		_ptr[cnt] = (struct ptr_t *)heap.start;
-		heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);	
-		struct page_t *page = (struct page_t *)heap.start;
+		_ptr[cnt] = (struct ptr_t *)st;
+		st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
+		struct page_t *page = (struct page_t *)st;
 		page -> lock        = &lock[cpu_id];
 		page -> next        = NULL;
 		page -> block_size  = memory_size;
@@ -359,8 +359,8 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 		page -> magic       = LUCK_NUMBER; 
 		page -> remain      = 0;
 		page -> id          = cpu_id;
-		for (uintptr_t k = (uintptr_t)heap.start + pmax(128, DataSize[memory_size]); 
-					   k != (uintptr_t)heap.start + PAGE_SIZE;
+		for (uintptr_t k = st + pmax(128, DataSize[memory_size]); 
+					   k != st + PAGE_SIZE;
 					   k += DataSize[memory_size]) {
 			_ptr[page -> belong] -> slot[page -> remain] = k;	
 			page -> remain = page -> remain + 1;
@@ -368,18 +368,19 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 	}
 	assert(page->remain <= 512);
 	assert(sizeof(_ptr[cnt - 1]) <= 4096);
-	heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);	
+	st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
 	return page;
 	}
 	else if (kd == 2) {
-		void * tep = heap.start;	
-		heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);	
+		void *tep = (void *)st;	
+		st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
 		return (struct page_t *)tep;
 	}
     else assert(0);
 }
 
 static void pmm_init() {
+  st = (uintptr_t)heap.start;
   BigLock_Slab.flag = 0;
   BigLock_Slow.flag = 0;
   assert(sizeof(DataSize) / sizeof(int) == MAX_DATA_SIZE);
@@ -388,13 +389,13 @@ static void pmm_init() {
   assert(tep * cpu_count() <= MAX_PAGE);
   
   #ifndef TEST
-  heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
+  st = ROUNDUP(st, PAGE_SIZE);
   #else
   char *ptr = malloc(Heap_Size);
   assert(ptr != NULL);
-  heap.start = ptr;
-  heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
-  heap.end   = heap.start + Heap_Size;
+  st = ptr;
+  st = ROUNDUP(st, PAGE_SIZE);
+  heap.end   = (void *) st + Heap_Size;
   #endif
   
   int tot = cpu_count();
@@ -413,13 +414,13 @@ static void pmm_init() {
 		}		
 	}	    
   }
-  lSlab = (uintptr_t)heap.start;
+  lSlab = st;
   for (int i = 0; i < MAX_BIG_SLAB; i++)
 	BigSlab[BigSlab_Size++] = (uintptr_t)alloc_page(0, 0, 2);
-  rSlab = (uintptr_t)heap.start;
-  List = (struct node *)heap.start;
-  heap.start = (void *)((uintptr_t)heap.start + sizeof(struct node));
-  heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);
+  rSlab = st;
+  List = (struct node *)st;
+  st = ((uintptr_t)st + sizeof(struct node));
+  st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);
   init_list();
 }
 
