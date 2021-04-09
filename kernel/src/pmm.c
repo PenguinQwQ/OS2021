@@ -105,7 +105,7 @@ void add_delete(uintptr_t l, uintptr_t r) {
 }
 
 void *Slow_path(size_t size) {
-	int tep = 2;
+	size_t tep = 2;
     while (tep < size) tep = tep * 2;
     heap.start = (void *)ROUNDUP(heap.start, tep);
 	void *ttep = heap.start;
@@ -384,15 +384,12 @@ static void pmm_init() {
   
   #ifndef TEST
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
-//  uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
- // printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
   #else
   char *ptr = malloc(Heap_Size);
   assert(ptr != NULL);
   heap.start = ptr;
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   heap.end   = heap.start + Heap_Size;
- // printf("Got %d MiB heap: [%p, %p)\n", Heap_Size >> 20, heap.start, heap.end);
   #endif
   BigLock_Slab.flag = 0;
   BigLock_Slow.flag = 0;
@@ -421,8 +418,6 @@ static void pmm_init() {
   heap.start = (void *)((uintptr_t)heap.start + sizeof(struct node));
   heap.start = (void *)ROUNDUP(heap.start + PAGE_SIZE, PAGE_SIZE);
   init_list();
-//  printf("%p %p\n", lSlab, rSlab);
-//  printf("Got %d MiB heap: [%p, %p)\n", (heap.end-heap.start) >> 20, heap.start, heap.end);
 }
 
 MODULE_DEF(pmm) = {
