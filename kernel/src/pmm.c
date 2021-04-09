@@ -393,7 +393,7 @@ static void pmm_init() {
   #else
   char *ptr = malloc(Heap_Size);
   assert(ptr != NULL);
-  st = ptr;
+  st = (uintptr_t)ptr;
   st = ROUNDUP(st, PAGE_SIZE);
   heap.end   = (void *) st + Heap_Size;
   #endif
