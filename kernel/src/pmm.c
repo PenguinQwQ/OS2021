@@ -320,6 +320,7 @@ static void kfree(void *ptr) {
 	spinlock(now->lock);
 	deal_slab_free(now, ptr);
 	spinunlock(now->lock);
+	spinunlock(&a);
   }
   else if (kd == 2) {
 	  spinlock(&BigLock_Slab);
