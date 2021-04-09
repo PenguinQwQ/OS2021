@@ -79,7 +79,6 @@ void task1() { // smoke task
 		if (bj == 0) {
 			void *tep = pmm -> alloc(sz);
 		//	if (p <= 5) pmm->free(tep);
-			printf("%p %d\n", tep, sz);
 			record_alloc(sz, tep);
 		}
 	}	
