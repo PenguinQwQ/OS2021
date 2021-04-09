@@ -179,7 +179,6 @@ void deal_SlowSlab_free(void *ptr) {
 void *SlowSlab_path() {
 	if (BigSlab_Size > 0) return (void *)BigSlab[--BigSlab_Size];
 	else {
-		return NULL;
 		spinlock(&BigLock_Slow);
 		void *tep = Slow_path(PAGE_SIZE);
 		spinunlock(&BigLock_Slow);
