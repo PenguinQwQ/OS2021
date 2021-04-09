@@ -275,7 +275,7 @@ void debug_count() {
 //	printf("sum1:%d sum1: %d\n", sup, sub);
 }
 
-static void *kalloc(size_t size) {
+static void *kalloc(size_t size) {return NULL;
   assert(size);
   if ((size >> (size_t)20) >= (size_t)16) return NULL;
   void *space;
