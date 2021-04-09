@@ -272,10 +272,8 @@ void debug_count() {
 //	printf("sum1:%d sum1: %d\n", sup, sub);
 }
 
-spinlock_t a;
 
 static void *kalloc(size_t size) {  
-  spinlock(&a);
   assert(size);
   if ((size >> (size_t)20) >= (size_t)16) return NULL;
   
@@ -287,21 +285,18 @@ static void *kalloc(size_t size) {
 	spinlock(&lock[id]);
 	space = deal_slab(id, kd, size);
 	spinunlock(&lock[id]);	  
-  spinunlock(&a);
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
 	spinlock(&BigLock_Slab);
 	space = SlowSlab_path();
 	spinunlock(&BigLock_Slab);
-  spinunlock(&a);
 	return space;
   }
   else if (kd == MAX_DATA_SIZE + 1) {
 	spinlock(&BigLock_Slow);
 	space = Slow_path(size);
 	spinunlock(&BigLock_Slow);
-  spinunlock(&a);
 	return space;  
   }
   else assert(0);
@@ -316,7 +311,6 @@ int judge_free(void *ptr) {
 }
 
 static void kfree(void *ptr) {
-  spinlock(&a);
   int kd = judge_free(ptr);
   if (kd == 1) {  
 	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1)));
@@ -335,7 +329,6 @@ static void kfree(void *ptr) {
 	  spinunlock(&BigLock_Slow);
   }
   else assert(0);
-  spinunlock(&a);
 }
 
 
