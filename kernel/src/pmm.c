@@ -277,7 +277,6 @@ void debug_count() {
 //	printf("sum1:%d sum1: %d\n", sup, sub);
 }
 
-spinlock_t a;
 
 static void *kalloc(size_t size) {  
   assert(size);
@@ -330,11 +329,9 @@ static void kfree(void *ptr) {
 	  spinunlock(&BigLock_Slab);
   }
   else if (kd == 3) {
-	spinlock(&a);
 	  spinlock(&BigLock_Slow);
 	  deal_Slow_free((uintptr_t)ptr);
 	  spinunlock(&BigLock_Slow);
-	spinunlock(&a);
   }
   else assert(0);
 }
