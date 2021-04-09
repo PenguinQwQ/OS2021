@@ -24,7 +24,7 @@ typedef struct{
 
 
 static int DataSize[MAX_DATA_SIZE] = {8, 16, 32, 64, 128, 512, 1024, 2048};
-static int power[MAX_DATA_SIZE]    = {7, 15, 31, 63, 127, 15, 7, 7};
+static int power[MAX_DATA_SIZE]    = {7, 15, 31, 63, 511, 15, 7, 7};
 static int remain_cnt[MAX_CPU][MAX_DATA_SIZE];
 uintptr_t st = 0;
 
@@ -320,14 +320,11 @@ static void kfree(void *ptr) {
 	spinlock(now->lock);
 	deal_slab_free(now, ptr);
 	spinunlock(now->lock);
-	spinunlock(&a);
   }
   else if (kd == 2) {
-	spinlock(&a);
 	  spinlock(&BigLock_Slab);
 	  deal_SlowSlab_free(ptr);
 	  spinunlock(&BigLock_Slab);
-	spinunlock(&a);
   }
   else if (kd == 3) {
 	spinlock(&a);
