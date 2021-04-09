@@ -23,8 +23,8 @@ typedef struct{
 }spinlock_t;
 
 
-static int DataSize[MAX_DATA_SIZE] = {64, 128, 1024, 2048};
-static int power[MAX_DATA_SIZE]    = {127, 511, 127, 255};
+static int DataSize[MAX_DATA_SIZE] = {64, 128, 1024};
+static int power[MAX_DATA_SIZE]    = {255, 511, 255};
 static int remain_cnt[MAX_CPU][MAX_DATA_SIZE];
 uintptr_t st = 0;
 
