@@ -109,7 +109,7 @@ void *Slow_path(size_t size) {
     while (tep < size) tep = tep * 2;
     heap.start = (void *)ROUNDUP(heap.start, tep);
 	void *ttep = heap.start;
-    heap.start = (void *)((uintptr_t)heap.start + tep);
+    heap.start = heap.start + tep;
 	if (heap.start > heap.end) return NULL;
 	return ttep;
 
@@ -318,7 +318,8 @@ int judge_free(void *ptr) {
   else return 3;
 }
 
-static void kfree(void *ptr) {return;
+static void kfree(void *ptr) {
+  return;
   int kd = judge_free(ptr);
   if (kd == 1) {  
 	struct page_t *now = (struct page_t *) ((uintptr_t)ptr & (~(PAGE_SIZE - 1)));
@@ -378,6 +379,9 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
     else assert(0);
 }
 static void pmm_init() {
+  BigLock_Slab.flag = 0;
+  BigLock_Slow.flag = 0;
+  return;
   assert(sizeof(DataSize) / sizeof(int) == MAX_DATA_SIZE);
   int tep = 0;
   for (int i = 0; i < MAX_DATA_SIZE; i++) tep += power[i] + 1;
@@ -392,8 +396,6 @@ static void pmm_init() {
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   heap.end   = heap.start + Heap_Size;
   #endif
-  BigLock_Slab.flag = 0;
-  BigLock_Slow.flag = 0;
   
   int tot = cpu_count();
   for (int i = 0; i < tot; i++) {
