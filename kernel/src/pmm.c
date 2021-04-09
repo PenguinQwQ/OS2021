@@ -281,6 +281,12 @@ static void *kalloc(size_t size) {
   int id = cpu_current();
   int kd = judge_size(size);
   void *space;
+
+  spinlock(&BigLock_Slab);
+  space = Slow_path(size);
+  spinunlock(&BigLock_Slab);
+  return space;
+
   if (kd < MAX_DATA_SIZE) {
 	spinlock(&lock[id]);
 	space = deal_slab(id, kd, size);
