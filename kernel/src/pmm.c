@@ -381,7 +381,6 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 static void pmm_init() {
   BigLock_Slab.flag = 0;
   BigLock_Slow.flag = 0;
-  return;
   assert(sizeof(DataSize) / sizeof(int) == MAX_DATA_SIZE);
   int tep = 0;
   for (int i = 0; i < MAX_DATA_SIZE; i++) tep += power[i] + 1;
@@ -396,6 +395,7 @@ static void pmm_init() {
   heap.start = (void *)ROUNDUP(heap.start, PAGE_SIZE);
   heap.end   = heap.start + Heap_Size;
   #endif
+  return;
   
   int tot = cpu_count();
   for (int i = 0; i < tot; i++) {
