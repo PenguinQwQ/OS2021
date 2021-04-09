@@ -106,7 +106,7 @@ void add_delete(uintptr_t l, uintptr_t r) {
 	List -> delete_r[id] = r;
 }
 
-int lst;
+int lst = 0;
 
 void *Slow_path(size_t size) {
 
