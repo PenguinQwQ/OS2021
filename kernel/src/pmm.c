@@ -201,6 +201,7 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 		return (struct page_t *)tep;
 	}
 	else if (kd == 4) {
+		return NULL;
 		void *tep = (void *)st;	
 		st = ROUNDUP(st + 16 * PAGE_SIZE, PAGE_SIZE);	
 		return (struct page_t *)tep;
@@ -477,6 +478,7 @@ static void pmm_init() {
 		BigSlab[i][BigSlab_Size[i]++] = (uintptr_t)alloc_page(0, 0, 2);
 	  rSlab[i] = st;
   }
+
 
   _lSlab = st;
   for (int i = 0; i < MAX_SLOT; i++)
