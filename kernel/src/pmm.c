@@ -6,7 +6,7 @@
 #define MAX_PAGE       100000
 #define LUCK_NUMBER    10291223
 #define MAX_BIG_SLAB   2048
-#define MAX_SLOT       2048
+#define MAX_SLOT       10
 
 #ifdef TEST
 #include <test.h>
