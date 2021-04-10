@@ -25,7 +25,7 @@ typedef struct{
 
 
 static int DataSize[MAX_DATA_SIZE] = {64, 128, 1024};
-static int power[MAX_DATA_SIZE]    = {255, 511, 255};
+static int power[MAX_DATA_SIZE]    = {1, 1, 1};
 static int remain_cnt[MAX_CPU][MAX_DATA_SIZE];
 uintptr_t st = 0;
 
@@ -432,7 +432,7 @@ static void pmm_init() {
   for (int i  = 0; i < tot; i++) {
 	for (int j = 0; j < MAX_DATA_SIZE; j++) {
 		struct page_t *now = page_table[i][j];
-		for (int k = 0; k < power[j]; k++) {
+		for (int k = 0; k < power[j] - 1; k++) {
 			now -> next = alloc_page(i, j, 1);
 			now = now -> next;	
 		}		
