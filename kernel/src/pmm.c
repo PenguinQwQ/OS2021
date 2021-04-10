@@ -168,7 +168,6 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 		else {
 			spinlock(&BigLock_Slow);
 			uintptr_t tep = (uintptr_t)Slow_path(PAGE_SIZE * 2);
-	        spinunlock(&BigLock_Slow);
 			_ptr[cnt] = (struct ptr_t *)tep;
 			assert(_ptr[cnt]);	
 	     	page = (struct page_t *)(tep + PAGE_SIZE);
@@ -180,6 +179,7 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 		page -> magic       = LUCK_NUMBER; 
 		page -> remain      = 0;
 		page -> id          = cpu_id;
+		if (kd == 3) spinunlock(&BigLock_Slow);
 		for (uintptr_t k = ((uintptr_t)page) + pmax(128, DataSize[memory_size]); 
 					   k != ((uintptr_t)page) + PAGE_SIZE;
 					   k += DataSize[memory_size]) {
@@ -221,7 +221,7 @@ void* deal_slab(int id, int kd, size_t sz) {
 	}
 */
 	struct page_t *now, *prev;
-	if (remain_cnt[id][kd] == 0) {return NULL;
+	if (remain_cnt[id][kd] == 0) {
 		spinlock(&lock_all);  
 		struct page_t* ptr = alloc_page(id, kd, 3);
 		assert(ptr != NULL);
