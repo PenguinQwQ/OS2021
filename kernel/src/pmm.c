@@ -181,9 +181,11 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 		page -> remain      = 0;
 		page -> id          = cpu_id;
 		if (kd == 3) spinunlock(&BigLock_Slow);
+		printf("%p\n", page);
 		for (uintptr_t k = ((uintptr_t)page) + pmax(128, DataSize[memory_size]); 
 					   k != ((uintptr_t)page) + PAGE_SIZE;
 					   k += DataSize[memory_size]) {
+			printf("%p ", k);
 			_ptr[page -> belong] -> slot[page -> remain] = k;	
 			page -> remain = page -> remain + 1;
 			remain_cnt[cpu_id][memory_size]++;
