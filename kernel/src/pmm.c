@@ -94,7 +94,7 @@ void spinunlock(spinlock_t *lk) {
 int judge_size(size_t size) {
 	for (int i = 0; i < MAX_DATA_SIZE; i++)
 		if (size <= DataSize[i]) return i;
-	if (size <= 4096) return MAX_DATA_SIZE;
+	if (size == 4096) return MAX_DATA_SIZE;
 	else if (size <= 4096 * 4 && size % 4096 == 0) return MAX_DATA_SIZE + 2;
 	else return MAX_DATA_SIZE + 1;
 }
@@ -222,12 +222,12 @@ void *SlowSlab_path(int id, size_t sz) {
 
 void* deal_slab(int id, int kd, size_t sz) {
 	if (kd == MAX_DATA_SIZE) {
-		return SlowSlab_path(id, sz);
-/*		sz = pmax(sz, 128);
+//		return SlowSlab_path(id, sz);
+		sz = pmax(sz, 128);
 		spinlock(&BigLock_Slow);
 		void *tep = Slow_path(sz);
 		spinunlock(&BigLock_Slow);
-		return tep;*/
+		return tep;
 	}
 
 	struct page_t *now;
