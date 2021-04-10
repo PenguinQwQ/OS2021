@@ -213,7 +213,7 @@ void *SlowSlab_path(int id, size_t sz) {
 	if (sz <= 4096 && 
 		BigSlab_Size[id] > 0) return (void *)BigSlab[id][--BigSlab_Size[id]];
 	else {
-		if (sz > 128) sz = pmax(sz, 4096);
+		if (sz > 128) sz = pmax(sz, 128);
 		else sz = pmax(sz, 128);
 		spinlock(&BigLock_Slow);
 		void *tep = Slow_path(sz);
