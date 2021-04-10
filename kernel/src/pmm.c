@@ -14,7 +14,7 @@ struct Area{
 	void *start;
 	void *end;
 }heap;
-#define Heap_Size (128 << 20)
+#define Heap_Size (150 << 20)
 #define MAX_LIST       1000000
 #else
 #define MAX_LIST       200000
