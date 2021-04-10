@@ -220,6 +220,7 @@ void* deal_slab(int id, int kd, size_t sz) {
 		return tep;
 	}
 */
+  spinlock(&lock_all);  
 	struct page_t *now, *prev;
 	if (remain_cnt[id][kd] == 0) {
 		struct page_t* ptr = alloc_page(id, kd, 3);
@@ -240,6 +241,7 @@ void* deal_slab(int id, int kd, size_t sz) {
 	}
 	assert(remain_cnt[id][kd]);
 	remain_cnt[id][kd]--;
+  spinunlock(&lock_all);  
     return (void *)_ptr[now -> belong] -> slot[--now -> remain];	
 }
 
@@ -348,11 +350,9 @@ static void *kalloc(size_t size) {
   int kd = judge_size(size);
 
   if (kd < MAX_DATA_SIZE) {
-  spinlock(&lock_all);  
 	spinlock(&lock[id]);
 	space = deal_slab(id, kd, size);
 	spinunlock(&lock[id]);	  
-  spinunlock(&lock_all);  
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
