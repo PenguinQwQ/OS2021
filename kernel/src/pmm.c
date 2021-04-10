@@ -5,7 +5,7 @@
 #define MAX_SLAB_SUM   5
 #define MAX_PAGE       100000
 #define LUCK_NUMBER    10291223
-#define MAX_BIG_SLAB   1024
+#define MAX_BIG_SLAB   2048
 
 #ifdef TEST
 #include <test.h>
@@ -345,7 +345,7 @@ void debug_count() {
 
 static void *kalloc(size_t size) {  
   assert(size);
-  if ((size >> (size_t)20) >= (size_t)1) return NULL;
+  if ((size >> (size_t)20) >= (size_t)16) return NULL;
   void *space;
   int id = cpu_current();
   int kd = judge_size(size);
