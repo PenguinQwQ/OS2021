@@ -25,7 +25,7 @@ typedef struct{
 
 
 static int DataSize[MAX_DATA_SIZE] = {64, 128, 1024};
-static int power[MAX_DATA_SIZE]    = {1, 1, 1};
+static int power[MAX_DATA_SIZE]    = {256, 512, 256};
 static int remain_cnt[MAX_CPU][MAX_DATA_SIZE];
 uintptr_t st = 0;
 
@@ -224,7 +224,7 @@ void* deal_slab(int id, int kd, size_t sz) {
 	struct page_t *now, *prev;
 	if (remain_cnt[id][kd] == 0) {
 		struct page_t* ptr = alloc_page(id, kd, 3);
-		if (ptr == NULL) return NULL;
+		if (ptr == NULL);
 		assert(ptr != NULL);
 		now = page_table[id][kd];
 		prev = NULL;
