@@ -6,6 +6,7 @@
 #define MAX_PAGE       100000
 #define LUCK_NUMBER    10291223
 #define MAX_BIG_SLAB   2048
+#define MAX_SLOT       2048
 
 #ifdef TEST
 #include <test.h>
@@ -27,6 +28,8 @@ typedef struct{
 static int DataSize[MAX_DATA_SIZE] = {64, 128, 1024};
 static int power[MAX_DATA_SIZE]    = {256, 512, 256};
 static int remain_cnt[MAX_CPU][MAX_DATA_SIZE];
+static uintptr_t slot[MAX_SLOT];
+static int _lSlab, _rSlab, slot_cnt = 0;;
 uintptr_t st = 0;
 
 
@@ -92,6 +95,7 @@ int judge_size(size_t size) {
 	for (int i = 0; i < MAX_DATA_SIZE; i++)
 		if (size <= DataSize[i]) return i;
 	if (size <= 4096) return MAX_DATA_SIZE;
+	else if (size <= 4096 * 4 && size % 4096 == 0) return MAX_DATA_SIZE + 2;
 	else return MAX_DATA_SIZE + 1;
 }
 
@@ -195,6 +199,11 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 	else if (kd == 2) {
 		void *tep = (void *)st;	
 		st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
+		return (struct page_t *)tep;
+	}
+	else if (kd == 4) {
+		void *tep = (void *)st;	
+		st = ROUNDUP(st + 4 * PAGE_SIZE, PAGE_SIZE);	
 		return (struct page_t *)tep;
 	}
     else assert(0);
@@ -342,6 +351,15 @@ void debug_count() {
 //	printf("sum1:%d sum1: %d\n", sup, sub);
 }
 
+static void *special(size_t size) {
+	if (slot_cnt > 0) return (void *)slot[--slot_cnt];
+	else {
+		spinlock(&BigLock_Slow);
+		void *tep =  Slow_path(size);
+		spinunlock(&BigLock_Slow);	
+		return tep;
+	}
+} 
 
 static void *kalloc(size_t size) {  
   assert(size);
@@ -368,6 +386,12 @@ static void *kalloc(size_t size) {
 	spinunlock(&BigLock_Slow);
 	return space;  
   }
+  else if (kd == MAX_DATA_SIZE + 2) {
+	spinlock(&BigLock_Slab);
+	space = special(size);
+	spinunlock(&BigLock_Slab);
+	return space;			  
+  }
   else assert(0);
 }
 
@@ -375,12 +399,16 @@ int judge_free(void *ptr) {
   assert(ptr != NULL);
   struct page_t *now = (struct page_t *) ((uintptr_t) ptr & (~(PAGE_SIZE - 1)));	
   if (now -> magic == LUCK_NUMBER) return 1;
-  
+  if ((uintptr_t)ptr >= _lSlab && (uintptr_t)ptr < _rSlab) return 3;
   int tot = cpu_count();
   for (int i = 0; i < tot; i++)
-   if ((uintptr_t)ptr >= lSlab[i] && (uintptr_t)ptr < rSlab[i]) return 3 + i;
+   if ((uintptr_t)ptr >= lSlab[i] && (uintptr_t)ptr < rSlab[i]) return 4 + i;
   
   return 2;
+}
+
+void special_free(void *ptr) {
+	slot[slot_cnt++] = (uintptr_t)ptr;	
 }
 
 static void kfree(void *ptr) {
@@ -396,17 +424,17 @@ static void kfree(void *ptr) {
 	  deal_Slow_free((uintptr_t)ptr);
 	  spinunlock(&BigLock_Slow);
   }
+  else if (kd == 3) {
+	  spinlock(&BigLock_Slab);
+	  special_free(ptr);
+	  spinunlock(&BigLock_Slab);	  
+  }
   else{	 
-	 spinlock(&lock[kd - 3]);
-	 deal_SlowSlab_free(kd - 3, ptr);
-	 spinunlock(&lock[kd - 3]);
+	 spinlock(&lock[kd - 4]);
+	 deal_SlowSlab_free(kd - 4, ptr);
+	 spinunlock(&lock[kd - 4]);
   }
 }
-
-
-
-
-
 
 static void pmm_init() {
   st = (uintptr_t)heap.start;
@@ -450,6 +478,11 @@ static void pmm_init() {
 		BigSlab[i][BigSlab_Size[i]++] = (uintptr_t)alloc_page(0, 0, 2);
 	  rSlab[i] = st;
   }
+
+  _lSlab = st;
+  for (int i = 0; i < MAX_SLOT; i++)
+	slot[slot_cnt++] = (uintptr_t)alloc_page(0, 0, 4);
+  _rSlab = st;
 
   List = (struct node *)st;
   st = ((uintptr_t)st + sizeof(struct node));
