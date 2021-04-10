@@ -343,12 +343,12 @@ void debug_count() {
 static void *kalloc(size_t size) {  
   assert(size);
   if ((size >> (size_t)20) >= (size_t)16) return NULL;
-  spinlock(&lock_all);  
   void *space;
   int id = cpu_current();
   int kd = judge_size(size);
 
   if (kd < MAX_DATA_SIZE) {
+  spinlock(&lock_all);  
 	spinlock(&lock[id]);
 	space = deal_slab(id, kd, size);
 	spinunlock(&lock[id]);	  
