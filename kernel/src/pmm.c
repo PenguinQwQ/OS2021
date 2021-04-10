@@ -354,6 +354,7 @@ void debug_count() {
 static void *special(size_t size) {
 	if (slot_cnt > 0) return (void *)slot[--slot_cnt];
 	else {
+		assert(0);
 		spinlock(&BigLock_Slow);
 		void *tep =  Slow_path(size);
 		spinunlock(&BigLock_Slow);	
