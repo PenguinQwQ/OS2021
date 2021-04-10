@@ -3,7 +3,7 @@
 #define MAX_CPU        8
 #define MAX_DATA_SIZE  3
 #define MAX_SLAB_SUM   5
-#define MAX_PAGE       1000000
+#define MAX_PAGE       100000
 #define LUCK_NUMBER    10291223
 #define MAX_BIG_SLAB   1024
 
@@ -166,8 +166,9 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 			st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
 		}
 		else {
-			spinlock(&BigLock_Slow);
 			uintptr_t tep = (uintptr_t)Slow_path(PAGE_SIZE * 2);
+			if (tep == 0) return NULL;
+			spinlock(&BigLock_Slow);
 			_ptr[cnt] = (struct ptr_t *)tep;
 			assert(_ptr[cnt]);	
 	     	page = (struct page_t *)(tep + PAGE_SIZE);
@@ -223,6 +224,7 @@ void* deal_slab(int id, int kd, size_t sz) {
 	struct page_t *now, *prev;
 	if (remain_cnt[id][kd] == 0) {
 		struct page_t* ptr = alloc_page(id, kd, 3);
+		if (ptr == NULL) return NULL;
 		assert(ptr != NULL);
 		now = page_table[id][kd];
 		prev = NULL;
