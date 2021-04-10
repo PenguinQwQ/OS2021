@@ -95,7 +95,7 @@ int judge_size(size_t size) {
 	for (int i = 0; i < MAX_DATA_SIZE; i++)
 		if (size <= DataSize[i]) return i;
 	if (size == 4096) return MAX_DATA_SIZE;
-	else if (size <= 4096 * 4 && size % 4096 == 0) return MAX_DATA_SIZE + 2;
+	else if (size <= 4096 * 8 && size % 4096 == 0) return MAX_DATA_SIZE + 2;
 	else return MAX_DATA_SIZE + 1;
 }
 
@@ -203,7 +203,7 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 	}
 	else if (kd == 4) {
 		void *tep = (void *)st;	
-		st = ROUNDUP(st + 4 * PAGE_SIZE, PAGE_SIZE);	
+		st = ROUNDUP(st + 8 * PAGE_SIZE, PAGE_SIZE);	
 		return (struct page_t *)tep;
 	}
     else assert(0);
