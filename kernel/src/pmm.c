@@ -221,7 +221,7 @@ void* deal_slab(int id, int kd, size_t sz) {
 	}
 */
 	struct page_t *now, *prev;
-	if (remain_cnt[id][kd] == 0) {
+	if (remain_cnt[id][kd] == 0) {return NULL;
 		spinlock(&lock_all);  
 		struct page_t* ptr = alloc_page(id, kd, 3);
 		assert(ptr != NULL);
