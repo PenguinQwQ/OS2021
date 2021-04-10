@@ -213,7 +213,7 @@ void *SlowSlab_path(int id, size_t sz) {
 	if (sz <= 4096 && 
 		BigSlab_Size[id] > 0) return (void *)BigSlab[id][--BigSlab_Size[id]];
 	else {
-		sz = pmax(sz, 1024);
+		sz = pmax(sz, 128);
 		spinlock(&BigLock_Slow);
 		void *tep = Slow_path(sz);
 		spinunlock(&BigLock_Slow);
@@ -362,7 +362,13 @@ static void *special(size_t size) {
 	}
 } 
 
+int tot = 0;
 static void *kalloc(size_t size) {  
+  spinlock(&lock_all);
+  if (size % 4096 == 0 && size > 4096)tot++;
+  if (tot == 1024) assert(0);
+  spinunlock(&lock_all);
+
   assert(size);
   if ((size >> (size_t)20) >= (size_t)16) return NULL;
   void *space;
