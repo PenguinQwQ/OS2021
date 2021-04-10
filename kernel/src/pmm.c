@@ -3,7 +3,7 @@
 #define MAX_CPU        8
 #define MAX_DATA_SIZE  3
 #define MAX_SLAB_SUM   5
-#define MAX_PAGE       100000
+#define MAX_PAGE       1000000
 #define LUCK_NUMBER    10291223
 #define MAX_BIG_SLAB   1024
 
