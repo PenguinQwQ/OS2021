@@ -181,11 +181,9 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 		page -> remain      = 0;
 		page -> id          = cpu_id;
 		if (kd == 3) spinunlock(&BigLock_Slow);
-		if (kd == 1)printf("%p\n", page);
 		for (uintptr_t k = ((uintptr_t)page) + pmax(128, DataSize[memory_size]); 
 					   k != ((uintptr_t)page) + PAGE_SIZE;
 					   k += DataSize[memory_size]) {
-			if (kd==1)printf("%p ", k);
 			_ptr[page -> belong] -> slot[page -> remain] = k;	
 			page -> remain = page -> remain + 1;
 			remain_cnt[cpu_id][memory_size]++;
@@ -214,7 +212,7 @@ void *SlowSlab_path(int id, size_t sz) {
 }
 
 void* deal_slab(int id, int kd, size_t sz) {
-/*	if (kd == MAX_DATA_SIZE) {
+	if (kd == MAX_DATA_SIZE) {
 		return SlowSlab_path(id, sz);
 		sz = pmax(sz, 128);
 		spinlock(&BigLock_Slow);
@@ -222,9 +220,10 @@ void* deal_slab(int id, int kd, size_t sz) {
 		spinunlock(&BigLock_Slow);
 		return tep;
 	}
-*/
+
 	struct page_t *now, *prev;
 	if (remain_cnt[id][kd] == 0) {
+		return deal_slab(id, kd + 1, sz);
 		struct page_t* ptr = alloc_page(id, kd, 3);
 		if (ptr == NULL);
 		assert(ptr != NULL);
