@@ -5,8 +5,8 @@
 #define MAX_SLAB_SUM   5
 #define MAX_PAGE       100000
 #define LUCK_NUMBER    10291223
-#define MAX_BIG_SLAB   2048
-#define MAX_SLOT       10
+#define MAX_BIG_SLAB   1024
+#define MAX_SLOT       1024
 
 #ifdef TEST
 #include <test.h>
