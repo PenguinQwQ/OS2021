@@ -366,7 +366,7 @@ int tot = 0;
 static void *kalloc(size_t size) {  
   spinlock(&lock_all);
   if (size % 4096 == 0 && size > 4096)tot++;
-  if (tot == 1024) assert(0);
+  if (tot == 256) assert(0);
   spinunlock(&lock_all);
 
   assert(size);
