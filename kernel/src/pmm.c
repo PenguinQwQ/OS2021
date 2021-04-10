@@ -236,7 +236,6 @@ void* deal_slab(int id, int kd, size_t sz) {
 	}
 	else {
 		now = page_table[id][kd];
-  spinlock(&lock_all);  
 		while (now != NULL && now -> remain == 0) now = now ->next;
   spinunlock(&lock_all);  
 		assert(now != NULL);
