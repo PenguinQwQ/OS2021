@@ -35,7 +35,11 @@ static void os_run() {
     putch(*s == '*' ? '0' + cpu_current() : *s);
 	#endif
   }
-  test1();
+  for (int i = 0; i < 100; i++) {
+	void * p = pmm->alloc(128);
+	printf("%p\n", p);  
+	  
+	}
   while(1);
 }
 
