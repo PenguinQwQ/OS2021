@@ -214,17 +214,17 @@ void *SlowSlab_path(int id, size_t sz) {
 void* deal_slab(int id, int kd, size_t sz) {
 	if (kd == MAX_DATA_SIZE) {
 		return SlowSlab_path(id, sz);
-		sz = pmax(sz, 128);
+/*		sz = pmax(sz, 128);
 		spinlock(&BigLock_Slow);
 		void *tep = Slow_path(sz);
 		spinunlock(&BigLock_Slow);
-		return tep;
+		return tep;*/
 	}
 
 	struct page_t *now, *prev;
 	if (remain_cnt[id][kd] == 0) {
 		return deal_slab(id, kd + 1, sz);
-		struct page_t* ptr = alloc_page(id, kd, 3);
+/*		struct page_t* ptr = alloc_page(id, kd, 3);
 		if (ptr == NULL);
 		assert(ptr != NULL);
 		now = page_table[id][kd];
@@ -233,7 +233,7 @@ void* deal_slab(int id, int kd, size_t sz) {
 		assert(now == 0);
 		assert(prev != NULL);
 		prev -> next = ptr;
-		now = ptr;
+		now = ptr;*/
 	}
 	else {
 		now = page_table[id][kd];
@@ -345,7 +345,7 @@ void debug_count() {
 
 static void *kalloc(size_t size) {  
   assert(size);
-  if ((size >> (size_t)20) >= (size_t)16) return NULL;
+  if ((size >> (size_t)20) >= (size_t)1) return NULL;
   void *space;
   int id = cpu_current();
   int kd = judge_size(size);
