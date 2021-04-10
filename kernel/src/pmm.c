@@ -165,7 +165,9 @@ struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
 			st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
 		}
 		else {
+			spinlock(&BigLock_Slow);
 			uintptr_t tep = (uintptr_t)Slow_path(PAGE_SIZE * 2);
+	        spinunlock(&BigLock_Slow);
 			_ptr[cnt] = (struct ptr_t *)tep;
 			assert(_ptr[cnt]);	
 	     	page = (struct page_t *)(tep + PAGE_SIZE);
