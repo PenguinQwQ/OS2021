@@ -2,9 +2,10 @@
 #define PAGE_SIZE      4096
 #define MAX_CPU        8
 #define MAX_DATA_SIZE  3
-#define MAX_PAGE       9000
+#define MAX_SLAB_SUM   5
+#define MAX_PAGE       100000
 #define LUCK_NUMBER    10291223
-#define MAX_BIG_SLAB   4096
+#define MAX_BIG_SLAB   1024
 
 #ifdef TEST
 #include <test.h>
@@ -15,7 +16,7 @@ struct Area{
 #define Heap_Size (128 << 20)
 #define MAX_LIST       1000000
 #else
-#define MAX_LIST       500000
+#define MAX_LIST       200000
 #endif
 
 typedef struct{
@@ -152,6 +153,48 @@ int pmax(int a, int b) {
 uintptr_t BigSlab[MAX_CPU][MAX_BIG_SLAB];
 static int BigSlab_Size[MAX_CPU] = {0};
 uintptr_t lSlab[MAX_CPU], rSlab[MAX_CPU];
+static int cnt = 0;
+
+struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
+	if (kd == 1 || kd == 3) {
+		struct page_t *page;
+		if (kd == 1) {
+			_ptr[cnt] = (struct ptr_t *)st;
+			st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
+	     	page = (struct page_t *)st;
+			st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
+		}
+		else {
+			uintptr_t tep = (uintptr_t)Slow_path(PAGE_SIZE * 2);
+			_ptr[cnt] = (struct ptr_t *)tep;
+			assert(_ptr[cnt]);	
+	     	page = (struct page_t *)(tep + PAGE_SIZE);
+		}
+		page -> lock        = &lock[cpu_id];
+		page -> next        = NULL;
+		page -> block_size  = memory_size;
+		page -> belong      = cnt++;
+		page -> magic       = LUCK_NUMBER; 
+		page -> remain      = 0;
+		page -> id          = cpu_id;
+		for (uintptr_t k = ((uintptr_t)page) + pmax(128, DataSize[memory_size]); 
+					   k != ((uintptr_t)page) + PAGE_SIZE;
+					   k += DataSize[memory_size]) {
+			_ptr[page -> belong] -> slot[page -> remain] = k;	
+			page -> remain = page -> remain + 1;
+			remain_cnt[cpu_id][memory_size]++;
+	}
+	assert(page->remain <= 512);
+	assert(sizeof(_ptr[cnt - 1]) <= 4096);
+	return page;
+	}
+	else if (kd == 2) {
+		void *tep = (void *)st;	
+		st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
+		return (struct page_t *)tep;
+	}
+    else assert(0);
+}
 
 void *SlowSlab_path(int id, size_t sz) {
 	if (sz <= 4096 && 
@@ -165,7 +208,7 @@ void *SlowSlab_path(int id, size_t sz) {
 }
 
 void* deal_slab(int id, int kd, size_t sz) {
-	if (kd == MAX_DATA_SIZE) {
+/*	if (kd == MAX_DATA_SIZE) {
 		return SlowSlab_path(id, sz);
 		sz = pmax(sz, 128);
 		spinlock(&BigLock_Slow);
@@ -173,12 +216,26 @@ void* deal_slab(int id, int kd, size_t sz) {
 		spinunlock(&BigLock_Slow);
 		return tep;
 	}
-	if (remain_cnt[id][kd] == 0) return deal_slab(id, kd + 1, sz);
-	struct page_t *now;
-	now = page_table[id][kd];
-	while (now != NULL && now -> remain == 0) now = now ->next;
-	assert(now != NULL);
-	assert(now -> remain != 0);
+*/
+	struct page_t *now, *prev;
+	if (remain_cnt[id][kd] == 0) {
+		struct page_t* ptr = alloc_page(id, kd, 3);
+		assert(ptr != NULL);
+		now = page_table[id][kd];
+		prev = NULL;
+	    while (now != NULL && now -> remain == 0) prev = now, now = now ->next;
+		assert(now == 0);
+		assert(prev != NULL);
+		prev -> next = ptr;
+		now = ptr;
+	}
+	else {
+		now = page_table[id][kd];
+		while (now != NULL && now -> remain == 0) now = now ->next;
+		assert(now != NULL);
+		assert(now -> remain != 0);
+	}
+	assert(remain_cnt[id][kd]);
 	remain_cnt[id][kd]--;
     return (void *)_ptr[now -> belong] -> slot[--now -> remain];	
 }
@@ -343,39 +400,8 @@ static void kfree(void *ptr) {
 
 
 
-static int cnt = 0;
 
-struct page_t* alloc_page(int cpu_id, int memory_size, int kd) {
-	if (kd == 1) {
-		_ptr[cnt] = (struct ptr_t *)st;
-		st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
-		struct page_t *page = (struct page_t *)st;
-		page -> lock        = &lock[cpu_id];
-		page -> next        = NULL;
-		page -> block_size  = memory_size;
-		page -> belong      = cnt++;
-		page -> magic       = LUCK_NUMBER; 
-		page -> remain      = 0;
-		page -> id          = cpu_id;
-		for (uintptr_t k = st + pmax(128, DataSize[memory_size]); 
-					   k != st + PAGE_SIZE;
-					   k += DataSize[memory_size]) {
-			_ptr[page -> belong] -> slot[page -> remain] = k;	
-			page -> remain = page -> remain + 1;
-			remain_cnt[cpu_id][memory_size]++;
-	}
-	assert(page->remain <= 512);
-	assert(sizeof(_ptr[cnt - 1]) <= 4096);
-	st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
-	return page;
-	}
-	else if (kd == 2) {
-		void *tep = (void *)st;	
-		st = ROUNDUP(st + PAGE_SIZE, PAGE_SIZE);	
-		return (struct page_t *)tep;
-	}
-    else assert(0);
-}
+
 
 static void pmm_init() {
   st = (uintptr_t)heap.start;
