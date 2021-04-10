@@ -108,6 +108,7 @@ void add_delete(uintptr_t l, uintptr_t r) {
 }
 
 int lst = 0;
+spinlock_t lock_all;
 
 void *Slow_path(size_t size) {
 
@@ -342,7 +343,7 @@ void debug_count() {
 static void *kalloc(size_t size) {  
   assert(size);
   if ((size >> (size_t)20) >= (size_t)16) return NULL;
-  
+  spinlock(&lock_all);  
   void *space;
   int id = cpu_current();
   int kd = judge_size(size);
@@ -351,6 +352,7 @@ static void *kalloc(size_t size) {
 	spinlock(&lock[id]);
 	space = deal_slab(id, kd, size);
 	spinunlock(&lock[id]);	  
+  spinunlock(&lock_all);  
 	return space;
   }
   else if(kd == MAX_DATA_SIZE) {
