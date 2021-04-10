@@ -6,7 +6,7 @@
 #define MAX_PAGE       100000
 #define LUCK_NUMBER    10291223
 #define MAX_BIG_SLAB   9012
-#define MAX_SLOT       256
+#define MAX_SLOT       10
 
 #ifdef TEST
 #include <test.h>
@@ -354,7 +354,6 @@ void debug_count() {
 static void *special(size_t size) {
 	if (slot_cnt > 0) return (void *)slot[--slot_cnt];
 	else {
-		assert(0);
 		spinlock(&BigLock_Slow);
 		void *tep =  Slow_path(size);
 		spinunlock(&BigLock_Slow);	
