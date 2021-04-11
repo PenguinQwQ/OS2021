@@ -267,7 +267,6 @@ static void pmm_init() {
   heap.end   = (void *) st + Heap_Size;
   #endif	
  
-  int sz = (heap.end - heap.start) >> 20;
   
   List = (List_t *)st;
   st = ROUNDUP(st + sizeof(List_t), PAGE_SIZE);
@@ -275,13 +274,11 @@ static void pmm_init() {
   tot = cpu_count();
   
   init_list();  
-  sz = ((uintptr_t)heap.end - st) >> 20;
   for (int i = 0; i < tot; i++) 
 	  for (int j = 0; j < MAX_DATA_SIZE - 1; j++) {
 	  page_table[i][j] = init_slab(i, 1, j);
 	  assert(page_table[i][j]);
   }
-  sz = ((uintptr_t)heap.end - st) >> 20;
 }
 
 MODULE_DEF(pmm) = {
