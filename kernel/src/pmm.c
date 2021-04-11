@@ -160,10 +160,7 @@ void *fast_alloc(int id, int kd) {
 		page = page -> next;
 		if (page != NULL) spinlock(&page -> lock);
 	}
-	if (page == NULL) {
-		spinunlock(&lock[id]);
-		return NULL;
-	}
+	if (page == NULL) return NULL;
 	uintptr_t t = page -> stack[--page -> cnt];
 	spinunlock(&page -> lock);
 	return (void *)t;
