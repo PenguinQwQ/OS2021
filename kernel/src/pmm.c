@@ -22,7 +22,6 @@ typedef struct{
 
 
 spinlock_t lock_all;
-spinlock_t lock[MAX_CPU];
 
 void spinlock(spinlock_t *lk) {
 	while(atomic_xchg(&lk -> flag, 1));
@@ -258,7 +257,6 @@ static void kfree(void *ptr) {
 
 static void pmm_init() {
   lock_all.flag = 0;
-  for (int i = 0; i < MAX_CPU; i++) lock[i].flag = 0;
 
   assert(sizeof(page_t) <= 4096);
   assert(sizeof(slot) / sizeof(int) == MAX_DATA_SIZE);
@@ -287,7 +285,6 @@ static void pmm_init() {
 	  assert(page_table[i][j]);
   }
   sz = ((uintptr_t)heap.end - st) >> 20;
-  printf("%d\n", sz);
 }
 
 MODULE_DEF(pmm) = {
