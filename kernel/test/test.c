@@ -63,9 +63,8 @@ void finish() {
 void task1() { // smoke task
 	for (int i = 0; i < MAXN; i++) {
 		int p = rand() % 17, sz, bj = 0;
-		p = 9;
 		if (p <= 6)      sz = rand() % 128 + 1;
-		else if (p <= 9) sz = 4096+4096;
+		else if (p <= 9) sz = 4096;
 		else if (p <= 10) sz = (rand() & ((16 << 20) - 1)) + 1;
 		else {
 			if (cnt == 0) continue;
@@ -77,8 +76,7 @@ void task1() { // smoke task
 			unlock();
 		}
 		if (bj == 0) {
-			void *tep = pmm -> alloc(sz);
-		//	if (p <= 5) pmm->free(tep);
+			void *tep = pmm -> alloc(sz);		//	if (p <= 5) pmm->free(tep);
 			record_alloc(sz, tep);
 		}
 	}	
@@ -93,6 +91,7 @@ void entry(int tid) {
 } 
 
 int main(int argc, char *argv[]) {
+	srand(time(0));
 	pmm -> init();
 	for (int i = 0; i < smp; i++)
 		create(entry);	

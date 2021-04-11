@@ -30,13 +30,14 @@ void test1() {
 
 
 static void os_run() {
+  printf("212\n");
   for (const char *s = "Hello World from CPU #*\n"; *s; s++) {
 	#ifndef TEST
     putch(*s == '*' ? '0' + cpu_current() : *s);
 	#endif
   }
   for (int i = 0; i < 100; i++) {
-	void * p = pmm->alloc(128);
+	void * p = pmm->alloc(4096);
 	printf("%p\n", p);  
 	  
 	}
