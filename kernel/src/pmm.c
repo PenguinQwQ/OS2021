@@ -78,7 +78,6 @@ void *slow_alloc(size_t size) {
 	while (tep < size) tep = tep * 2;
 	size = tep;
 	int now = List -> head, prev = 0;
-	lst = 0;
 	if (lst) now = lst;
 	uintptr_t left, right;
 	spinlock(&lock_all);
