@@ -13,7 +13,7 @@ struct Area{
 #define Heap_Size (512 << 20)
 #define MAX_LIST       1000000
 #else
-#define MAX_LIST       2000000
+#define MAX_LIST       200000
 #endif
 
 typedef struct{
@@ -78,6 +78,7 @@ void *slow_alloc(size_t size) {
 	while (tep < size) tep = tep * 2;
 	size = tep;
 	int now = List -> head, prev = 0;
+	lst = 0;
 	if (lst) now = lst;
 	uintptr_t left, right;
 	spinlock(&lock_all);
