@@ -6,12 +6,12 @@
 
 char *exec_argv[N] = {"strace", "-T"};
 char *exec_envp[]  = { "PATH=/bin", NULL};
-int fildes[2];
+int fd[2];
 
 int main(int argc, char *argv[]) {
   for (int i = 1; i < argc; i++) exec_argv[i + 1] = argv[i];
   exec_argv[argc + 1] = NULL;
-  if (pipe(fildes) != 0) assert(0);
+  if (pipe(fd) != 0) assert(0);
   int pid = fork();
   if (pid == 0) {
 	execve("strace",          exec_argv, exec_envp);
