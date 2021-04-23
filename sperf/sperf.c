@@ -21,8 +21,9 @@ int main(int argc, char *argv[]) {
 	exit(EXIT_FAILURE);
   }
   else {
-	  
-	printf("%d\n", fd[1]);	  
+	char buf[1024];
+	read(fd[0], buf, sizeof(buf));
+	printf("%s\n", buf); 
 	return 0;	  
   }
 }
