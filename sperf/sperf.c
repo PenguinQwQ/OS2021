@@ -3,7 +3,7 @@
 #include <unistd.h>
 const int N = 65536;
 
-char *exec_argv[] = { "strace", "-T"};
+char *exec_argv[N] = { "strace", "-T"};
 char *exec_envp[]  = { "PATH=/bin", NULL};
 
 int main(int argc, char *argv[]) {
