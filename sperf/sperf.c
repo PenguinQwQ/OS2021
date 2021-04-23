@@ -4,7 +4,7 @@
 #define N 65536
 
 char *string_name[] = {"strace", "-T"};
-char *exec_argv[N];
+char *exec_argv[N] = {"strace", "-T"};
 char *exec_envp[]  = { "PATH=/bin", NULL};
 
 int main(int argc, char *argv[]) {
