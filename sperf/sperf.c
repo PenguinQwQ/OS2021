@@ -12,17 +12,17 @@ int main(int argc, char *argv[]) {
   for (int i = 1; i < argc; i++) exec_argv[i + 1] = argv[i];
   exec_argv[argc + 1] = NULL;
   if (pipe(fildes) != 0) assert(0);
-  int pid = fork();
-  if (pid == 0) {
+//  int pid = fork();
+ // if (pid == 0) {
 	execve("strace",          exec_argv, exec_envp);
 	execve("/bin/strace",     exec_argv, exec_envp);
 	execve("/usr/bin/strace", exec_argv, exec_envp);
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
-  }
-  else {
+ // }
+//  else {
 	  
 	  
-	return 0;	  
-  }
+//	return 0;	  
+//  }
 }
