@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 	exit(EXIT_FAILURE);
   }
   else {
-	char buf[1024];
+	char buf[10];
 	int cnt = read(fd[0], buf, sizeof(buf));
 	printf("%d\n", cnt); 
 	return 0;	  
