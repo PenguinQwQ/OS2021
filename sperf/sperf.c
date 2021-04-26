@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <signal.h>
 #include <sys/wait.h>
-#define N 6553600
+#define N 65536
 
 char *exec_argv[N] = {"strace", "-T"};
 char *exec_envp[]  = { "PATH=/bin", NULL};
@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
 	signal(SIGCHLD, handler);
 	while(kill(pid, 0) == 0) {
 		int cnt = read(fd[0], buf, sizeof(buf));
+		buf[cnt] = 0;
 		if (cnt > 0) printf("%s", buf);
 	}
 	printf("666\n");
