@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 	close(fd[1]);
 	while(kill(pid, 0) == 0) {
 	if (read(fd[0], buf, sizeof(buf)))
-		printf("%s\n", buf); 
+		printf("%s", buf); 
 	}
 	return 0;	  
   }
