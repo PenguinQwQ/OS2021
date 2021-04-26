@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
 	if (read(fd[0], buf, sizeof(buf)))
 		printf("%s", buf); 
 	}
+	printf("1\n");
 	return 0;	  
   }
 }
