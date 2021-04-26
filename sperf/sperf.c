@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 		int cnt = read(fd[0], buf, sizeof(buf));
 		if (cnt > 0) {
 			for (int i = 0; i < cnt; i++)
-				printf("%c", buf[i]);
+				printf("%s", buf);
 		}
 		printf("%d\n", pid);			
 	}
