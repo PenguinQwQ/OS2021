@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 			for (int i = 0; i < cnt; i++)
 				printf("%c", buf[i]);
 		}
-			
+		printf("%d\n", pid);			
 	}
 	return 0;	  
   }
