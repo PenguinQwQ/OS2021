@@ -15,9 +15,7 @@ int main(int argc, char *argv[]) {
   dup2(fd[1], 2);
   int pid = fork();
   if (pid == 0) {
-	close(fd[1]);
-	printf("2131\n");
-	return 0;
+	close(fd[0]);
 	execve("strace",          exec_argv, exec_envp);
 	execve("/bin/strace",     exec_argv, exec_envp);
 	execve("/usr/bin/strace", exec_argv, exec_envp);
@@ -25,11 +23,11 @@ int main(int argc, char *argv[]) {
 	exit(EXIT_FAILURE);
   }
   else {
-	close(fd[0]);
+	close(fd[1]);
 	char buf[10];
-	while(1) {
-	int cnt = read(fd[1], buf, sizeof(buf));
-	printf("%s\n", buf); 
+	while(kill(pid, 0) == 0) {
+	if (read(fd[0], buf, sizeof(buf)))
+		printf("%s\n", buf); 
 	}
 	return 0;	  
   }
