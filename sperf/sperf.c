@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
   dup2(fd[1], 2);
   int pid = fork();
   if (pid == 0) {
+	printf("%d %d\n", fd[0], fd[1]);
 	close(fd[0]);
 	exit(0);
 	execve("strace",          exec_argv, exec_envp);
