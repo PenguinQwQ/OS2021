@@ -43,8 +43,8 @@ int main(int argc, char *argv[]) {
 			if (s == '\n') {	
 				buf[loc] = '\0';
 				printf("%s", buf);
+				loc = 0;
 			}
-			else loc = 0;;
 		}
 	}
 	close(fd[0]);
