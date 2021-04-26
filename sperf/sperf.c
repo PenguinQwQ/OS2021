@@ -18,7 +18,6 @@ int main(int argc, char *argv[]) {
   dup2(fd[1], 2);
   int pid = fork();
   if (pid == 0) {
-	printf("%d %d\n", fd[0], fd[1]);
 	close(fd[0]);
 	exit(0);
 	execve("strace",          exec_argv, exec_envp);
@@ -29,9 +28,8 @@ int main(int argc, char *argv[]) {
   }
   else {
 	close(fd[1]);
-	printf("%d %d\n", fd[0], fd[1]);
 	while(waitpid(pid, NULL, WNOHANG) == 0) {
-//		int cnt = read(1, buf, 1);
+		int cnt = read(1, buf, 0);
 	//	buf[cnt] = 0;
 		//if (cnt > 0) printf("%s", buf);
 		printf("666\n");
