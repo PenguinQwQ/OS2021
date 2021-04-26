@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   dup2(fd[1], 2);
   int pid = fork();
   if (pid == 0) {
-	close(fd[0]);
+	//close(fd[0]);
 	exit(0);
 	execve("strace",          exec_argv, exec_envp);
 	execve("/bin/strace",     exec_argv, exec_envp);
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 	exit(EXIT_FAILURE);
   }
   else {
-	close(fd[1]);
+	//close(fd[1]);
 	while(waitpid(pid, NULL, WNOHANG) == 0) {
 		int cnt = read(fd[0], buf, sizeof(buf));
 	//	buf[cnt] = 0;
