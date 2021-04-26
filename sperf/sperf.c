@@ -25,8 +25,10 @@ int main(int argc, char *argv[]) {
   else {
 	close(fd[0]);
 	char buf[10];
+	while(1) {
 	int cnt = read(fd[1], buf, sizeof(buf));
 	printf("%s\n", buf); 
+	}
 	return 0;	  
   }
 }
