@@ -10,14 +10,6 @@ char *exec_argv[N] = {"strace", "-T"};
 char *exec_envp[]  = { "PATH=/bin", NULL};
 char buf[N];
 
-void handler(int sig) {
-	if (sig == SIGCHLD) {
-		int status;
-		waitpid(-1, &status, WNOHANG);	
-	}	
-}
-
-
 int main(int argc, char *argv[]) {
   for (int i = 1; i < argc; i++) exec_argv[i + 1] = argv[i];
   exec_argv[argc + 1] = NULL;
@@ -36,7 +28,6 @@ int main(int argc, char *argv[]) {
   }
   else {
 	close(fd[1]);
-	signal(SIGCHLD, handler);
 	while(waitpid(pid, NULL, WNOHANG) == 0) {
 		int cnt = read(fd[0], buf, sizeof(buf));
 		buf[cnt] = 0;
