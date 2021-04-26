@@ -17,7 +17,6 @@ int main(int argc, char *argv[]) {
   if (pipe(fd) != 0) assert(0);
   dup2(fd[1], 2);
   int pid = fork();
-  fprintf(stderr, "1\n");
   if (pid == 0) {
 	close(fd[0]);
 	exit(0);
