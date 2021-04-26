@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
   }
   else {
 	close(fd[1]);
+	printf("%d %d\n", fd[0], fd[1]);
 	while(waitpid(pid, NULL, WNOHANG) == 0) {
 //		int cnt = read(1, buf, 1);
 	//	buf[cnt] = 0;
