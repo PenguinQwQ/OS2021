@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
   int pid = fork();
   if (pid == 0) {
 	close(fd[0]);
+	exit(0);
 	execve("strace",          exec_argv, exec_envp);
 	execve("/bin/strace",     exec_argv, exec_envp);
 	execve("/usr/bin/strace", exec_argv, exec_envp);
@@ -28,7 +29,8 @@ int main(int argc, char *argv[]) {
   else {
 	close(fd[1]);
 	while(waitpid(pid, NULL, WNOHANG) == 0) {
-		int cnt = read(fd[0], buf, sizeof(buf));assert(0);
+		int cnt = read(fd[0], buf, sizeof(buf));
+		printf("%d\n", cnt);
 		if (cnt >= 0) buf[cnt] = 0;
 		if (cnt > 0) printf("%s", buf);
 	}
