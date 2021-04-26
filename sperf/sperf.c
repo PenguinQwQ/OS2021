@@ -39,7 +39,6 @@ int main(int argc, char *argv[]) {
 	while(kill(pid, 0) == 0) {
 		int cnt = read(fd[0], buf, sizeof(buf));
 		if (cnt > 0) printf("%s", buf);
-		printf("%d\n", pid);			
 	}
 	printf("666\n");
 	return 0;	  
