@@ -32,6 +32,7 @@ int main(int argc, char *argv[]) {
 		if (cnt > 0) printf("%s", buf);
 		printf("%d\n", pid);			
 	}
+	printf("666\n");
 	return 0;	  
   }
 }
