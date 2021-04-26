@@ -29,10 +29,7 @@ int main(int argc, char *argv[]) {
 	close(fd[1]);
 	while(kill(pid, 0) == 0) {
 		int cnt = read(fd[0], buf, sizeof(buf));
-		if (cnt > 0) {
-			for (int i = 0; i < cnt; i++)
-				printf("%s", buf);
-		}
+		if (cnt > 0) printf("%s", buf);
 		printf("%d\n", pid);			
 	}
 	return 0;	  
