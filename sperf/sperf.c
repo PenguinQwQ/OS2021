@@ -28,8 +28,11 @@ int main(int argc, char *argv[]) {
   else {
 	close(fd[1]);
 	while(kill(pid, 0) == 0) {
-		if (read(fd[0], buf, sizeof(buf) > 0))
-			printf("%s 8", buf);
+		int cnt = 0;
+		if (cnt = read(fd[0], buf, sizeof(buf)) && cnt)
+			for (int i = 0; i < cnt; i++)
+				printf("%c", buf[i]);
+			
 	}
 	return 0;	  
   }
