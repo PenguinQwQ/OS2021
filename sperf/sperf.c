@@ -14,6 +14,12 @@ char *exec_envp[]  = { "PATH=/bin", NULL};
 char buf[N];
 int loc = 0;
 
+void record() {
+		
+	
+}
+
+
 int main(int argc, char *argv[]) {
   for (int i = 1; i < argc; i++) exec_argv[i + 1] = argv[i];
   exec_argv[argc + 1] = NULL;
@@ -41,7 +47,7 @@ int main(int argc, char *argv[]) {
 			buf[loc++] = s;
 			if (s == '\n') {	
 				buf[loc] = '\0';
-				printf("%s", buf);
+				record();
 				loc = 0;
 			}
 		}
