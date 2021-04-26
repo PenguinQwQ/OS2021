@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <assert.h>
+#include <signal.h>
 #define N 65536
 
 char *exec_argv[N] = {"strace", "-T"};
