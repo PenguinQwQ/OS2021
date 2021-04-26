@@ -16,12 +16,9 @@ int main(int argc, char *argv[]) {
   int fd[2];
   if (pipe(fd) != 0) assert(0);
   dup2(fd[1], 2);
-  fprintf(stderr, "1\n");
   int pid = fork();
   if (pid == 0) {
 	close(fd[0]);
-	fprintf(stderr, "d");
-	exit(0);
 	execve("strace",          exec_argv, exec_envp);
 	execve("/bin/strace",     exec_argv, exec_envp);
 	execve("/usr/bin/strace", exec_argv, exec_envp);
@@ -34,9 +31,7 @@ int main(int argc, char *argv[]) {
 		int cnt = read(fd[0], buf, sizeof(buf));
 		buf[cnt] = 0;
 		if (cnt > 0) printf("%s", buf);
-		printf("666\n");
 	}
-	printf("666\n");
 	return 0;	  
   }
 }
