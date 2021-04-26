@@ -7,6 +7,7 @@
 
 char *exec_argv[N] = {"strace", "-T"};
 char *exec_envp[]  = { "PATH=/bin", NULL};
+char buf[N];
 
 int main(int argc, char *argv[]) {
   for (int i = 1; i < argc; i++) exec_argv[i + 1] = argv[i];
@@ -25,7 +26,6 @@ int main(int argc, char *argv[]) {
   }
   else {
 	close(fd[1]);
-	char buf[10];
 	while(kill(pid, 0) == 0) {
 	if (read(fd[0], buf, sizeof(buf)))
 		printf("%s\n", buf); 
