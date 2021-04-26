@@ -34,6 +34,8 @@ int main(int argc, char *argv[]) {
   else {
 	close(fd[1]);
 	char s;
+	loc = 0;
+
 	while(waitpid(pid, NULL, WNOHANG) == 0) {
 		int cnt = read(fd[0], &s, 1);
 		if (cnt > 0) {
