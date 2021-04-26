@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 	close(fd[1]);
 	while(waitpid(pid, NULL, WNOHANG) == 0) {
 		int cnt = read(fd[0], buf, sizeof(buf));
-		buf[cnt] = 0;
+		if (cnt >= 0) buf[cnt] = 0;
 		if (cnt > 0) printf("%s", buf);
 	}
 	return 0;	  
