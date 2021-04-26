@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
   int pid = fork();
   if (pid == 0) {
 	close(fd[0]);
+	return 0;
 	execve("strace",          exec_argv, exec_envp);
 	execve("/bin/strace",     exec_argv, exec_envp);
 	execve("/usr/bin/strace", exec_argv, exec_envp);
