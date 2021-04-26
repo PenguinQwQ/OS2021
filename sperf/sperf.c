@@ -36,12 +36,10 @@ int main(int argc, char *argv[]) {
   else {
 	close(fd[1]);
 	signal(SIGCHLD, handler);
-	while(kill(pid, 0) == 0) {
+	while(waitpid(pid, NULL, WNOHANG) == 0) {
 		int cnt = read(fd[0], buf, sizeof(buf));
 		buf[cnt] = 0;
 		if (cnt > 0) printf("%s", buf);
-		wait(NULL);
-		break;
 	}
 	printf("666\n");
 	return 0;	  
