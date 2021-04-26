@@ -28,7 +28,8 @@ int main(int argc, char *argv[]) {
   else {
 	close(fd[1]);
 	int t;
-	while(t = waitpid(pid, NULL, WNOHANG) <= 0) {
+	while((t = waitpid(pid, NULL, WNOHANG)) <= 0) {
+		printf("%d\n", t);
 		int cnt = read(fd[0], buf, sizeof(buf));
 		buf[cnt] = 0;
 		if (cnt > 0) printf("%s", buf);
