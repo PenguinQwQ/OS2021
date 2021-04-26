@@ -31,12 +31,12 @@ int main(int argc, char *argv[]) {
 	int result;
 	do {
 		result = waitpid(pid, NULL, WNOHANG);
-	}while(result == 0);/*
-	while(waitpid(pid, NULL, WNOHANG) == 0) {
 		int cnt = read(fd[0], buf, sizeof(buf));
 		buf[cnt] = 0;
 		//if (cnt > 0) printf("%s", buf);
 		printf("666\n");
+	}while(result == 0);/*
+	while(waitpid(pid, NULL, WNOHANG) == 0) {
 	}*/
 	printf("666\n");
 	return 0;	  
