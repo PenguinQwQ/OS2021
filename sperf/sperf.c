@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <signal.h>
 #include <sys/wait.h>
-#define N 65536
+#define N 6553600
 
 char *exec_argv[N] = {"strace", "-T"};
 char *exec_envp[]  = { "PATH=/bin", NULL};
