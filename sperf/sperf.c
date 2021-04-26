@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <assert.h>
 #include <signal.h>
+#include <sys/wait.h>
 #define N 65536
 
 char *exec_argv[N] = {"strace", "-T"};
