@@ -28,9 +28,9 @@ int main(int argc, char *argv[]) {
   else {
 	close(fd[1]);
 	while(kill(pid, 0) == 0) {
-	wait(NULL);
-	if (read(fd[0], buf, sizeof(buf)))
-		printf("%s", buf); 
+		if (read(fd[0], buf, sizeof(buf)))
+			printf("%s", buf);
+		printf("%d\n", pid);
 	}
 	printf("1\n");
 	return 0;	  
