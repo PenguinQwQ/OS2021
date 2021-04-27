@@ -17,7 +17,7 @@ int loc = 0, tot = 0;
 
 struct node{
 	char name[128];
-	double time = 0;	
+	double time;	
 	struct node *next;
 };
 
