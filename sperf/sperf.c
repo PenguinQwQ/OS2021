@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
   }
 
   else {
-	  printf("%d\n", pid);
+	printf("%d\n", pid);
 	close(fd[1]);
 	char s;
 	int cnt = 0;
