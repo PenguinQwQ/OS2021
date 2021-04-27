@@ -56,8 +56,9 @@ void record() {
 	}
 }
 
-int compare(const struct node w1, const struct node w2) {
-	return w1.time > w2.time;	
+int compare(const void *w1, const void* w2) {
+	double t1 = (struct node *)w1 -> time, t2 = (struct node *)w2 -> time; 
+	return t1 > t2;	
 }
 
 void show_result() {
