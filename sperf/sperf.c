@@ -38,9 +38,10 @@ void record() {
 					break;
 				}
 			}
-		else {printf("%s", buf);return;}
+		else return;
 
 	sscanf(tep, "%lf", &now_time);
+	printf("%s %lf\n", now_name, now_time);
 }
 
 
