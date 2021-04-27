@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 	int file = open("/dev/null", 0);
 	assert(file > 0);
 //	dup2(file, 1);
-	dup2(file, 2);
+//	dup2(file, 2);
 	close(fd[0]);
 	char tep_argv[100];
 	int id = getpid();
