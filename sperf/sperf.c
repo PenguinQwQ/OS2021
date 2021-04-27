@@ -7,12 +7,19 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #define N 65536
+#define M 128
 
 char *exec_argv[N] = {"strace", "-T", "-o"};
 char *exec_envp[]  = { "PATH=/bin", NULL};
 
 char buf[N];
-int loc = 0;
+int loc = 0, tot = 0;
+
+struct node{
+	char name[128];
+	double time = 0;	
+	struct node *next;
+};
 
 void record() {
 			
@@ -52,7 +59,6 @@ int main(int argc, char *argv[]) {
 			buf[loc++] = s;
 			if (s == '\n') {	
 				buf[loc] = '\0';
-				printf("%s", buf);
 				record();
 				loc = 0;
 			}
