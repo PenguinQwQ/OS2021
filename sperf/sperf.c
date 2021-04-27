@@ -38,7 +38,7 @@ void record() {
 					break;
 				}
 			}
-		else {printf("%s", buf[i]);return;}
+		else {printf("%s", buf);return;}
 
 	sscanf(tep, "%lf", &now_time);
 }
