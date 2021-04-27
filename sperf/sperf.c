@@ -37,6 +37,9 @@ int main(int argc, char *argv[]) {
     sprintf(tep_argv, "/proc/%d/fd/%d", id, fd[1]);
 	exec_argv[3] = tep_argv;
 	for (int i = 1; i < argc; i++) exec_argv[i + 3] = argv[i];
+	int now = 0;
+	while(exec_argv[now != NULL])
+		printf("%s\n". exec_argv[now]), now++;
 	exec_argv[argc + 1] = NULL;
 	execve("strace",          exec_argv, exec_envp);
 	execve("/bin/strace",     exec_argv, exec_envp);
@@ -50,7 +53,6 @@ int main(int argc, char *argv[]) {
 	char s;
 	int cnt = 0;
 	while(waitpid(pid, NULL, WNOHANG) == 0) {
-		printf("11\n");
 		int cnt = read(fd[0], &s, 1);
 		if (cnt > 0) {
 			buf[loc++] = s;
