@@ -7,7 +7,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <string.h>
-#include <ctime>
+#include <time.h>
 #define N 65536
 #define M 128
 
