@@ -24,8 +24,6 @@ int main(int argc, char *argv[]) {
   int fd[2];
   if (pipe2(fd, O_NONBLOCK) != 0) assert(0);
   int pid = fork();
-  int t;
-  if ((t = -1)  == -1) printf("666\n");
   if (pid == 0) {
 	int file = open("/dev/null", 0);
 	assert(file > 0);
