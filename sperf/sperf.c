@@ -41,7 +41,8 @@ void record() {
 		else return;
 
 	sscanf(tep, "%lf", &now_time);
-	printf("%s %lf\n", now_name, now_time);
+	printf("%s %lf\n %s", now_name, now_time, buf);
+	
 }
 
 
