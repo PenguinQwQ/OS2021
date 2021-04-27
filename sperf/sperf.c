@@ -63,8 +63,14 @@ int compare(const void *w1, const void* w2) {
 }
 
 void show_result() {
-	qsort(List, tot, sizeof(struct node), compare);	
-	for (int i = 0; i < tot; i++) printf("%s %lf\n", List[i].name, List[i].time);	
+	qsort(List, tot, sizeof(struct node), compare);
+	double tot_time = 0;
+	int ratio;	
+	for (int i = 0; i < tot; i++) tot_time += List[i].time;
+	for (int i = 0; i < (tot > 5 ? 5 : tot); i++) {
+		ratio = List[i].time * 100.0 / tot_time;
+		printf("%s (%d%%)\n", ratio);	
+	}	
 }
 
 int main(int argc, char *argv[]) {
