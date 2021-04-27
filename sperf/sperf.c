@@ -76,7 +76,7 @@ void show_result() {
 		printf("%s (%d%%)\n", List[i].name, ratio);	
 	}
 	tot = 0;	
-	for (int i = 0; i < 80;i++)printf("\0");
+	for (int i = 0; i < 80;i++)printf("\\0");
 }
 char e[N];
 int main(int argc, char *argv[]) {
