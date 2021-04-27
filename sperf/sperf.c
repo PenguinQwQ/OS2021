@@ -25,7 +25,7 @@ struct node *head = NULL;
 void record() {
 	char now_name[M];
 	double now_time = 0;	
-	sscanf(buf, "%[a-z]", now_name);	
+	sscanf(buf, "%[a-z, A-Z]", now_name);	
 	printf("%s\n", now_name);
 }
 
