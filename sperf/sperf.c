@@ -31,12 +31,12 @@ void record() {
 	char *tep;
 	tep = NULL;
 	int len = strlen(buf), flag = 0;
+	printf("33\n");
 	for (int i = len - 1; i >= 0; i--)
 		if (buf[i] == '<' || buf[i] == '>' || buf[i] == ' ' || buf[i] == '.' || \
 			buf[i] == '\n' || (buf[i] <= '9' && buf[i] >= '0')) {
 				if (buf[i] == '<') {
 					tep = &buf[i + 1];
-					printf("2121\n");
 					break;
 				}
 			}
