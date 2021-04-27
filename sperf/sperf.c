@@ -50,12 +50,13 @@ int main(int argc, char *argv[]) {
 	char s;
 	int cnt = 0;
 	while(waitpid(pid, NULL, WNOHANG) == 0) {
+		printf("11\n");
 		int cnt = read(fd[0], &s, 1);
 		if (cnt > 0) {
 			buf[loc++] = s;
 			if (s == '\n') {	
 				buf[loc] = '\0';
-				printf("%s\n", buf);
+				printf("%s", buf);
 				record();
 				loc = 0;
 			}
