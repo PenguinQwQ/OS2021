@@ -46,6 +46,7 @@ void record() {
 		if (strcmp(List[i].name, now_name) == 0) {
 			flag = 1;
 			List[i].time += now_time;
+			printf("%s %lf\n", List[i].name, List[i].time);
 			break;	
 		}
 	if (flag == 0) {
@@ -53,7 +54,6 @@ void record() {
 		List[tot].time = now_time;
 		tot++;	
 	}
-		
 }
 
 
