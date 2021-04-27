@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+#include <regex.h>
 #define N 65536
 #define M 128
 
@@ -25,8 +26,8 @@ struct node *head = NULL;
 void record() {
 	char now_name[M];
 	double now_time = 0;	
-	sscanf(buf, "%[a-z, A-Z]s", now_name);
-	sscanf(buf, "%lf", &now_time);	
+	sscanf(buf, "%[a-z, A-Z]", now_name);
+	sscanf(buf, "[<]%lf", &now_time);	
 	printf("%s %lf\n", now_name, now_time);
 }
 
