@@ -63,7 +63,6 @@ int compare(const void *w1, const void* w2) {
 }
 
 void show_result() {
-	printf("%d\n", tot);
 	qsort(List, tot, sizeof(struct node), compare);
 	double tot_time = 0;
 	int ratio;	
