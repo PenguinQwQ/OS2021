@@ -49,7 +49,7 @@ void record() {
 			break;	
 		}
 	if (flag == 0) {
-		strcpy(List[tot].name, now_name, sizeof(now_name);
+		strcpy(List[tot].name, now_name, sizeof(now_name));
 		List[tot].time = now_time;
 		tot++;	
 	}
