@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
 	for (int i = 1; i < argc; i++) exec_argv[i + 3] = argv[i];
 	exec_argv[argc + 3] = NULL;
 	int now = 0;
+	printf("2121\n");
 	while(exec_argv[now] != NULL)
 		printf("%s\n", exec_argv[now]), now++;
 	execve("strace",          exec_argv, exec_envp);
