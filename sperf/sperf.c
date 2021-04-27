@@ -8,7 +8,7 @@
 #include <fcntl.h>
 #define N 65536
 
-char *exec_argv[N] = {"strace", "-T"};
+char *exec_argv[N] = {"strace", "-T", "-o"};
 char *exec_envp[]  = { "PATH=/bin", NULL};
 
 char buf[N];
@@ -21,15 +21,23 @@ void record() {
 
 
 int main(int argc, char *argv[]) {
-  for (int i = 1; i < argc; i++) exec_argv[i + 1] = argv[i];
-  exec_argv[argc + 1] = NULL;
   int fd[2];
   if (pipe2(fd, O_NONBLOCK) != 0) assert(0);
-  dup2(fd[1], 2);
   int pid = fork();
-
   if (pid == 0) {
+
+	int file = open("/dev/null", 0);
+	assert(file > 0);
+	dup2(file, 1);
+	dup2(file, 2);
 	close(fd[0]);
+
+	char tep_argv[100];
+	int id = getpid();
+    fscanf(tep_argv, "/proc/%d/fd/%d", id, fd[1]);
+	exec_argv[3] = tep_argv;
+	for (int i = 1; i < argc; i++) exec_argv[i + 3] = argv[i];
+	exec_argv[argc + 1] = NULL;
 	execve("strace",          exec_argv, exec_envp);
 	execve("/bin/strace",     exec_argv, exec_envp);
 	execve("/usr/bin/strace", exec_argv, exec_envp);
