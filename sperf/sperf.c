@@ -73,7 +73,7 @@ void show_result() {
 	}
 	tot = 0;	
 }
-
+char e[N];
 int main(int argc, char *argv[]) {
   int fd[2];
   if (pipe2(fd, O_NONBLOCK) != 0) assert(0);
@@ -102,10 +102,9 @@ int main(int argc, char *argv[]) {
 	char s;
 	int cnt = 0;
 	int lst_time = 0;
-	while(waitpid(pid, NULL, WNOHANG) == 0 || (cnt = read(fd[0], &s, 1)) > 0) {
-		printf("%d\n", cnt);
+	while(waitpid(pid, NULL, WNOHANG) == 0 || (cnt = read(fd[0], e, sizeof(e))) > 0) {
 		if (cnt > 0) {
-			printf("%s", buf);
+			printf("%s", e);
 			continue;
 			buf[loc++] = s;
 			if (s == '\n') {
