@@ -32,7 +32,7 @@ void record() {
 	for (int i = len - 1; i >= 0; i--)
 		if (buf[i] == '<' || buf[i] == '>' || buf[i] == ' ' || buf[i] == ',' || \
 			buf[i] == '\n' || (buf[i] <= '9' && buf[i] >= '0')) {
-				if (buf[i] = '<') {
+				if (buf[i] == '<') {
 					tep = &buf[i + 1];
 					break;
 				}
