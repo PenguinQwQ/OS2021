@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 //	dup2(file, 1);
 	dup2(file, 2);
 	close(fd[0]);
-	printf("%d\n", flie);
+	printf("%d\n", file);
 	char tep_argv[100];
 	int id = getpid();
     sprintf(tep_argv, "/proc/%d/fd/%d", id, 4);
