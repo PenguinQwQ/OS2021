@@ -103,6 +103,7 @@ int main(int argc, char *argv[]) {
 	int cnt = 0;
 	int lst_time = 0;
 	while(waitpid(pid, NULL, WNOHANG) == 0 || (cnt = read(fd[0], &s, 1)) > 0) {
+		printf("%d\n", cnt);
 		if (cnt > 0) {
 			printf("%s", buf);
 			continue;
