@@ -36,6 +36,7 @@ void record() {
 			buf[i] == '\n' || (buf[i] <= '9' && buf[i] >= '0')) {
 				if (buf[i] == '<') {
 					tep = &buf[i + 1];
+					printf("2121\n");
 					break;
 				}
 			}
