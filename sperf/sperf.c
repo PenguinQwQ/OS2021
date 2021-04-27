@@ -26,7 +26,7 @@ void record() {
 	char now_name[M];
 	double now_time = 0;	
 	sscanf(buf, "%[a-z, A-Z]", now_name);
-	sscanf(bufm "<%lf>", &now_time);	
+	sscanf(buf, "<%lf>", &now_time);	
 	printf("%s %lf\n", now_name, now_time);
 }
 
