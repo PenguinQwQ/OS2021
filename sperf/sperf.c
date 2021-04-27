@@ -20,7 +20,7 @@ struct node{
 	double time;	
 }List[N];
 
-node *head = NULL;
+struct node *head = NULL;
 
 void record() {
 	char now_name[M];
