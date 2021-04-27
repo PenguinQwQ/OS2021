@@ -26,9 +26,15 @@ struct node *head = NULL;
 void record() {
 	char now_name[M];
 	double now_time = 0;	
-	sscanf(buf, "%[a-z, A-Z]", now_name);
-	sscanf(buf, "[<]%lf", &now_time);	
-	printf("%s %lf\n", now_name, now_time);
+	sscanf(buf, "%[a-zA-Z]", now_name);
+	char *tep;
+	int len = strlen(buf), flag = 0;
+	for (int i = len - 1; i >= 0; i--)
+		if (buf[i] == '<' || buf[i] == '>' || buf[i] == ' ' || buf[i] == ',' || \\
+			buf[i] == '\n' || (buf[i] <= '9' && buf[i] >= '0')) {
+			
+			}
+		else {printf("%s", buf);return;}
 }
 
 
