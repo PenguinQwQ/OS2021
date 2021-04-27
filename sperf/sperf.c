@@ -28,6 +28,7 @@ void record() {
 	double now_time = 0;	
 	sscanf(buf, "%[a-zA-Z]", now_name);
 	char *tep;
+	tep = NULL;
 	int len = strlen(buf), flag = 0;
 	for (int i = len - 1; i >= 0; i--)
 		if (buf[i] == '<' || buf[i] == '>' || buf[i] == ' ' || buf[i] == ',' || \
@@ -38,7 +39,8 @@ void record() {
 				}
 			}
 		else {printf("%s", buf);return;}
-		sscanf(tep, "%lf", &now_time);
+
+	sscanf(tep, "%lf", &now_time);
 }
 
 
