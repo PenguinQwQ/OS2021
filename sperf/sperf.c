@@ -7,6 +7,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <string.h>
+#include <ctime>
 #define N 65536
 #define M 128
 
@@ -46,7 +47,6 @@ void record() {
 		if (strcmp(List[i].name, now_name) == 0) {
 			flag = 1;
 			List[i].time += now_time;
-			printf("%s %lf\n", List[i].name, List[i].time);
 			break;	
 		}
 	if (flag == 0) {
@@ -56,6 +56,11 @@ void record() {
 	}
 }
 
+void show_result() {
+	printf("%d\n", 1);	
+	
+	
+}
 
 int main(int argc, char *argv[]) {
   int fd[2];
@@ -84,6 +89,7 @@ int main(int argc, char *argv[]) {
 	close(fd[1]);
 	char s;
 	int cnt = 0;
+	int lst_time = 0;
 	while(waitpid(pid, NULL, WNOHANG) == 0 || (cnt = read(fd[0], &s, 1)) > 0) {
 		if (cnt > 0) {
 			buf[loc++] = s;
@@ -93,8 +99,11 @@ int main(int argc, char *argv[]) {
 				loc = 0;
 			}
 		}
+		int now = clock() / CLOCKS_PER_SEC;
+		if (now > lst_time) lst_time = now, show_result();
 	}
 	close(fd[0]);
+	show_result();
 	return 0;	  
   }
 }
