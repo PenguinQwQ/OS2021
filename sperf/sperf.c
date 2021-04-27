@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 
 	char tep_argv[100];
 	int id = getpid();
-    sprintf(tep_argv, "/proc/%d/fd/%d", id, fd[1]);
+    sprintf(tep_argv, "/proc/%d/fd/%d", id, 2);
 	exec_argv[3] = tep_argv;
 	for (int i = 1; i < argc; i++) exec_argv[i + 3] = argv[i];
 	int now = 0;
