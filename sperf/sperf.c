@@ -28,19 +28,15 @@ int main(int argc, char *argv[]) {
 
 	int file = open("/dev/null", 0);
 	assert(file > 0);
-//	dup2(file, 1);
-//	dup2(file, 2);
+	dup2(file, 1);
+	dup2(file, 2);
 	close(fd[0]);
 	char tep_argv[100];
 	int id = getpid();
-    sprintf(tep_argv, "/proc/%d/fd/%d", 17503, 2);
+    sprintf(tep_argv, "/proc/%d/fd/%d", id, fd[1]);
 	exec_argv[3] = tep_argv;
 	for (int i = 1; i < argc; i++) exec_argv[i + 3] = argv[i];
 	exec_argv[argc + 3] = NULL;
-	int now = 0;
-	printf("2121\n");
-	while(exec_argv[now] != NULL)
-		printf("%s\n", exec_argv[now]), now++;
 	execve("strace",          exec_argv, exec_envp);
 	execve("/bin/strace",     exec_argv, exec_envp);
 	execve("/usr/bin/strace", exec_argv, exec_envp);
