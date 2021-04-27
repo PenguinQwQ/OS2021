@@ -56,9 +56,12 @@ void record() {
 	}
 }
 
+int compare(const struct node w1, const struct node w2) {
+	return w1.time > w2.time;	
+}
+
 void show_result() {
-	printf("%d\n", 1);	
-	
+	qsort(List, tot, sizeof(struct node), compare);	
 	
 }
 
