@@ -105,6 +105,7 @@ int main(int argc, char *argv[]) {
 	while(waitpid(pid, NULL, WNOHANG) == 0 || (cnt = read(fd[0], &s, 1)) > 0) {
 		if (cnt > 0) {
 			printf("%s", buf);
+			continue;
 			buf[loc++] = s;
 			if (s == '\n') {
 				buf[loc] = '\0';
