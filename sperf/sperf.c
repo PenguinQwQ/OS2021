@@ -10,19 +10,22 @@
 #define M 128
 
 char *exec_argv[N] = {"strace", "-T", "-o"};
-char *exec_envp[]  = { "PATH=/bin", NULL};
+char *exec_envp[]  = { "PATH=/:/usr/bin:/bin", NULL};
 
 char buf[N];
 int loc = 0, tot = 0;
 
 struct node{
-	char name[128];
+	char name[M];
 	double time;	
-	struct node *next;
-};
+}List[N];
+
+node *head = NULL;
 
 void record() {
-			
+	char now_name[M];
+	double now_time = 0;
+	
 	
 }
 
