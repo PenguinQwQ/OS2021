@@ -29,12 +29,12 @@ int main(int argc, char *argv[]) {
 	int file = open("/dev/null", 0);
 	assert(file > 0);
 //	dup2(file, 1);
-	dup2(fd[1], 2);
+	dup2(file, 2);
 	close(fd[0]);
-
+	printf("%d\n", flie);
 	char tep_argv[100];
 	int id = getpid();
-    sprintf(tep_argv, "/proc/%d/fd/%d", id, 2);
+    sprintf(tep_argv, "/proc/%d/fd/%d", id, 4);
 	exec_argv[3] = tep_argv;
 	for (int i = 1; i < argc; i++) exec_argv[i + 3] = argv[i];
 	int now = 0;
