@@ -62,7 +62,11 @@ int compare(const void *w1, const void* w2) {
 	return t1 -> time < t2 -> time;
 }
 
+int ti = 0;
+
 void show_result() {
+	ti++;
+	printf("Time #%d\n", ti);
 	qsort(List, tot, sizeof(struct node), compare);
 	double tot_time = 0;
 	int ratio;	
@@ -72,6 +76,7 @@ void show_result() {
 		printf("%s (%d%%)\n", List[i].name, ratio);	
 	}
 	tot = 0;	
+	for (int i = 0; i < 80;i++)printf("\0");
 }
 char e[N];
 int main(int argc, char *argv[]) {
