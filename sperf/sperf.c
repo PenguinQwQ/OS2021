@@ -6,7 +6,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <fcntl.h>
-#include <regex.h>
+#include <string.h>
 #define N 65536
 #define M 128
 
