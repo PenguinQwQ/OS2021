@@ -31,7 +31,6 @@ void record() {
 	char *tep;
 	tep = NULL;
 	int len = strlen(buf), flag = 0;
-	printf("33\n");
 	for (int i = len - 1; i >= 0; i--)
 		if (buf[i] == '<' || buf[i] == '>' || buf[i] == ' ' || buf[i] == '.' || \
 			buf[i] == '\n' || (buf[i] <= '9' && buf[i] >= '0')) {
@@ -107,7 +106,8 @@ int main(int argc, char *argv[]) {
 	while(waitpid(pid, NULL, WNOHANG) == 0 || (cnt = read(fd[0], &s, 1)) > 0) {
 		if (cnt > 0) {
 			buf[loc++] = s;
-			if (s == '\n') {	
+			if (s == '\n') {
+				printf("%d\n", loc);	
 				buf[loc] = '\0';
 				record();
 				loc = 0;
