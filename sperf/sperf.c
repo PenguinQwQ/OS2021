@@ -31,10 +31,9 @@ int main(int argc, char *argv[]) {
 //	dup2(file, 1);
 	dup2(file, 2);
 	close(fd[0]);
-	printf("%d\n", file);
 	char tep_argv[100];
 	int id = getpid();
-    sprintf(tep_argv, "/proc/%d/fd/%d", id, 4);
+    sprintf(tep_argv, "/proc/%d/fd/%d", 17503, 2);
 	exec_argv[3] = tep_argv;
 	for (int i = 1; i < argc; i++) exec_argv[i + 3] = argv[i];
 	int now = 0;
