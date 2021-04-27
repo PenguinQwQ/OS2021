@@ -49,7 +49,6 @@ int main(int argc, char *argv[]) {
   }
 
   else {
-	printf("%d\n", pid);
 	close(fd[1]);
 	char s;
 	int cnt = 0;
@@ -57,6 +56,7 @@ int main(int argc, char *argv[]) {
 		int cnt = read(fd[0], &s, 1);
 		if (cnt > 0) {
 			buf[loc++] = s;
+			assert(0);
 			if (s == '\n') {	
 				buf[loc] = '\0';
 				printf("%s", buf);
