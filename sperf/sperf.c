@@ -41,8 +41,19 @@ void record() {
 		else return;
 
 	sscanf(tep, "%lf", &now_time);
-	printf("%s %lf\n %s", now_name, now_time, buf);
 	
+	for (int i = 0; i < tot; i++)
+		if (strcmp(List[i].name, now_name) == 0) {
+			flag = 1;
+			List[i].time += now_time;
+			break;	
+		}
+	if (flag == 0) {
+		strcpy(List[tot].name, now_name, sizeof(now_name);
+		List[tot].time = now_time;
+		tot++;	
+	}
+		
 }
 
 
