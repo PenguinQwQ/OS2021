@@ -102,10 +102,8 @@ int main(int argc, char *argv[]) {
 	char s;
 	int cnt = 0;
 	int lst_time = 0;
-	while(waitpid(pid, NULL, WNOHANG) == 0 || (cnt = read(fd[0], e, sizeof(e))) > 0) {
+	while((cnt = read(fd[0], &s, 1)) > 0 ||waitpid(pid, NULL, WNOHANG) == 0) {
 		if (cnt > 0) {
-			printf("%s", e);
-			continue;
 			buf[loc++] = s;
 			if (s == '\n') {
 				buf[loc] = '\0';
