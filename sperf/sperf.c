@@ -31,14 +31,14 @@ void record() {
 	tep = NULL;
 	int len = strlen(buf), flag = 0;
 	for (int i = len - 1; i >= 0; i--)
-		if (buf[i] == '<' || buf[i] == '>' || buf[i] == ' ' || buf[i] == ',' || \
+		if (buf[i] == '<' || buf[i] == '>' || buf[i] == ' ' || buf[i] == '.' || \
 			buf[i] == '\n' || (buf[i] <= '9' && buf[i] >= '0')) {
 				if (buf[i] == '<') {
 					tep = &buf[i + 1];
 					break;
 				}
 			}
-		else {printf("%c", buf[i]);return;}
+		else {printf("%s", buf[i]);return;}
 
 	sscanf(tep, "%lf", &now_time);
 }
