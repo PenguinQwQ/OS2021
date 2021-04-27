@@ -38,6 +38,7 @@ void record() {
 				}
 			}
 		else {printf("%s", buf);return;}
+		sscanf(tep, "%lf", &now_time);
 }
 
 
