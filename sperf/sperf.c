@@ -48,8 +48,7 @@ int main(int argc, char *argv[]) {
 	close(fd[1]);
 	char s;
 	int cnt = 0;
-	while(waitpid(pid, NULL, WNOHANG) == 0) {
-		int cnt = read(fd[0], &s, 1);
+	while(waitpid(pid, NULL, WNOHANG) == 0 || (cnt = read(fd[0], &s, 1)) > 0) {
 		if (cnt > 0) {
 			buf[loc++] = s;
 			if (s == '\n') {	
