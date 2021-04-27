@@ -15,7 +15,7 @@ char buf[N];
 int loc = 0;
 
 void record() {
-		
+			
 	
 }
 
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 			buf[loc++] = s;
 			if (s == '\n') {	
 				buf[loc] = '\0';
-		//		printf("%s\n", buf);
+				printf("%s\n", buf);
 				record();
 				loc = 0;
 			}
