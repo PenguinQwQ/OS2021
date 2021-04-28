@@ -42,13 +42,13 @@ void makedoc() {
 	strcpy(cname, filename_template);
 	int p = 11;
 	cname[p] = '.', cname[p + 1] = 'c', cname[p + 2] = '\0';
+	unlink(filename_template);
 	rename(filename_template, cname);
 	strcpy(sname, filename_template);
 	sname[p] = '.', sname[p + 1] = 's', sname[p + 2] = 'o', sname[p + 3] = '\0';
 	judge();
 	write(fd, complete, strlen(complete));
 	close(fd);
-	unlink(sname);
 }
 
 char *exec_argv[16] = {"gcc", "-fPIC", "-shared"};
