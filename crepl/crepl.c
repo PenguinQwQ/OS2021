@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <dlfcn.h>
 #include <sys/wait.h>
+#include <stdbool.h>
 
 static char cname[16];
 static char sname[16];
