@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <dlopen.h>
+#include <dlfcn.h>
 
 static char cname[16];
 static char sname[16];
