@@ -53,7 +53,7 @@ bool compile() {
 void dlink() {
 	int (*func)();
 	void *handle;
-	handle = dlopen(sname, RTLD_NOW | RTLD_GLOBAL);
+	handle = dlopen(sname, RTLD_LAZY | RTLD_GLOBAL);
 	assert(handle != NULL);
 	func = dlsym(handle, "lq");
 	if (func) printf("%d\n", func());
