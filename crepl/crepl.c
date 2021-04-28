@@ -16,10 +16,11 @@ void makedoc() {
 	int fd = mkstemp(filename_template);
 	assert(fd > 0);
 	strcpy(cname, filename_template);
-	cname[6] = '.', cname[7] = 'c', cname[8] = '\0';
+	int p = 6;
+	cname[p] = '.', cname[p + 1] = 'c', cname[p + 2] = '\0';
 	rename(filename_template, cname);
 	strcpy(sname, filename_template);
-	sname[6] = '.', sname[7] = 's', sname[8] = 'o', sname[9] = '\0';
+	sname[p] = '.', sname[p + 1] = 's', sname[p + 2] = 'o', sname[p + 3] = '\0';
 	write(fd, line, strlen(line));
 	close(fd);
 }
@@ -38,6 +39,7 @@ void compile() {
 void dlink() {
 	int (*func)();
 	void *handle;
+	printf("%s\n", sname);
 	handle = dlopen(sname, RTLD_LAZY);
 	assert(handle != NULL);
 	func = dlsym(handle, "gcd");
