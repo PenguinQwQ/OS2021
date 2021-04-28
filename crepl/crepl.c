@@ -12,11 +12,11 @@ static char sname[16];
 static char line[4096];
 
 void makedoc() {
-    char filename_template[] = "XXXXXX";
+    char filename_template[] = "/tmp/XXXXXX";
 	int fd = mkstemp(filename_template);
 	assert(fd > 0);
 	strcpy(cname, filename_template);
-	int p = 6;
+	int p = 11;
 	cname[p] = '.', cname[p + 1] = 'c', cname[p + 2] = '\0';
 	rename(filename_template, cname);
 	strcpy(sname, filename_template);
