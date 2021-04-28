@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     char filename_template[] = "./temp_file.XXXXXX";
 	int fd = mkstemp(filename_template);
 	assert(fd > 0);
-	printf("%s\n", filename_template);
+	write(fd, line, sizeof(line));
 	close(fd);
   }
   return 0;
