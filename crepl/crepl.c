@@ -59,6 +59,7 @@ bool compile() {
 	exec_argv[p] = cname;
 	exec_argv[p + 1] = "-o";
 	exec_argv[p + 2] = sname;
+	for (int i = 0; i < p + 3; i++) printf("%s ", exec_argv[i]);
 	int status;
 	int pid = fork();
 	if (pid == 0) {
