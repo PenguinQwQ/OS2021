@@ -59,7 +59,6 @@ bool compile() {
 	exec_argv[p] = cname;
 	exec_argv[p + 1] = "-o";
 	exec_argv[p + 2] = sname;
-	for (int i = 0; i < p + 3; i++) printf("%s ", exec_argv[i]);
 	int status;
 	int pid = fork();
 	if (pid == 0) {
@@ -89,6 +88,9 @@ void dlink() {
 }
 
 int main(int argc, char *argv[]) {
+  int file = open("/dev/null", 0);
+  assert(file > 0);
+  dup2(file, 2);
   while (1) {
     printf("crepl> ");
     fflush(stdout);
