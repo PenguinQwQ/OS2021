@@ -35,6 +35,15 @@ void compile() {
 	else wait(NULL);	
 }
 
+void link() {
+	int (*func)();
+	void *handle;
+	handle = dlopen(sname, RTLD_LAZY);
+	assert(handle != NULL);
+	func = dlsym(handle, "gcd");
+	printf("%d\n", func);
+}
+
 int main(int argc, char *argv[]) {
   while (1) {
     printf("crepl> ");
@@ -44,6 +53,7 @@ int main(int argc, char *argv[]) {
     }
 	makedoc();
 	compile();
+	link();
   }
   return 0;
 }
