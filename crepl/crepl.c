@@ -35,7 +35,7 @@ void compile() {
 	else wait(NULL);	
 }
 
-void link() {
+void dlink() {
 	int (*func)();
 	void *handle;
 	handle = dlopen(sname, RTLD_LAZY);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
     }
 	makedoc();
 	compile();
-	link();
+	dlink();
   }
   return 0;
 }
