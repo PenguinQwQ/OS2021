@@ -66,9 +66,10 @@ bool compile() {
 	else {
 		wait(&status);
 		if (status) {
-			printf("Illegal expression!\n");
+			printf("compile error!\n");
 			return false;
 		}
+		printf("Add Sucessfully!\n");
 		return true;
 	}
 	return true;
@@ -81,7 +82,7 @@ void dlink() {
 	assert(handle != NULL);
 	if (flag == false) return;
 	func = dlsym(handle, expr);
-	if (func) printf("%d\n", func());
+	if (func) printf("(%s) == %d.\n", line, func());
 }
 
 int main(int argc, char *argv[]) {
