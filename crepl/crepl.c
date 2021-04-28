@@ -11,6 +11,17 @@
 static char cname[16];
 static char sname[16];
 static char line[4096];
+static char complete[4096];
+static char jud[4096];
+static int bool flag;
+
+void judge() {
+	sscanf(line, "%s", jud);
+	if (strcmp(jud, "int") == 0) {
+		printf("1\n");	
+	}
+	
+}
 
 void makedoc() {
     char filename_template[] = "/tmp/XXXXXX";
@@ -22,7 +33,8 @@ void makedoc() {
 	rename(filename_template, cname);
 	strcpy(sname, filename_template);
 	sname[p] = '.', sname[p + 1] = 's', sname[p + 2] = 'o', sname[p + 3] = '\0';
-	write(fd, line, strlen(line));
+	judge();
+	write(fd, complete, strlen(complete));
 	close(fd);
 }
 
@@ -63,6 +75,7 @@ int main(int argc, char *argv[]) {
   while (1) {
     printf("crepl> ");
     fflush(stdout);
+	flag = false;
     if (!fgets(line, sizeof(line), stdin)) {
       break;
     }
