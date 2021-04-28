@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     if (!fgets(line, sizeof(line), stdin)) {
       break;
     }
-    char filename_template[] = "./temp_file.XXXXXX";
+    char filename_template[] = "XXXXXX";
 	int fd = mkstemp(filename_template);
 	assert(fd > 0);
 	write(fd, line, strlen(line));
