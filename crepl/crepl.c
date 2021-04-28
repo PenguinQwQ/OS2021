@@ -23,7 +23,6 @@ void makedoc() {
 	sname[p] = '.', sname[p + 1] = 's', sname[p + 2] = 'o', sname[p + 3] = '\0';
 	write(fd, line, strlen(line));
 	close(fd);
-	printf("555\n");
 }
 
 char *exec_argv[16] = {"gcc", "-fPIC", "-shared"};
@@ -43,9 +42,8 @@ void dlink() {
 	handle = dlopen(sname, RTLD_NOW);
 	assert(handle != NULL);
 	char tep[1024];
-	scanf("%s", tep);
 	func = dlsym(handle, tep);
-	printf("%d\n", func());
+	if (func) printf("%d\n", func());
 }
 
 int main(int argc, char *argv[]) {
@@ -55,7 +53,6 @@ int main(int argc, char *argv[]) {
     if (!fgets(line, sizeof(line), stdin)) {
       break;
     }
-	printf("finish\n");
 	makedoc();
 	compile();
 	dlink();
