@@ -19,7 +19,8 @@ void judge() {
 	sscanf(line, "%s", jud);
 	if (strcmp(jud, "int") == 0) {
 		flag = false;
-		strcpy(complete, line);	
+		strcpy(complete, line);
+		printf("3232\n");	
 	}
 	else {
 		flag = true;	
