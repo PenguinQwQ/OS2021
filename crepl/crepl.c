@@ -6,6 +6,8 @@
 #include <fcntl.h>
 
 static char name[16];
+static char line[4096];
+
 void makedoc() {
     char filename_template[] = "XXXXXX";
 	int fd = mkstemp(filename_template);
@@ -18,7 +20,6 @@ void makedoc() {
 }
 
 int main(int argc, char *argv[]) {
-  static char line[4096];
   while (1) {
     printf("crepl> ");
     fflush(stdout);
