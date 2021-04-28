@@ -13,14 +13,17 @@ static char sname[16];
 static char line[4096];
 static char complete[4096];
 static char jud[4096];
-static int bool flag;
+static bool flag;
 
 void judge() {
 	sscanf(line, "%s", jud);
 	if (strcmp(jud, "int") == 0) {
-		printf("1\n");	
+		flag = false;
+		strcpy(complete, line);	
 	}
-	
+	else {
+		flag = true;	
+    }	
 }
 
 void makedoc() {
