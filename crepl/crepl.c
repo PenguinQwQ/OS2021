@@ -35,7 +35,8 @@ void compile() {
 	int pid = fork();
 	if (pid == 0) execvp("gcc", exec_argv);
 	else {
-		wait(&status);	
+		wait(&status);
+		printf("%d\n", status);	
 		if (WIFEXITED(status)) printf("Illegal expression!\n");
 	}
 }
