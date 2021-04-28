@@ -34,7 +34,10 @@ bool compile() {
 	exec_argv[5] = sname;
 	int status;
 	int pid = fork();
-	if (pid == 0) execvp("gcc", exec_argv);
+	if (pid == 0) {
+		execvp("gcc", exec_argv);
+		assert(0);
+	}
 	else {
 		wait(&status);
 		if (status) {
@@ -43,6 +46,7 @@ bool compile() {
 		}
 		return true;
 	}
+	return true;
 }
 
 void dlink() {
