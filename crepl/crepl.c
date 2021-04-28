@@ -50,10 +50,10 @@ void makedoc() {
 	close(fd);
 }
 
-char *exec_argv[16] = {"gcc", "-fPIC", "-shared"};
+char *exec_argv[16] = {"gcc", "-fPIC", "-shared", "-m32"};
 
 bool compile() {
-	int p = 3;
+	int p = 4;
 	exec_argv[p] = cname;
 	exec_argv[p + 1] = "-o";
 	exec_argv[p + 2] = sname;
