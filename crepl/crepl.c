@@ -39,10 +39,11 @@ void compile() {
 void dlink() {
 	int (*func)();
 	void *handle;
-	printf("%s\n", sname);
-	handle = dlopen(sname, RTLD_LAZY);
+	handle = dlopen(sname, RTLD_NOW);
 	assert(handle != NULL);
-	func = dlsym(handle, "gcd");
+	char tep[1024];
+	scanf("%s", tep);
+	func = dlsym(handle, tep);
 	printf("%d\n", func());
 }
 
