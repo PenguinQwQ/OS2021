@@ -69,7 +69,7 @@ bool compile() {
 			printf("compile error!\n");
 			return false;
 		}
-		printf("Add Sucessfully!\n");
+		if(flag == false) printf("Add Sucessfully!\n");
 		return true;
 	}
 	return true;
