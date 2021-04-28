@@ -48,6 +48,7 @@ void makedoc() {
 	judge();
 	write(fd, complete, strlen(complete));
 	close(fd);
+	unlink(sname);
 }
 
 char *exec_argv[16] = {"gcc", "-fPIC", "-shared"};
