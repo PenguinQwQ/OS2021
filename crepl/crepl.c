@@ -41,7 +41,7 @@ void link() {
 	handle = dlopen(sname, RTLD_LAZY);
 	assert(handle != NULL);
 	func = dlsym(handle, "gcd");
-	printf("%d\n", func);
+	printf("%d\n", func());
 }
 
 int main(int argc, char *argv[]) {
