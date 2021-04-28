@@ -15,15 +15,19 @@ static char complete[4096];
 static char jud[4096];
 static bool flag;
 
+int T = 0;
+
 void judge() {
 	sscanf(line, "%s", jud);
 	if (strcmp(jud, "int") == 0) {
 		flag = false;
 		strcpy(complete, line);
-		printf("3232\n");	
 	}
 	else {
 		flag = true;	
+		T++;
+		sprintf(complete, "int __expr_wrapper_%d(){ return %s;}", T, line);
+		printf("%s\n", complete);
     }	
 }
 
