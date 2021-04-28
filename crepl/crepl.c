@@ -27,7 +27,7 @@ void makedoc() {
 
 char *exec_argv[16] = {"gcc", "-fPIC", "-shared"};
 
-void compile() {
+bool compile() {
 	exec_argv[3] = cname;
 	exec_argv[4] = "-o";
 	exec_argv[5] = sname;
@@ -36,8 +36,11 @@ void compile() {
 	if (pid == 0) execvp("gcc", exec_argv);
 	else {
 		wait(&status);
-		printf("%d\n", status);	
-		if (WIFEXITED(status)) printf("Illegal expression!\n");
+		if (status) {
+			printf("Illegal expression!\n");
+			return false;
+		}
+		return true;
 	}
 }
 
@@ -58,7 +61,7 @@ int main(int argc, char *argv[]) {
       break;
     }
 	makedoc();
-	compile();
+	if(compile() == false) continue;
 	dlink();
   }
   return 0;
