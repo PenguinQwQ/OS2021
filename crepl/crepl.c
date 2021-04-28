@@ -36,7 +36,7 @@ void compile() {
 	if (pid == 0) execvp("gcc", exec_argv);
 	else {
 		wait(&status);	
-		if (WIFEXITED(status) == 0) printf("Illegal expression!\n");
+		if (WIFEXITED(status)) printf("Illegal expression!\n");
 	}
 }
 
