@@ -27,6 +27,8 @@ void judge() {
 	else {
 		flag = true;	
 		T++;
+		if (line[strlen(line) - 1] == '\n')
+				line[strlen(line) - 1] = '\0';
 		sprintf(complete, "int __expr_wrapper_%d(){ return %s;}", T, line);
 		printf("%s\n", complete);
     }	
