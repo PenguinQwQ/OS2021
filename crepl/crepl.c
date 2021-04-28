@@ -29,9 +29,10 @@ void makedoc() {
 char *exec_argv[16] = {"gcc", "-fPIC", "-shared"};
 
 bool compile() {
-	exec_argv[3] = cname;
-	exec_argv[4] = "-o";
-	exec_argv[5] = sname;
+	int p = 3;
+	exec_argv[p] = cname;
+	exec_argv[p + 1] = "-o";
+	exec_argv[p + 2] = sname;
 	int status;
 	int pid = fork();
 	if (pid == 0) {
@@ -52,7 +53,7 @@ bool compile() {
 void dlink() {
 	int (*func)();
 	void *handle;
-	handle = dlopen(sname, RTLD_NOW);
+	handle = dlopen(sname, RTLD_GLOBAL);
 	assert(handle != NULL);
 	func = dlsym(handle, "lq");
 	if (func) printf("%d\n", func());
