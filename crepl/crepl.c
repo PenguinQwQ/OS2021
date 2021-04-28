@@ -23,6 +23,7 @@ void makedoc() {
 	sname[p] = '.', sname[p + 1] = 's', sname[p + 2] = 'o', sname[p + 3] = '\0';
 	write(fd, line, strlen(line));
 	close(fd);
+	printf("555\n");
 }
 
 char *exec_argv[16] = {"gcc", "-fPIC", "-shared"};
