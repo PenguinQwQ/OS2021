@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <dlfcn.h>
+#include <sys/wait.h>
 
 static char cname[16];
 static char sname[16];
@@ -16,7 +17,7 @@ void makedoc() {
 	assert(fd > 0);
 	strcpy(cname, filename_template);
 	cname[6] = '.', cname[7] = 'c', cname[8] = '\0';
-	rename(filename_template, name);
+	rename(filename_template, cname);
 	strcpy(sname, filename_template);
 	sname[6] = '.', sname[7] = 's', sname[8] = 'o', sname[9] = '\0';
 	write(fd, line, strlen(line));
