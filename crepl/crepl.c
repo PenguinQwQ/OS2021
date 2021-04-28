@@ -53,8 +53,8 @@ void makedoc() {
 char *exec_argv[16] = {"gcc", "-fPIC", "-shared"};
 
 bool compile() {
-	if (sizeof(int *) == 4) sprintf(exec_argv[3], "-m%d", 32);
-	else sprintf(exec_argv[3], "-m%d", 64);
+	if (sizeof(int *) == 4) exec_argv[3] = "-m32";
+	else exec_argv[3] = "-m64";
 	int p = 4;
 	exec_argv[p] = cname;
 	exec_argv[p + 1] = "-o";
