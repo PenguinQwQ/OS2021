@@ -7,12 +7,13 @@
 #include <dlfcn.h>
 #include <sys/wait.h>
 #include <stdbool.h>
+#define N 4096
 
-static char cname[16];
-static char sname[16];
-static char line[4096];
-static char complete[4096];
-static char jud[4096];
+static char cname[N];
+static char sname[N];
+static char line[N];
+static char complete[N << 1];
+static char jud[N];
 static bool flag;
 
 int T = 0;
