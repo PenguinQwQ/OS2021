@@ -41,8 +41,7 @@ void dlink() {
 	void *handle;
 	handle = dlopen(sname, RTLD_NOW);
 	assert(handle != NULL);
-	char tep[1024];
-	func = dlsym(handle, tep);
+	func = dlsym(handle, "lq");
 	if (func) printf("%d\n", func());
 }
 
