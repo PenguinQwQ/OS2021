@@ -13,6 +13,7 @@ static char cname[N];
 static char sname[N];
 static char line[N];
 static char complete[N << 1];
+static char expr[N];
 static char jud[N];
 static bool flag;
 
@@ -30,7 +31,7 @@ void judge() {
 		if (line[strlen(line) - 1] == '\n')
 				line[strlen(line) - 1] = '\0';
 		sprintf(complete, "int __expr_wrapper_%d(){ return %s;}", T, line);
-		printf("%s\n", complete);
+		sprintf(expr, "__expr_wrapper_%d", T);
     }	
 }
 
@@ -78,7 +79,8 @@ void dlink() {
 	void *handle;
 	handle = dlopen(sname, RTLD_LAZY | RTLD_GLOBAL);
 	assert(handle != NULL);
-	func = dlsym(handle, "lq");
+	if (flag == false) return;
+	func = dlsym(handle, expr);
 	if (func) printf("%d\n", func());
 }
 
