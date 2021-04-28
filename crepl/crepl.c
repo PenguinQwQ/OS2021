@@ -31,9 +31,13 @@ void compile() {
 	exec_argv[3] = cname;
 	exec_argv[4] = "-o";
 	exec_argv[5] = sname;
+	int status;
 	int pid = fork();
 	if (pid == 0) execvp("gcc", exec_argv);
-	else wait(NULL);	
+	else {
+		wait(&status);	
+		if (WIFEXITED(status) == 0) printf("Illegal expression!\n");
+	}
 }
 
 void dlink() {
