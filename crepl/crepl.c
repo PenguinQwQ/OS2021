@@ -5,15 +5,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-int main(int argc, char *argv[]) {
-  static char line[4096];
-  static char name[16];
-  while (1) {
-    printf("crepl> ");
-    fflush(stdout);
-    if (!fgets(line, sizeof(line), stdin)) {
-      break;
-    }
+static char name[16];
+void makedoc() {
     char filename_template[] = "XXXXXX";
 	int fd = mkstemp(filename_template);
 	assert(fd > 0);
@@ -22,6 +15,18 @@ int main(int argc, char *argv[]) {
 	rename(filename_template, name);
 	write(fd, line, strlen(line));
 	close(fd);
+}
+
+int main(int argc, char *argv[]) {
+  static char line[4096];
+  while (1) {
+    printf("crepl> ");
+    fflush(stdout);
+    if (!fgets(line, sizeof(line), stdin)) {
+      break;
+    }
+	makedoc();
+
   }
   return 0;
 }
