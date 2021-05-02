@@ -109,7 +109,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		strcpy(tmp, "PATH");
 		int bj = 0;
 		for (int j = 0; j < 4; j++) 
-			if (tmp[j] != envp[i]) {
+			if (tmp[j] != envp[i][j]) {
 				bj = 1; break;	
 			}
 		if(bj == 0) continue;
