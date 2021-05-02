@@ -150,7 +150,6 @@ int main(int argc, char *argv[], char *envp[]) {
 	}
 	close(fd[0]);
 	show_result();
-	if (sizeof(int *) == 4)while(1);
 	return 0;	  
   }
 }
