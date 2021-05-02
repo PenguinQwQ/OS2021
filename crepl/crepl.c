@@ -49,7 +49,7 @@ void makedoc() {
 	strcpy(sname, filename_template);
 	sname[p] = '.', sname[p + 1] = 's', sname[p + 2] = 'o', sname[p + 3] = '\0';
 	judge();
-	fwrite(fd, complete, strlen(complete));
+	fwrite(complete, strlen(complete), 1, fd);
 	fclose(fd);
 	unlink(filename_template);
 }
