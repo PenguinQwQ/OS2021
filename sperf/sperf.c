@@ -85,6 +85,7 @@ void show_result() {
 char e[N];
 int main(int argc, char *argv[], char *envp[]) {
   int fd[2];
+  assert(0);
   if (pipe2(fd, O_NONBLOCK) != 0) assert(0);
   int pid = fork();
   if (pid == 0) {
