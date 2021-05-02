@@ -114,27 +114,24 @@ int main(int argc, char *argv[], char *envp[]) {
 				bj = 1; break;	
 			}
 		if(bj == 1) {i++; continue;}
-		printf("%s\n", envp[i]);
 		int current = 0;
 		for (int j = 5; j < strlen(envp[i]) + 1; j++) 
 			if (envp[i][j] == ':' || envp[i][j] == ' ' || envp[i][j] == '\n' \
 			||  envp[i][j] == '\0') {
 				tmp[current] = '\0';
 				strcat(tmp, tmp2);
-				printf("%s\n", tmp);
+				execve(tmp, exec_argv, envp);
 				current = 0;
 			}
 			else tmp[current++] = envp[i][j];
 		i++;
 	}
     	
-	printf("666\n");
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
   }
 
   else {
-	  return 0;
 	close(fd[1]);
 	char s;
 	int cnt = 0;
