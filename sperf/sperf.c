@@ -75,7 +75,7 @@ void show_result() {
 		ratio = List[i].time * 100.0 / tot_time;
 		printf("%s (%d%%)\n", List[i].name, ratio);	
 	}
-	tot = 0;	
+//	tot = 0;	
 	for (int i = 0; i < 80; i++) printf("%c", '\0');
 	printf("\n");
 	for (int i = 0; i < 10; i++) printf("=");
