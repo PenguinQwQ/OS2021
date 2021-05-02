@@ -124,7 +124,7 @@ int main(int argc, char *argv[], char *envp[]) {
 				current = 0;
 			}
 			else tmp[current++] = envp[i][j];
-			i++;
+		i++;
 	}
     	
 	printf("666\n");
