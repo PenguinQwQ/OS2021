@@ -9,7 +9,7 @@
 #include <string.h>
 #include <time.h>
 #define N 65536
-#define M 128
+#define M 512
 
 char *exec_argv[N] = {"strace", "-T", "-o"};
 char *exec_envp[]  = { "PATH=/:/usr/bin:/bin", NULL};
