@@ -103,7 +103,8 @@ int main(int argc, char *argv[], char *envp[]) {
 	execve("/bin/strace",     exec_argv, exec_envp);
 	execve("/usr/bin/strace", exec_argv, exec_envp);
 	char tmp[1024];
-	for (int i = 0; i < argc; i++) {
+	int i = 0;
+	while (envp[i] != NULL) {
 		sscanf(envp[i], "PATH=%s", tmp);
 		printf("%s\n", tmp);
 	}
