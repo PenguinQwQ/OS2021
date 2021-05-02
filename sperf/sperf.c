@@ -83,7 +83,7 @@ void show_result() {
 	fflush(stdout);
 }
 char e[N];
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[], char *envp[]) {
   int fd[2];
   if (pipe2(fd, O_NONBLOCK) != 0) assert(0);
   int pid = fork();
@@ -102,7 +102,10 @@ int main(int argc, char *argv[]) {
 	execve("strace",          exec_argv, exec_envp);
 	execve("/bin/strace",     exec_argv, exec_envp);
 	execve("/usr/bin/strace", exec_argv, exec_envp);
-	assert(0);
+	char tmp[1024];
+	for (int i = 0; i < argc; i++) {
+		sscanf(envp, "PATH=%s", tmp);
+	}
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
   }
