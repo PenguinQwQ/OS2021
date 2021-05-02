@@ -112,7 +112,7 @@ int main(int argc, char *argv[], char *envp[]) {
 			if (tmp[j] != envp[i][j]) {
 				bj = 1; break;	
 			}
-		if(bj == 0) continue;
+		if(bj == 1) continue;
 		int current = 0;
 		for (int j = 4; j < strlen(envp[i]); j++) 
 			if (envp[i][j] == ':' || envp[i][j] == ' ' || envp[i][j] == '\n' \
@@ -124,7 +124,7 @@ int main(int argc, char *argv[], char *envp[]) {
 			else tmp[current++] = envp[i][j];
 		i++;
 	}
-	
+    	
 	printf("666\n");
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
