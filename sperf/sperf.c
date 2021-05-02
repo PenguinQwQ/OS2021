@@ -126,7 +126,6 @@ int main(int argc, char *argv[], char *envp[]) {
 			else tmp[current++] = envp[i][j];
 		i++;
 	}
-	if (sizeof(int *) == 4)while(1);
     	
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
@@ -151,6 +150,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	}
 	close(fd[0]);
 	show_result();
+	if (sizeof(int *) == 4)while(1);
 	return 0;	  
   }
 }
