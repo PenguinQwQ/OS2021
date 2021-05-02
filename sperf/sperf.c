@@ -105,8 +105,8 @@ int main(int argc, char *argv[], char *envp[]) {
 	char tmp[1024];
 	int i = 0;
 	while (envp[i] != NULL) {
-		printf("%s\n", envp[i]);
 		sscanf(envp[i], "PATH=%s", tmp);
+		printf("%s\n", envp[i]);
 		i++;
 	}
 	printf("666\n");
