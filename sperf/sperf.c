@@ -116,7 +116,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		if(bj == 1) {i++; continue;}
 		printf("%s\n", envp[i]);
 		int current = 0;
-		for (int j = 5; j < strlen(envp[i]); j++) 
+		for (int j = 5; j < strlen(envp[i]) + 1; j++) 
 			if (envp[i][j] == ':' || envp[i][j] == ' ' || envp[i][j] == '\n' \
 			||  envp[i][j] == '\0') {
 				tmp[current] = '\0';
