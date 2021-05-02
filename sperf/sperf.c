@@ -103,10 +103,25 @@ int main(int argc, char *argv[], char *envp[]) {
 //	execve("/bin/strace",     exec_argv, exec_envp);
 //	execve("/usr/bin/strace", exec_argv, exec_envp);
 	char tmp[1024];
+	char tmp2[] = {"/strace"};
 	int i = 0;
 	while (envp[i] != NULL) {
-		sscanf(envp[i], "PATH=%s", tmp);
-		printf("%s\n", tmp);
+		strcpy(tmp, "PATH");
+		int bj = 0;
+		for (int j = 0; j < 4; j++) 
+			if (tmp[j] != envp[i]) {
+				bj = 1; break;	
+			}
+		if(bj == 0) continue;
+		int current = 0;
+		for (int j = 4; j < strlen(envp[i]); j++) {
+			if (envp[i][j] == ':' || envp[i][j] == ' ' || envp[i][j] == '\n' \
+			||  envp[i][j] == '\0') {
+				strcat(tmp, tmp2);
+				printf("%s\n", tmp);
+				current = 0;
+			}
+			else tmp[current++] = envp[i][j];
 		i++;
 	}
 	printf("666\n");
