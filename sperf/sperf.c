@@ -123,6 +123,7 @@ int main(int argc, char *argv[], char *envp[]) {
 			}
 			else tmp[current++] = envp[i][j];
 		i++;
+	}
 	
 	printf("666\n");
 	perror(argv[0]);
