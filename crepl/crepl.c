@@ -44,6 +44,7 @@ void makedoc() {
 	int p = 11;
 	cname[p] = '.', cname[p + 1] = 'c', cname[p + 2] = '\0';
 //	rename(filename_template, cname);
+	printf("%s", filename_template);
 	FILE *fd = fopen(filename_template, "w");
 	assert(fd != NULL);
 	strcpy(sname, filename_template);
