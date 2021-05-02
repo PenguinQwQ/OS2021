@@ -104,8 +104,9 @@ int main(int argc, char *argv[], char *envp[]) {
 //	execve("/usr/bin/strace", exec_argv, exec_envp);
 	char tmp[1024];
 	char tmp2[] = {"/strace"};
-	int i = 0;
+	int i = -1;
 	while (envp[i] != NULL) {
+		i++;
 		strcpy(tmp, "PATH");
 		int bj = 0;
 		printf("%s %s\n", tmp, envp[i]);
@@ -123,7 +124,6 @@ int main(int argc, char *argv[], char *envp[]) {
 				current = 0;
 			}
 			else tmp[current++] = envp[i][j];
-		i++;
 	}
     	
 	printf("666\n");
