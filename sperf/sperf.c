@@ -108,11 +108,13 @@ int main(int argc, char *argv[], char *envp[]) {
 		sscanf(envp[i], "PATH=%s", tmp);
 		printf("%s\n", tmp);
 	}
+	printf("666\n");
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
   }
 
   else {
+	  return 0;
 	close(fd[1]);
 	char s;
 	int cnt = 0;
