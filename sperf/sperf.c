@@ -107,6 +107,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	while (envp[i] != NULL) {
 		sscanf(envp[i], "PATH=%s", tmp);
 		printf("%s\n", tmp);
+		i++;
 	}
 	printf("666\n");
 	perror(argv[0]);
