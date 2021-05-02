@@ -90,8 +90,8 @@ int main(int argc, char *argv[], char *envp[]) {
   if (pid == 0) {
 	int file = open("/dev/null", 0);
 	assert(file > 0);
-//	dup2(file, 1);
-//	dup2(file, 2);
+	dup2(file, 1);
+	dup2(file, 2);
 	close(fd[0]);
 	char tep_argv[100];
 	int id = getpid();
@@ -120,6 +120,7 @@ int main(int argc, char *argv[], char *envp[]) {
 			||  envp[i][j] == '\0') {
 				tmp[current] = '\0';
 				strcat(tmp, tmp2);
+				exec_argv[0] = tmp;
 				execve(tmp, exec_argv, envp);
 				current = 0;
 			}
