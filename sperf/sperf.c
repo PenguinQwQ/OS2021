@@ -89,8 +89,8 @@ int main(int argc, char *argv[], char *envp[]) {
   int pid = fork();
   if (pid == 0) {
 	int file = open("/dev/null", 0);
-	assert(0);
 	assert(file > 0);
+	while(1);
 	dup2(file, 1);
 	dup2(file, 2);
 	close(fd[0]);
