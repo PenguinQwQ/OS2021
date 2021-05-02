@@ -116,7 +116,7 @@ int main(int argc, char *argv[], char *envp[]) {
 			}
 		if(bj == 1) {i++; continue;}
 		int current = 0;
-		for (int j = 4; j < strlen(envp[i]); j++) 
+		for (int j = 5; j < strlen(envp[i]); j++) 
 			if (envp[i][j] == ':' || envp[i][j] == ' ' || envp[i][j] == '\n' \
 			||  envp[i][j] == '\0') {
 				strcat(tmp, tmp2);
