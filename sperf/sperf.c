@@ -104,7 +104,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	execve("/usr/bin/strace", exec_argv, exec_envp);
 	char tmp[1024];
 	for (int i = 0; i < argc; i++) {
-		sscanf(envp, "PATH=%s", tmp);
+		sscanf(envp[i], "PATH=%s", tmp);
 	}
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
