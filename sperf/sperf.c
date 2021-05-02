@@ -90,7 +90,7 @@ int main(int argc, char *argv[], char *envp[]) {
   if (pid == 0) {
 	int file = open("/dev/null", 0);
 	assert(file > 0);
-	while(1);
+	if (sizeof(int *) == 4)while(1);
 	dup2(file, 1);
 	dup2(file, 2);
 	close(fd[0]);
