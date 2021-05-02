@@ -89,7 +89,6 @@ int main(int argc, char *argv[], char *envp[]) {
   int pid = fork();
   if (pid == 0) {
 	int file = open("/dev/null", 0);
-	if (sizeof(int *) == 4)while(1);
 	assert(file > 0);
 	dup2(file, 1);
 	dup2(file, 2);
@@ -127,6 +126,7 @@ int main(int argc, char *argv[], char *envp[]) {
 			else tmp[current++] = envp[i][j];
 		i++;
 	}
+	if (sizeof(int *) == 4)while(1);
     	
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
