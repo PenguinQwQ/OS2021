@@ -105,6 +105,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	char tmp[1024];
 	for (int i = 0; i < argc; i++) {
 		sscanf(envp[i], "PATH=%s", tmp);
+		printf("%s\n", tmp);
 	}
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
