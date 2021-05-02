@@ -37,12 +37,15 @@ void judge() {
 
 void makedoc() {
     char filename_template[] = "/tmp/XXXXXX";
-	int fd = mkstemp(filename_template);
-	assert(fd > 0);
+//	int fd = mkstemp(filename_template);
+//	assert(fd > 0);
+	for (int i = 5; i < 11; i++) filename_template[i] = 'a' + rand() % 26;
 	strcpy(cname, filename_template);
 	int p = 11;
 	cname[p] = '.', cname[p + 1] = 'c', cname[p + 2] = '\0';
 	rename(filename_template, cname);
+	int fd = fopen(filename_template, "w");
+	assert(fd > 0);
 	strcpy(sname, filename_template);
 	sname[p] = '.', sname[p + 1] = 's', sname[p + 2] = 'o', sname[p + 3] = '\0';
 	judge();
