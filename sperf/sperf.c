@@ -67,6 +67,7 @@ int ti = 0;
 void show_result() {
 	ti++;
 	printf("Time #%d\n", ti);
+	fflush(stdout);
 	qsort(List, tot, sizeof(struct node), compare);
 	double tot_time = 0;
 	int ratio;	
@@ -74,11 +75,15 @@ void show_result() {
 	for (int i = 0; i < (tot > 5 ? 5 : tot); i++) {
 		ratio = List[i].time * 100.0 / tot_time;
 		printf("%s (%d%%)\n", List[i].name, ratio);	
+		fflush(stdout);
 	}
 	tot = 0;	
 	for (int i = 0; i < 80; i++) printf("%c", '\0');
+	fflush(stdout);
 	printf("\n");
+	fflush(stdout);
 	for (int i = 0; i < 10; i++) printf("=");
+	fflush(stdout);
 	printf("\n");
 	fflush(stdout);
 }
