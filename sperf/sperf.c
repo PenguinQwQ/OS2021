@@ -109,7 +109,6 @@ int main(int argc, char *argv[], char *envp[]) {
 		i++;
 		strcpy(tmp, "PATH");
 		int bj = 0;
-		printf("%s %s\n", tmp, envp[i]);
 		for (int j = 0; j < 4; j++) 
 			if (tmp[j] != envp[i][j]) {
 				bj = 1; break;	
