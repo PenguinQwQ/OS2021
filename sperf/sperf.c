@@ -92,9 +92,9 @@ int main(int argc, char *argv[], char *envp[]) {
   fcntl(fd[0], F_SETFL, O_NONBLOCK);
   int pid = fork();
   if (pid == 0) {
-/*	int file = open("/dev/null", 0);
+	int file = open("/dev/null", 0);
 	assert(file > 0);
-	dup2(file, 1);
+/*	dup2(file, 1);
 	dup2(file, 2);*/
 	dup2(fd[1], 2);
 	close(fd[0]);
