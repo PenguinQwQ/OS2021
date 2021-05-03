@@ -103,7 +103,7 @@ int main(int argc, char *argv[], char *envp[]) {
     sprintf(tep_argv, "/proc/%d/fd/%d", id, fd[1]);
 	*/
 	int p = 1;
-	exec_argv[p] = tep_argv;
+//	exec_argv[p] = tep_argv;
 	for (int i = 1; i < argc; i++) exec_argv[i + p] = argv[i];
 	exec_argv[argc + p] = NULL;
 //	execve("strace",          exec_argv, exec_envp);
