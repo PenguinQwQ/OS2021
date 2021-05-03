@@ -136,7 +136,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	close(fd[1]);
 	char s;
 	int cnt = 0;
-	int lst_time = 0, tt = 0;
+	int lst_time = 0;
 	while((cnt = read(fd[0], &s, 1)) > 0 ||waitpid(pid, NULL, WNOHANG) == 0) {
 		if (cnt > 0) {
 			buf[loc++] = s;
@@ -146,10 +146,7 @@ int main(int argc, char *argv[], char *envp[]) {
 				loc = 0;
 			}
 		}
-		tt++;
-		//int now = clock() / CLOCKS_PER_SEC;
-		int now = lst_time;
-		if (tt == 1000000) now++, tt = 0;
+		int now = clock() / CLOCKS_PER_SEC;
 		if (now > lst_time) lst_time = now, show_result();
 	}
 	close(fd[0]);
