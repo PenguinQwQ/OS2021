@@ -1,4 +1,3 @@
-#include <os.h>
 #include <devices.h>
 
 #define DEVICES(_) \

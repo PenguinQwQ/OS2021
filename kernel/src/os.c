@@ -1,7 +1,7 @@
 #include <common.h>
-
 static void os_init() {
   pmm->init();
+  kmt->init();
 }
 
 void test1() {	
@@ -48,3 +48,4 @@ MODULE_DEF(os) = {
   .init = os_init,
   .run  = os_run,
 };
+

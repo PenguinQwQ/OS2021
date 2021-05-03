@@ -1,3 +1,7 @@
+#include <stdint.h>
+#include <common.h>
+#include <os.h>
+
 typedef struct devops {
   int (*init)(device_t *dev);
   int (*read) (device_t *dev, int offset, void *buf, int count);
@@ -10,6 +14,20 @@ struct device {
   int id;
   void *ptr;
   devops_t *ops;
+};
+
+struct spinlock{
+	
+	
+};
+
+struct task{
+	
+
+};
+
+struct semaphore{
+
 };
 
 // Input

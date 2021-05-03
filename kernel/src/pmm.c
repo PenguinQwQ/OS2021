@@ -18,23 +18,23 @@ struct Area{
 
 typedef struct{
 	int flag;	
-}spinlock_t;
+}_spinlock_t;
 
 
-spinlock_t lock_all;
+_spinlock_t lock_all;
 
-void spinlock(spinlock_t *lk) {
+void spinlock(_spinlock_t *lk) {
 	while(atomic_xchg(&lk -> flag, 1));
 }
 
-void spinunlock(spinlock_t *lk) {
+void spinunlock(_spinlock_t *lk) {
 	atomic_xchg(&lk -> flag, 0);
 }
 
 uintptr_t st = 0;
 
 typedef struct page {
-	spinlock_t lock;
+	_spinlock_t lock;
 	int id;
 	int type;
 	int head;
