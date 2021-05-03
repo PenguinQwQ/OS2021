@@ -10,7 +10,7 @@
 #define N 65536
 #define M 512
 
-char *exec_argv[N] = {"strace", "-T"};
+char *exec_argv[N] = {"strace", "-T", "-o"};
 char *exec_envp[]  = { "PATH=/:/usr/bin:/bin", NULL};
 
 char buf[N];
@@ -95,17 +95,14 @@ int main(int argc, char *argv[], char *envp[]) {
 	int file = open("/dev/null", 0);
 	assert(file > 0);
 	dup2(file, 1);
-/*	dup2(file, 2);*/
-	dup2(fd[1], 2);
-	close(fd[0]);
+	dup2(file, 2);
+//	close(fd[0]);
 	char tep_argv[100];
-/*	int id = getpid();
+	int id = getpid();
     sprintf(tep_argv, "/proc/%d/fd/%d", id, fd[1]);
-	*/
-	int p = 1;
-//	exec_argv[p] = tep_argv;
-	for (int i = 1; i < argc; i++) exec_argv[i + p] = argv[i];
-	exec_argv[argc + p] = NULL;
+	exec_argv[3] = tep_argv;
+	for (int i = 1; i < argc; i++) exec_argv[i + 3] = argv[i];
+	exec_argv[argc + 3] = NULL;
 //	execve("strace",          exec_argv, exec_envp);
 //	execve("/bin/strace",     exec_argv, exec_envp);
 //	execve("/usr/bin/strace", exec_argv, exec_envp);
@@ -137,7 +134,7 @@ int main(int argc, char *argv[], char *envp[]) {
   }
 
   else {
-	close(fd[1]);
+//	close(fd[1]);
 	char s;
 	int cnt = 0;
 	int lst_time = 0;
