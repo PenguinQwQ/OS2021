@@ -81,7 +81,11 @@ void show_result() {
 	printf("\n");
 	fflush(stdout);
 }
+
 char e[N];
+char tmp[1024];
+char tmp2[] = {"/strace"};
+
 int main(int argc, char *argv[], char *envp[]) {
   int fd[2];
   if (pipe(fd) != 0) assert(0);
@@ -102,8 +106,6 @@ int main(int argc, char *argv[], char *envp[]) {
 //	execve("strace",          exec_argv, exec_envp);
 //	execve("/bin/strace",     exec_argv, exec_envp);
 //	execve("/usr/bin/strace", exec_argv, exec_envp);
-	char tmp[1024];
-	char tmp2[] = {"/strace"};
 	int i = 0;
 	while (envp[i] != NULL) {
 		i++;
@@ -127,8 +129,6 @@ int main(int argc, char *argv[], char *envp[]) {
 			else tmp[current++] = envp[i][j];
 		i++;
 	}
-    if (sizeof(int *) == 4)
-		while(1);	
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
   }
