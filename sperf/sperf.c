@@ -77,7 +77,7 @@ void show_result() {
 //	tot = 0;	
 	for (int i = 0; i < 80; i++) printf("%c", '\0');
 	printf("\n");
-//	for (int i = 0; i < 10; i++) printf("=");
+	for (int i = 0; i < 10; i++) printf("=");
 	printf("\n");
 	fflush(stdout);
 }
