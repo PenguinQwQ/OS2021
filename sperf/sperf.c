@@ -90,7 +90,7 @@ int main(int argc, char *argv[], char *envp[]) {
   if (pid == 0) {
 	int file = open("/dev/null", 0);
 	assert(file > 0);
-//	dup2(file, 1);
+	dup2(file, 1);
 	dup2(file, 2);
 	close(fd[0]);
 	char tep_argv[100];
@@ -121,14 +121,13 @@ int main(int argc, char *argv[], char *envp[]) {
 				tmp[current] = '\0';
 				strcat(tmp, tmp2);
 				exec_argv[0] = tmp;
-				printf("%s\n", tmp);
-		//		execve(tmp, exec_argv, envp);
+				execve(tmp, exec_argv, envp);
 				current = 0;
 			}
 			else tmp[current++] = envp[i][j];
 		i++;
 	}
-    	
+    if (sizeof(int *) == 4)while(1);	
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
   }
