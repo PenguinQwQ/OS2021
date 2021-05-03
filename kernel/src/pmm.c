@@ -180,6 +180,7 @@ static void *kalloc(size_t size) {
   if (!bj) {
 	  space = slow_alloc(size);
   }
+  memset(space, 0, size);
   return space;
 }
 
