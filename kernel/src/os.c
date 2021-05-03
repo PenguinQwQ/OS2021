@@ -34,8 +34,14 @@ static void os_run() {
   while(1);
 }
 
+static Context* os_trap(Event ev, Context *context) {
+	
+	return NULL;	
+}
+
 MODULE_DEF(os) = {
   .init = os_init,
   .run  = os_run,
+  .trap = os_trap,
 };
 
