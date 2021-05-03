@@ -147,7 +147,7 @@ int main(int argc, char *argv[], char *envp[]) {
 			}
 		}
 		//int now = clock() / CLOCKS_PER_SEC;
-		now = lst_time;
+		int now = lst_time;
 		_ti++;
 		if (_ti == 1000000) _ti = 0 , now++;
 		if (now > lst_time) lst_time = now, show_result();
