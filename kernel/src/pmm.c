@@ -168,6 +168,8 @@ void *fast_alloc(int id, int kd) {
 
 static void *kalloc(size_t size) {
   if ((size >> 20) >= 16) return NULL;
+  int i = ienabled();
+  iset(false);
   int id = cpu_current(), bj = 0;
   void *space;
   for (int i = 0; i < MAX_DATA_SIZE; i++) {
@@ -181,6 +183,7 @@ static void *kalloc(size_t size) {
 	  space = slow_alloc(size);
   }
   memset(space, 0, size);
+  if (i) iset(true);
   return space;
 }
 
@@ -239,6 +242,8 @@ void slow_free(uintptr_t left, uintptr_t right) {
 }
 
 static void kfree(void *ptr) {
+	int i = ienabled();
+	iset(false);
 	uintptr_t now = ((uintptr_t)ptr & (~(PAGE_SIZE - 1)));
 	page_t *page = (page_t *)(now - PAGE_SIZE);
 	assert(page);
@@ -251,6 +256,7 @@ static void kfree(void *ptr) {
 		spinunlock(&lock_all);
 	}
 	else assert(0);
+	if (i) iset(true);
 }
 
 static void pmm_init() {
