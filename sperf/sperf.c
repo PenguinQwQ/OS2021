@@ -1,4 +1,3 @@
-#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -85,7 +84,8 @@ void show_result() {
 char e[N];
 int main(int argc, char *argv[], char *envp[]) {
   int fd[2];
-  if (pipe2(fd, O_NONBLOCK) != 0) assert(0);
+  if (pipe(fd) != 0) assert(0);
+  fcntl(fd[0], F_SETFL, O_NONBLOCK);
   int pid = fork();
   if (pid == 0) {
 	int file = open("/dev/null", 0);
