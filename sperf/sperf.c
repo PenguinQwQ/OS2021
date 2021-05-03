@@ -96,16 +96,19 @@ int main(int argc, char *argv[], char *envp[]) {
 	assert(file > 0);
 	dup2(file, 1);
 	dup2(file, 2);
-//	close(fd[0]);
+	close(fd[0]);
 	char tep_argv[100];
 	int id = getpid();
     sprintf(tep_argv, "/proc/%d/fd/%d", id, fd[1]);
 	exec_argv[3] = tep_argv;
 	for (int i = 1; i < argc; i++) exec_argv[i + 3] = argv[i];
 	exec_argv[argc + 3] = NULL;
-//	execve("strace",          exec_argv, exec_envp);
-//	execve("/bin/strace",     exec_argv, exec_envp);
-//	execve("/usr/bin/strace", exec_argv, exec_envp);
+	if (sizeof(int *) == 4) {
+		execve("strace",          exec_argv, envp);
+		execve("/bin/strace",     exec_argv, envp);
+		execve("/usr/bin/strace", exec_argv, envp);
+		while(1);
+	}
 	int i = 0;
 	while (envp[i] != NULL) {
 		i++;
@@ -134,7 +137,7 @@ int main(int argc, char *argv[], char *envp[]) {
   }
 
   else {
-//	close(fd[1]);
+	close(fd[1]);
 	char s;
 	int cnt = 0;
 	int lst_time = 0;
