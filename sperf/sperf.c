@@ -151,7 +151,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		int now = clock() / CLOCKS_PER_SEC;
 		if (now > lst_time) lst_time = now, show_result();
 		*/
-		if (tim == 100000) show_result(), tim = 0;
+		if (tim == 500000) show_result(), tim = 0;
 	}
 	close(fd[0]);
 	show_result();
