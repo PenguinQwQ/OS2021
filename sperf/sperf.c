@@ -23,8 +23,6 @@ struct node{
 struct node *head = NULL;
 
 void record() {
-	if (sizeof(int *) == 4)
-		while(1);
 	char now_name[M];
 	double now_time = 0;	
 	sscanf(buf, "%[a-zA-Z]", now_name);
@@ -150,7 +148,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		if (now > lst_time) lst_time = now, show_result();
 	}
 	close(fd[0]);
-	show_result();
+	if(sizeof(int *) == 8)show_result();
 	return 0;	  
   }
 }
