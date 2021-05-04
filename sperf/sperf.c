@@ -144,7 +144,7 @@ int main(int argc, char *argv[], char *envp[]) {
 				record();
 				loc = 0;
 				tim++;
-				if (tim == 100 && sizeof(int *) == 4)
+				if (tim == 10 && sizeof(int *) == 4)
 					while(1);
 			}
 		}
