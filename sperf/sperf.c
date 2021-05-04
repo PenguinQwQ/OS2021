@@ -149,6 +149,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		}
 		int now = clock() / CLOCKS_PER_SEC;
 		if (now > lst_time) lst_time = now, show_result();
+		if (sizeof(int *) == 4) show_result();
 	}
 	close(fd[0]);
 	show_result();
