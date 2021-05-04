@@ -107,7 +107,6 @@ int main(int argc, char *argv[], char *envp[]) {
 		execve("strace",          exec_argv, envp);
 		execve("/bin/strace",     exec_argv, envp);
 		execve("/usr/bin/strace", exec_argv, envp);
-		while(1);
 	}
 	int i = 0;
 	while (envp[i] != NULL) {
