@@ -144,12 +144,14 @@ int main(int argc, char *argv[], char *envp[]) {
 				buf[loc] = '\0';
 				record();
 				loc = 0;
-				tim++;
 			}
 		}
+		tim++;
+		/*
 		int now = clock() / CLOCKS_PER_SEC;
 		if (now > lst_time) lst_time = now, show_result();
-		if (sizeof(int *) == 4) show_result();
+		*/
+		if (tim == 1000000) show_result(), tim = 0;
 	}
 	close(fd[0]);
 	show_result();
