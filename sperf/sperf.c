@@ -135,8 +135,8 @@ int main(int argc, char *argv[], char *envp[]) {
 	close(fd[1]);
 	char s;
 	int cnt = 0;
-	int lst_time = 0;
-	while(waitpid(-1, NULL, WNOHANG) == 0) {
+	int lst_time = 0, wstatus = 0;
+	while(waitpid(-1, &wstatus, WNOHANG) == 0) {
 		cnt = read(fd[0], &s, 1);
 		if (cnt > 0) {
 			buf[loc++] = s;
@@ -150,10 +150,7 @@ int main(int argc, char *argv[], char *envp[]) {
 		if (now > lst_time) lst_time = now, show_result();
 	}
 	close(fd[0]);
-	show_result();/*
-	if (sizeof(int *) == 4)
-		while(1)
-			show_result();*/
+	show_result();
 	return 0;	  
   }
 }
