@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <time.h>
-#define N 65536
+#define N 512
 #define M 512
 
 char *exec_argv[N] = {"strace", "-T", "-o"};
