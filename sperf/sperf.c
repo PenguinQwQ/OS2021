@@ -114,7 +114,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	for (int i = 0; i < strlen(path); i++) {
 		if (path[i] == ':') {
 			path[i] = '\0';
-			strcpy(exec, path[lst]);
+			strcpy(exec, *path[lst]);
 			strcat(exec, "/strace");
 			execve(exec, exec_argv, envp);
 			lst = i + 1;
