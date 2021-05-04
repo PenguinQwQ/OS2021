@@ -118,8 +118,8 @@ int main(int argc, char *argv[], char *envp[]) {
 			printf("1\n");
 			strcpy(exec, path + lst);
 			strcat(exec, "/strace");
-			execve(exec, exec_argv, envp);
 			printf("%s\n", exec);
+			execve(exec, exec_argv, envp);
 			lst = i + 1;
 		}
    }
