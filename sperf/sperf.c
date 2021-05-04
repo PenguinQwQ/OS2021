@@ -109,9 +109,9 @@ int main(int argc, char *argv[], char *envp[]) {
 	exec_argv[argc + pos] = NULL;
 	
 	int now = 0;
-	while(envp[now] != NULL) printf("%s\n", envp[now]), now = now + 1;
 	path = getenv("PATH");
 	assert(path != NULL);
+	while(envp[now] != NULL) printf("%s\n", envp[now]), now = now + 1;
 	int lst = 0;
 	int len = strlen(path);
 	for (int i = 0; i < len; i++) {
