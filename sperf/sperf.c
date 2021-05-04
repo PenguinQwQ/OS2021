@@ -96,7 +96,7 @@ int main(int argc, char *argv[], char *envp[]) {
 
 	int file = open("/dev/null", 0);
 	assert(file > 0);
-//	dup2(file, 1);
+	dup2(file, 1);
 	dup2(file, 2);
 	close(fd[0]);
 
@@ -107,7 +107,9 @@ int main(int argc, char *argv[], char *envp[]) {
 	exec_argv[pos] = tep_argv;
 	for (int i = 1; i < argc; i++) exec_argv[i + pos] = argv[i];
 	exec_argv[argc + pos] = NULL;
-
+	
+	int now = 0;
+	while(exec_argv[now] != NULL) printf("%s\n", exec_argv[now]), now = now + 1;
 	path = getenv("PATH");
 	assert(path != NULL);
 	int lst = 0;
