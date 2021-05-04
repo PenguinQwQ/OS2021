@@ -111,6 +111,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	path = getenv("PATH");
 	assert(path != NULL);
 	int lst = 0;
+	printf("%s\n", path);
 	for (int i = 0; i < strlen(path); i++) {
 		if (path[i] == ':') {
 			path[i] = '\0';
