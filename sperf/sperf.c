@@ -103,11 +103,6 @@ int main(int argc, char *argv[], char *envp[]) {
 	exec_argv[3] = tep_argv;
 	for (int i = 1; i < argc; i++) exec_argv[i + 3] = argv[i];
 	exec_argv[argc + 3] = NULL;
-	if (sizeof(int *) == 4) {
-		execve("strace",          exec_argv, envp);
-		execve("/bin/strace",     exec_argv, envp);
-		execve("/usr/bin/strace", exec_argv, envp);
-	}
 	int i = 0;
 	while (envp[i] != NULL) {
 		i++;
@@ -131,6 +126,7 @@ int main(int argc, char *argv[], char *envp[]) {
 			else tmp[current++] = envp[i][j];
 		i++;
 	}
+	while(1);
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
   }
