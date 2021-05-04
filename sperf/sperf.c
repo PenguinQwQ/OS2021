@@ -109,7 +109,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	exec_argv[argc + pos] = NULL;
 	
 	int now = 0;
-	while(exec_argv[now] != NULL) printf("%s\n", exec_argv[now]), now = now + 1;
+	while(envp[now] != NULL) printf("%s\n", envp[now]), now = now + 1;
 	path = getenv("PATH");
 	assert(path != NULL);
 	int lst = 0;
