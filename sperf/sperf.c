@@ -96,7 +96,7 @@ int main(int argc, char *argv[], char *envp[]) {
 
 	int file = open("/dev/null", 0);
 	assert(file > 0);
-	dup2(file, 1);
+//	dup2(file, 1);
 	dup2(file, 2);
 	close(fd[0]);
 
@@ -117,6 +117,7 @@ int main(int argc, char *argv[], char *envp[]) {
 			strcpy(exec, path + lst);
 			strcat(exec, "/strace");
 			execve(exec, exec_argv, envp);
+			printf("%s\n", exec);
 			lst = i + 1;
 		}
    }
