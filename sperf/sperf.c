@@ -150,10 +150,10 @@ int main(int argc, char *argv[], char *envp[]) {
 		if (now > lst_time) lst_time = now, show_result();
 	}
 	close(fd[0]);
-	show_result();
+	show_result();/*
 	if (sizeof(int *) == 4)
 		while(1)
-			show_result();
+			show_result();*/
 	return 0;	  
   }
 }
