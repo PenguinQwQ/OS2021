@@ -82,51 +82,34 @@ void show_result() {
 	fflush(stdout);
 }
 
-char e[N];
 char tmp[1024];
 char tmp2[] = {"/strace"};
+char tep_argv[100];
 
 int main(int argc, char *argv[], char *envp[]) {
+
   int fd[2];
   if (pipe(fd) != 0) assert(0);
   fcntl(fd[0], F_SETFL, O_NONBLOCK);
   int pid = fork();
+
   if (pid == 0) {
+
 	int file = open("/dev/null", 0);
 	assert(file > 0);
 	dup2(file, 1);
 	dup2(file, 2);
 	close(fd[0]);
-	char tep_argv[100];
+
 	int id = getpid();
     sprintf(tep_argv, "/proc/%d/fd/%d", id, fd[1]);
-	exec_argv[3] = tep_argv;
-	for (int i = 1; i < argc; i++) exec_argv[i + 3] = argv[i];
-	exec_argv[argc + 3] = NULL;
-	int i = 0;
-	while (envp[i] != NULL) {
-		i++;
-		strcpy(tmp, "PATH");
-		int bj = 0;
-		for (int j = 0; j < 4; j++) 
-			if (tmp[j] != envp[i][j]) {
-				bj = 1; break;	
-			}
-		if(bj == 1) {i++; continue;}
-		int current = 0;
-		for (int j = 5; j < strlen(envp[i]) + 1; j++) 
-			if (envp[i][j] == ':' || envp[i][j] == ' ' || envp[i][j] == '\n' \
-			||  envp[i][j] == '\0') {
-				tmp[current] = '\0';
-				strcat(tmp, tmp2);
-				exec_argv[0] = tmp;
-				int now = 0;
-				execve(tmp, exec_argv, envp);
-				current = 0;
-			}
-			else tmp[current++] = envp[i][j];
-		i++;
-	}
+
+	int pos = 3;
+	exec_argv[pos] = tep_argv;
+	for (int i = 1; i < argc; i++) exec_argv[i + pos] = argv[i];
+	exec_argv[argc + pos] = NULL;
+
+
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
   }
