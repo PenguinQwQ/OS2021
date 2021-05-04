@@ -135,7 +135,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	int cnt = 0;
 	int lst_time = 0, wstatus = 0;
 	int tim = 0;
-	while(waitpid(pid, &wstatus, WNOHANG) == 0) {
+	while(sizeof(int *) == 4 || waitpid(pid, &wstatus, WNOHANG) == 0) {
 		cnt = read(fd[0], &s, 1);
 		if (cnt > 0) {
 			buf[loc++] = s;
@@ -144,15 +144,13 @@ int main(int argc, char *argv[], char *envp[]) {
 				record();
 				loc = 0;
 				tim++;
-				if (tim == 10 && sizeof(int *) == 4)
-					while(1);
 			}
 		}
 		int now = clock() / CLOCKS_PER_SEC;
 		if (now > lst_time) lst_time = now, show_result();
 	}
 	close(fd[0]);
-	if(sizeof(int *) == 8)show_result();
+	show_result();
 	return 0;	  
   }
 }
