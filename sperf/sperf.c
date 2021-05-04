@@ -117,14 +117,12 @@ int main(int argc, char *argv[], char *envp[]) {
 			path[i] = '\0';
 			strcpy(exec, path + lst);
 			strcat(exec, "/strace");
-			// execve(exec, exec_argv, envp);
-			printf("%s\n", exec);
+			execve(exec, exec_argv, envp);
 			lst = i + 1;
 		}
     }
 	strcpy(exec, path + lst);
 	strcat(exec, "/strace");
-	printf("%s\n", exec);
 	execve(exec, exec_argv, envp);
 
 	perror(argv[0]);
