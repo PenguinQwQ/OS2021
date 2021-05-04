@@ -136,7 +136,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	char s;
 	int cnt = 0;
 	int lst_time = 0;
-	while((cnt = read(fd[0], &s, 1)) > 0 ||waitpid(pid, NULL, WNOHANG) == 0) {
+	while(waitpid(pid, NULL, WNOHANG) == 0) {
 		if (cnt > 0) {
 			buf[loc++] = s;
 			if (s == '\n') {
