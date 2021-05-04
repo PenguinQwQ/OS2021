@@ -7,11 +7,10 @@
 #include <fcntl.h>
 #include <string.h>
 #include <time.h>
-#define N 512
+#define N 1024
 #define M 512
 
 char *exec_argv[N] = {"strace", "-T", "-o"};
-char *exec_envp[]  = { "PATH=/:/usr/bin:/bin", NULL};
 
 char buf[N];
 int loc = 0, tot = 0;
@@ -82,9 +81,9 @@ void show_result() {
 	fflush(stdout);
 }
 
-char tmp[1024];
-char tmp2[] = {"/strace"};
-char tep_argv[100];
+char *path;
+char exec[N];
+char tep_argv[M];
 
 int main(int argc, char *argv[], char *envp[]) {
 
@@ -109,7 +108,18 @@ int main(int argc, char *argv[], char *envp[]) {
 	for (int i = 1; i < argc; i++) exec_argv[i + pos] = argv[i];
 	exec_argv[argc + pos] = NULL;
 
-
+	path = getenv("PATH");
+	assert(path != NULL);
+	int lst = 0;
+	for (int i = 0; i < strlen(path); i++) {
+		if (path[i] == ':') {
+			path[i] = '\0';
+			strcpy(exec, path[lst]);
+			strcat(exec, "/strace");
+			execve(exec, exec_argv, envp);
+			lst = i + 1;
+		}
+   }
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
   }
