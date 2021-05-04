@@ -96,7 +96,7 @@ int main(int argc, char *argv[], char *envp[]) {
 
 	int file = open("/dev/null", 0);
 	assert(file > 0);
-	dup2(file, 1);
+//	dup2(file, 1);
 	dup2(file, 2);
 	close(fd[0]);
 
