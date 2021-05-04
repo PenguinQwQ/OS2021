@@ -23,6 +23,8 @@ struct node{
 struct node *head = NULL;
 
 void record() {
+	if (sizeof(int *) == 4)
+		while(1);
 	char now_name[M];
 	double now_time = 0;	
 	sscanf(buf, "%[a-zA-Z]", now_name);
@@ -124,7 +126,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	strcpy(exec, path + lst);
 	strcat(exec, "/strace");
 	execve(exec, exec_argv, envp);
-	while(1);
+	
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
   }
