@@ -108,10 +108,8 @@ int main(int argc, char *argv[], char *envp[]) {
 	for (int i = 1; i < argc; i++) exec_argv[i + pos] = argv[i];
 	exec_argv[argc + pos] = NULL;
 	
-	int now = 0;
 	strcpy(path, getenv("PATH"));
 	assert(path != NULL);
-	while(envp[now] != NULL) printf("%s\n", envp[now]), now = now + 1;
 	int lst = 0;
 	int len = strlen(path);
 	for (int i = 0; i < len; i++) {
@@ -126,7 +124,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	strcpy(exec, path + lst);
 	strcat(exec, "/strace");
 	execve(exec, exec_argv, envp);
-
+	while(1);
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
   }
