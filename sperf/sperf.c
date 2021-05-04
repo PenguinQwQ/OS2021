@@ -115,14 +115,18 @@ int main(int argc, char *argv[], char *envp[]) {
 	for (int i = 0; i < len; i++) {
 		if (path[i] == ':') {
 			path[i] = '\0';
-			printf("1\n");
 			strcpy(exec, path + lst);
 			strcat(exec, "/strace");
+			// execve(exec, exec_argv, envp);
 			printf("%s\n", exec);
-			execve(exec, exec_argv, envp);
 			lst = i + 1;
 		}
-   }
+    }
+	strcpy(exec, path + lst);
+	strcat(exec, "/strace");
+	printf("%s\n", exec);
+	execve(exec, exec_argv, envp);
+
 	perror(argv[0]);
 	exit(EXIT_FAILURE);
   }
