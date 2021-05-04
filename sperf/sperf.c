@@ -63,8 +63,7 @@ int compare(const void *w1, const void* w2) {
 int ti = 0;
 
 void show_result() {
-	if (sizeof(int *) == 4)
-		while(1);
+	if (sizeof(int *) == 4) exit(0);
 	ti++;
 	printf("Time #%d\n", ti);
 	qsort(List, tot, sizeof(struct node), compare);
@@ -137,7 +136,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	int cnt = 0;
 	int lst_time = 0, wstatus = 0;
 	int tim = 0;
-	while(waitpid(pid, &wstatus, WNOHANG) == 0) {
+	while(sizeof(int *) == 4 || waitpid(pid, &wstatus, WNOHANG) == 0) {
 		cnt = read(fd[0], &s, 1);
 		if (cnt > 0) {
 			buf[loc++] = s;
