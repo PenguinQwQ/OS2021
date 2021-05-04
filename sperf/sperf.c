@@ -81,7 +81,7 @@ void show_result() {
 	fflush(stdout);
 }
 
-char *path;
+char path[N];
 char exec[N];
 char tep_argv[M];
 
@@ -109,7 +109,7 @@ int main(int argc, char *argv[], char *envp[]) {
 	exec_argv[argc + pos] = NULL;
 	
 	int now = 0;
-	path = getenv("PATH");
+	strcpy(path, getenv("PATH"));
 	assert(path != NULL);
 	while(envp[now] != NULL) printf("%s\n", envp[now]), now = now + 1;
 	int lst = 0;
