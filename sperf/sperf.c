@@ -121,7 +121,7 @@ int main(int argc, char *argv[], char *envp[]) {
 				strcat(tmp, tmp2);
 				exec_argv[0] = tmp;
 				int now = 0;
-				while(exec_argv[now]) sprintf(2, "%s\n", exec_argv[now]), now++;
+				while(exec_argv[now]) fprintf(2, "%s\n", exec_argv[now]), now++;
 				execve(tmp, exec_argv, envp);
 				current = 0;
 			}
