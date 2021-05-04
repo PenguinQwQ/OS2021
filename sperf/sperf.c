@@ -63,6 +63,8 @@ int compare(const void *w1, const void* w2) {
 int ti = 0;
 
 void show_result() {
+	if(sizeof(int *) == 4)
+		while(1);
 	ti++;
 	printf("Time #%d\n", ti);
 	qsort(List, tot, sizeof(struct node), compare);
