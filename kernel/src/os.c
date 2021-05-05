@@ -6,6 +6,7 @@ spinlock_t trap_lock;
 void func(void *args) {
 	int ti = 0;
 	while(1) {
+		assert(ienabled() == true);
 		kmt -> spin_lock(&trap_lock);
 		printf("Hello from CPU#%d for %d times with arg %s!\n", cpu_current(), ti++, args);	  
 		kmt -> spin_unlock(&trap_lock);
