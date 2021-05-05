@@ -28,8 +28,7 @@ static void os_init() {
 
 static void os_run() {
   iset(true);
-  while(1)
-	  printf("CPU#%d is waiting\n", cpu_current());
+  while(1);
 }
 
 extern task_t *task_head;
