@@ -21,11 +21,6 @@ struct spinlock{
 	
 };
 
-struct task{
-	
-
-};
-
 struct semaphore{
 
 };
