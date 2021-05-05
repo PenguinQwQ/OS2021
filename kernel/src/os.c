@@ -33,6 +33,7 @@ static void os_run() {
 
 extern task_t *task_head;
 extern task_t *current[MAX_CPU];
+Context *empty;
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
@@ -40,6 +41,7 @@ static Context* os_trap(Event ev, Context *context) {
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
 	}
+	else empty = context;
 	kmt -> spin_lock(&trap_lock);
 	task_t *next = NULL, *now = task_head;
 	while (now != NULL)	{
@@ -52,9 +54,8 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	if (next == NULL) next = current[id];
 	if (next == NULL) {
-		assert(0);
 	   	kmt -> spin_unlock(&trap_lock);
-		return context;
+		return empty;
 	}
 	next -> status = BLOCKED;
 	current[id] -> status = RUNNING;
