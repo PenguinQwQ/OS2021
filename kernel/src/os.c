@@ -28,7 +28,6 @@ static Context* os_trap(Event ev, Context *context) {
 	
 	kmt -> spin_lock(&trap_lock);
 	task_t *next = NULL, *now = task_head;
-	printf("%d\n", cpu_current());
 	while (now != NULL)	{
 		if (now -> status == RUNNING) {
 			next = now;
@@ -40,6 +39,7 @@ static Context* os_trap(Event ev, Context *context) {
 	if (next == NULL) next = current[id];
 	if (next == NULL) {
 		printf("No others thread can be excuted on CPU #%d\n", cpu_current());
+	   	kmt -> spin_unlock(&trap_lock);
 		return context;
 	}
 	next -> status = BLOCKED;
