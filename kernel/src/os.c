@@ -34,11 +34,10 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> ctx = context;
 		assert(current[id] -> status == BLOCKED);
 	}
-	
+	assert(task_head != NULL);	
 	kmt -> spin_lock(&trap_lock);
 	task_t *next = NULL, *now = task_head;
 	while (now != NULL)	{
-		printf("%d\n", 1);
 		if (now -> status == RUNNING) {
 			next = now;
 			next -> status = BLOCKED;
