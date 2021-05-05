@@ -11,8 +11,7 @@ static void os_run() {
   while(1);
 }
 
-static Context* os_trap(Event ev, Context *context) {	
-	return context;			
+static Context* os_trap(Event ev, Context *context) {
 	return NULL;	
 }
 
