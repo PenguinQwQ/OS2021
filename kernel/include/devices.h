@@ -16,14 +16,6 @@ struct device {
   devops_t *ops;
 };
 
-struct spinlock{
-	
-	
-};
-
-struct semaphore{
-
-};
 
 // Input
 // -------------------------------------------------------------------

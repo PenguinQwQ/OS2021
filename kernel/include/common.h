@@ -8,3 +8,12 @@ struct task{
 	Context *ctx;
 	void *stack;
 };
+
+struct spinlock{
+	
+	
+};
+
+struct semaphore{
+	
+};

@@ -2,7 +2,7 @@
 static void kmt_init() {
 	
 }
-/*
+
 static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), void *arg) {
 	task -> stack = pmm -> alloc(STACK_SIZE);
 	assert(task -> stack != NULL);
@@ -13,8 +13,8 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 	return 0;
 }
 
-*/
+
 MODULE_DEF(kmt) = {
 	.init   = kmt_init,
-//	.create = kmt_create,
+	.create = kmt_create,
 };
