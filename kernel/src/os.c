@@ -30,6 +30,22 @@ static void os_on_irq(int seq, int event, handler_t handler) {
 	event_handle[event].List[sum].seq  = seq;
 	sum								   = sum + 1;
 	event_handle[event].sum            = sum;
+
+	// bubble sort
+	for (int j = 0; j < sum - 1; j++)
+			for (int i = 0; i < sum - 1 - j; i++)
+				if (event_handle[event].List[i].seq < \
+					event_handle[event].List[i + 1].seq) {
+					int tep = event_handle[event].List[i].seq;
+					event_handle[event].List[i].seq   = \
+					event_handle[event].List[i + 1].seq;
+					event_handle[event].List[i + 1].seq	= tep;
+					
+					handler_t _tep = event_handle[event].List[i].func;
+					event_handle[event].List[i].func =  \
+					event_handle[event].List[i + 1].func;
+					event_handle[event].List[i + 1].func = _tep;
+				}
 }
 
 MODULE_DEF(os) = {
