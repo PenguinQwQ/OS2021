@@ -41,7 +41,10 @@ static Context* os_trap(Event ev, Context *context) {
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
 	}
-	else empty = context;
+	else {
+		empty = context;
+		assert(empty != NULL);
+	}
 	kmt -> spin_lock(&trap_lock);
 	task_t *next = NULL, *now = task_head;
 	while (now != NULL)	{
