@@ -21,6 +21,7 @@ extern task_t *current[MAX_CPU];
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	int id = cpu_current();
+	printf("%d\n", cpu_current());
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
 		assert(current[id] -> status == BLOCKED);
@@ -28,7 +29,6 @@ static Context* os_trap(Event ev, Context *context) {
 	
 	kmt -> spin_lock(&trap_lock);
 	task_t *next = NULL, *now = task_head;
-	printf("%d\n", cpu_current());
 	while (now != NULL)	{
 		if (now -> status == RUNNING) {
 			next = now;
