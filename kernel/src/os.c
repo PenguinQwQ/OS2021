@@ -12,7 +12,10 @@ static void os_init() {
 
 static void os_run() {
   iset(true);
-  while(1);
+  int ti = 0;
+  while(1) {
+	printf("Hello from CPU#%d for %d times!\n", cpu_current(), ti++);	  
+  }
 }
 
 extern task_t *task_head;
@@ -38,7 +41,6 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	if (next == NULL) next = current[id];
 	if (next == NULL) {
-		printf("No others thread can be excuted on CPU #%d\n", cpu_current());
 	   	kmt -> spin_unlock(&trap_lock);
 		return context;
 	}
