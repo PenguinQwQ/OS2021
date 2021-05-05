@@ -52,7 +52,7 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	if (next == NULL) next = current[id];
 	if (next == NULL) {
-		printf("CPU#%d is missing!\n", cpu_current());
+		assert(0);
 	   	kmt -> spin_unlock(&trap_lock);
 		return context;
 	}
