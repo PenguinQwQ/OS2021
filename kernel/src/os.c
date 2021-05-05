@@ -28,6 +28,7 @@ static void os_init() {
 
 static void os_run() {
   iset(true);
+  printf("666\n");
   while(1);
 }
 
