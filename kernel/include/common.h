@@ -2,11 +2,17 @@
 #include <klib.h>
 #include <klib-macros.h>
 #define STACK_SIZE 4096 * 8
+#define RUNNING 1
+#define BLOCKED 0
+
+struct task* task_head;
 
 struct task{
 	const char *name;	
 	Context *ctx;
 	void *stack;
+	int status;
+	struct task* next;
 };
 
 struct spinlock{
