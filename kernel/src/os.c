@@ -1,33 +1,10 @@
 #include <common.h>
 static void os_init() {
+  for (int i = 0; i < 256; i++)
+		event_handle[i].sum = 0;
   pmm->init();
   kmt->init();
 }
-
-void test1() {	
-  #define MAXN 1010
-  void *st[MAXN];
-  int st2[MAXN];
-  int top = 0;
-  for (int i = 0; i < 1000; i++) {
-		int	op = rand() % 2;
-		if (top == 0) op = 0;
-		if (top == MAXN) op = 1;
-		op = 0;
-		if (op == 0) {
-			st2[top] = 4096 + (rand() & ((1 << 10) - 1));
-			st[top]    = pmm->alloc(st2[top]);
-			assert(st[top] != 0); 
-			top++;
-		}
-	    else {
-			pmm->free(st[top - 1]);
-			top--;
-		}
-   }
-	printf("%d\n", top);
-}
-
 
 static void os_run() {
   iset(true);
@@ -39,9 +16,27 @@ static Context* os_trap(Event ev, Context *context) {
 	return NULL;	
 }
 
+int compare(const void *w1, const void *w2) {
+	struct handle *t1 = (struct handle *)w1;
+	struct handle *t2 = (struct handle *)w2;
+	return t1 -> seq < t2 -> seq;	
+}
+
+static void os_on_irq(int seq, int event, handler_t handler) {
+	if (event == EVENT_NULL);
+	int sum = event_handle[event].sum;
+	assert(sum < 100);
+	event_handle[event].List[sum].func = handler;
+	event_handle[event].List[sum].seq  = seq;
+	sum								   = sum + 1;
+	event_handle[event].sum            = sum;
+//	qsort(event_handle[event].List, sum, sizeof(event_handle[event].List[sum - 1]), compare);
+}
+
 MODULE_DEF(os) = {
-  .init = os_init,
-  .run  = os_run,
-  .trap = os_trap,
+  .init    = os_init,
+  .run     = os_run,
+  .trap    = os_trap,
+  .on_irq  = os_on_irq,
 };
 
