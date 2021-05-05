@@ -44,8 +44,25 @@ static void kmt_teardown(task_t *task) {
 	pmm  -> free(task);
 }
 
+static void spin_init(spinlock_t *lk, const char *name) {
+	lk -> name = name;
+	lk -> lock = 0;	
+}
+
+static void spin_lock(spinlock_t *lk) {
+	
+}
+
+static void spin_unlock(spinlock_t *lk) {
+	
+	
+}
+
 MODULE_DEF(kmt) = {
-	.init     = kmt_init,
-	.create   = kmt_create,
-	.teardown = kmt_teardown,
+	.init        = kmt_init,
+	.create      = kmt_create,
+	.teardown    = kmt_teardown,
+	.spin_init   = spin_init,
+	.spin_lock   = spin_lock,
+	.spin_unlock = spin_unlock,
 };
