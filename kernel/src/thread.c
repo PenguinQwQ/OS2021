@@ -1,4 +1,8 @@
 #include <common.h>
+
+task_t *task_head;
+task_t *current;
+
 static void kmt_init() {
 	
 }
@@ -21,10 +25,22 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 }
 
 static void kmt_teardown(task_t *task) {
+	if (task_head == task) task_head = NULL;
+	else {
+		task_t *now = task_head;
+		while(now -> next != task) {
+			assert(now -> next != NULL);
+			now = now -> next;
+		}
+		now -> next = now -> next -> next;
+	}
+
 	pmm -> free(task -> stack);
 	task -> stack = NULL;
 	task -> name  = NULL;
 	task -> ctx	  = NULL;
+	task -> next  = 0;
+	pmm  -> free(task);
 }
 
 MODULE_DEF(kmt) = {

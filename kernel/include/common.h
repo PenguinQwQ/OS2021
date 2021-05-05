@@ -5,7 +5,8 @@
 #define RUNNING 1
 #define BLOCKED 0
 
-struct task* task_head;
+extern struct task* task_head;
+extern struct task* current;
 
 struct task{
 	const char *name;	
