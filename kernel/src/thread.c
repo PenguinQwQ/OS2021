@@ -50,12 +50,11 @@ static void spin_init(spinlock_t *lk, const char *name) {
 }
 
 static void spin_lock(spinlock_t *lk) {
-	
+	while(atomic_xchg(&lk -> lock, 1));	
 }
 
 static void spin_unlock(spinlock_t *lk) {
-	
-	
+	atomic_xchg(&lk -> lock, 0);
 }
 
 MODULE_DEF(kmt) = {
