@@ -3,10 +3,10 @@
 
 spinlock_t trap_lock;
 
-void func() {
+void func(void *args) {
 	int ti = 0;
 	while(1) {
-		printf("Hello from CPU#%d for %d times!\n", cpu_current(), ti++);	  
+		printf("Hello from CPU#%d for %d times with arg *s!\n", cpu_current(), ti++, args);	  
 	}
 }
 
@@ -16,7 +16,8 @@ static void os_init() {
   pmm->init();
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, NULL);
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
 }
 
 static void os_run() {
