@@ -4,7 +4,8 @@ task_t *task_head;
 task_t *current;
 
 static void kmt_init() {
-	
+	task_head = NULL;
+	current   = NULL;	
 }
 
 static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), void *arg) {
