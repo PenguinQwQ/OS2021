@@ -30,7 +30,6 @@ static void os_on_irq(int seq, int event, handler_t handler) {
 	event_handle[event].List[sum].seq  = seq;
 	sum								   = sum + 1;
 	event_handle[event].sum            = sum;
-//	qsort(event_handle[event].List, sum, sizeof(event_handle[event].List[sum - 1]), compare);
 }
 
 MODULE_DEF(os) = {
