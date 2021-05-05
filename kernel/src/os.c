@@ -17,8 +17,8 @@ static void os_init() {
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
   kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "dd");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ee");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ff");
@@ -28,7 +28,6 @@ static void os_init() {
 
 static void os_run() {
   iset(true);
-  printf("6666\n");
   while(1);
 }
 
@@ -59,8 +58,8 @@ static Context* os_trap(Event ev, Context *context) {
 	if (next == NULL) next = current[id];
 	if (next == NULL) {
 	   	kmt -> spin_unlock(&trap_lock);
-		assert(empty == NULL);
-		return empty;
+		//assert(empty == NULL);
+		return context;
 	}
 	next -> status = BLOCKED;
 	current[id] -> status = RUNNING;
