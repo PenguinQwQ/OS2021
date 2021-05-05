@@ -1,4 +1,5 @@
 #include <common.h>
+#define MAX_CPU 128
 
 task_t *task_head;
 task_t *current;
@@ -49,12 +50,28 @@ static void spin_init(spinlock_t *lk, const char *name) {
 	lk -> lock = 0;	
 }
 
+int cnt[MAX_CPU];
+int status[MAX_CPU];
+
 static void spin_lock(spinlock_t *lk) {
+	int i = ienabled();
+	iset(false);
+	int id = cpu_current();
+	if (cnt[id] == 0) status[id] = i;
+	cnt[id] = cnt[id] + 1;
 	while(atomic_xchg(&lk -> lock, 1));	
 }
 
 static void spin_unlock(spinlock_t *lk) {
 	atomic_xchg(&lk -> lock, 0);
+	int id = cpu_current();
+	cnt[id]--;
+	if (cnt[id] == 0) {
+		if (status[id])
+			iset(true);
+		else iset(false);	
+	}
+	else assert(ienabled() == false);
 }
 
 MODULE_DEF(kmt) = {
