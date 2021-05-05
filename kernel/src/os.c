@@ -2,20 +2,26 @@
 #define MAX_CPU 128
 
 spinlock_t trap_lock;
+
+void func() {
+	int ti = 0;
+	while(1) {
+		printf("Hello from CPU#%d for %d times!\n", cpu_current(), ti++);	  
+	}
+}
+
 static void os_init() {
   for (int i = 0; i < 256; i++)
 		event_handle[i].sum = 0;
   pmm->init();
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, NULL);
 }
 
 static void os_run() {
   iset(true);
-  int ti = 0;
-  while(1) {
-	printf("Hello from CPU#%d for %d times!\n", cpu_current(), ti++);	  
-  }
+  while(1);
 }
 
 extern task_t *task_head;
@@ -48,12 +54,6 @@ static Context* os_trap(Event ev, Context *context) {
 	kmt -> spin_unlock(&trap_lock);
 	current[id] = next;
 	return current[id] -> ctx;	
-}
-
-int compare(const void *w1, const void *w2) {
-	struct handle *t1 = (struct handle *)w1;
-	struct handle *t2 = (struct handle *)w2;
-	return t1 -> seq < t2 -> seq;	
 }
 
 static void os_on_irq(int seq, int event, handler_t handler) {
