@@ -60,7 +60,7 @@ static Context* os_trap(Event ev, Context *context) {
 	next -> status = BLOCKED;
 	current[id] -> status = RUNNING;
 	kmt -> spin_unlock(&trap_lock);
-	current[id] = next;
+	current[id] = next;assert(0);
 	return next -> ctx;	
 }
 
