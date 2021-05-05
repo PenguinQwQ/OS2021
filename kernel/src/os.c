@@ -21,7 +21,7 @@ static void os_init() {
 }
 
 static void os_run() {
-  iset(true);
+  iset(false);
   while(1);
 }
 
