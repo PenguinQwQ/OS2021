@@ -6,7 +6,7 @@
 #define BLOCKED 0
 
 extern struct task* task_head;
-extern struct task* current;
+extern struct task* current[128];
 
 struct task{
 	const char *name;	

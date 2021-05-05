@@ -2,11 +2,12 @@
 #define MAX_CPU 128
 
 task_t *task_head;
-task_t *current;
+task_t *current[MAX_CPU];
 
 static void kmt_init() {
 	task_head = NULL;
-	current   = NULL;	
+	for (int i = 0; i < MAX_CPU; i++)
+		current[i] = NULL;	
 }
 
 static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), void *arg) {

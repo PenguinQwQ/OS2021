@@ -1,9 +1,13 @@
 #include <common.h>
+#define MAX_CPU 128
+
+spinlock_t trap_lock;
 static void os_init() {
   for (int i = 0; i < 256; i++)
 		event_handle[i].sum = 0;
   pmm->init();
   kmt->init();
+  kmt->spin_init(&trap_lock, "os_trap");
 }
 
 static void os_run() {
@@ -11,8 +15,32 @@ static void os_run() {
   while(1);
 }
 
+extern task_t *task_head;
+extern task_t *current[MAX_CPU];
+
 static Context* os_trap(Event ev, Context *context) {
-	return NULL;	
+	assert(ienabled() == false);
+	int id = cpu_current();
+	if (current[id] != NULL) {
+		current[id] -> ctx = context;
+		assert(current[id] -> status == BLOCKED);
+	}
+
+	kmt -> spin_lock(&trap_lock);
+	task_t *next = NULL, *now = task_head;
+	while (now != NULL)	{
+		if (now -> status == RUNNING) {
+			next = now;
+			next -> status = BLOCKED;
+			break;	
+		}
+		now = now -> next;
+	}
+	if (next == NULL) next = current[id];
+	next -> status = BLOCKED;
+	kmt -> spin_unlock(&trap_lock);
+	current[id] = next;
+	return current[id] -> ctx;	
 }
 
 int compare(const void *w1, const void *w2) {
