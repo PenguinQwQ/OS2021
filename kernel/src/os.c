@@ -24,7 +24,7 @@ static void os_init() {
   kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ee");
   kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ff");
   kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "gg");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "hh");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "hh");
 }
 
 static void os_run() {
