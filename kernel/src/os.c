@@ -62,7 +62,7 @@ static Context* os_trap(Event ev, Context *context) {
 	current[id] -> status = RUNNING;
 	kmt -> spin_unlock(&trap_lock);
 	current[id] = next;
-	return current[id] -> ctx;	
+	return next -> ctx;	
 }
 
 static void os_on_irq(int seq, int event, handler_t handler) {
