@@ -13,8 +13,15 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 	return 0;
 }
 
+static void kmt_teardown(task_t *task) {
+	pmm -> free(task -> stack);
+	task -> stack = NULL;
+	task -> name  = NULL;
+	task -> ctx	  = NULL;
+}
 
 MODULE_DEF(kmt) = {
-	.init   = kmt_init,
-	.create = kmt_create,
+	.init     = kmt_init,
+	.create   = kmt_create,
+	.teardown = kmt_teardown,
 };
