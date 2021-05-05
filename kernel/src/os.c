@@ -11,8 +11,8 @@ static void os_run() {
   while(1);
 }
 
-static Context* os_trap(Event ev, Context *context) {
-		
+static Context* os_trap(Event ev, Context *context) {	
+	printf("%d\n", ienabled());		
 	return NULL;	
 }
 
