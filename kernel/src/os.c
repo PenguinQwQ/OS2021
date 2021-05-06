@@ -19,7 +19,7 @@ static void os_init() {
   printf("restart\n");
   kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "dd");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ee");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ff");
@@ -38,6 +38,7 @@ Context *empty;
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
+	assert(ienabled() == true);
 	int id = cpu_current();
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
