@@ -73,6 +73,8 @@ static Context* os_trap(Event ev, Context *context) {
 		now = now -> next;
 	}
 	if (next == NULL) {
+		assert(task_head -> next != NULL);
+		printf("%d %d\n", task_head->status, task_head ->next ->status);
 		assert(0);
 		assert(origin[cpu_current()].ctx != NULL);
 		kmt -> spin_unlock(&trap_lock);
