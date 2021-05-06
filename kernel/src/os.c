@@ -61,6 +61,7 @@ static Context* os_trap(Event ev, Context *context) {
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
 	while (now != NULL)	{
+		printf("%s\n", now -> name);
 		if (now -> status == SUITABLE) {
 			next = now;
 			next -> status = RUNNING;
