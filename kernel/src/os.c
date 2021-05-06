@@ -107,8 +107,8 @@ static Context* os_trap(Event ev, Context *context) {
 	if (next -> status != BLOCKED) next -> status = RUNNING;
 
 	assert(cpu_current() == id);
-	kmt -> spin_unlock(&trap_lock);
 	current[id] = next;
+	kmt -> spin_unlock(&trap_lock);
 	assert(ienabled() == false);
 	assert(current[id] -> status != BLOCKED);
 	return next -> ctx;	
