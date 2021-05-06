@@ -45,12 +45,16 @@ static void os_run() {
 
 extern task_t *task_head;
 extern task_t *current[MAX_CPU];
+task_t origin[MAX_CPU];
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	int id = cpu_current();
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
+	}
+	else {
+		origin[cpu_current()].ctx = context;
 	}
 
 	for (int i = 0; i < Lists_sum; i++)
@@ -68,11 +72,10 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
-	if (next == NULL) next = current[id];
 	if (next == NULL) {
-	   	kmt -> spin_unlock(&trap_lock);
-		assert(0);
-		return context;
+		assert(origin[cpu_current()].ctx != NULL);
+		kmt -> spin_unlock(&trap_lock);
+		return origin[cpu_current()].ctx;
 	}
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 	if (next -> status != BLOCKED) next -> status = RUNNING;
