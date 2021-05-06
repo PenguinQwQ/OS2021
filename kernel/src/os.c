@@ -71,6 +71,7 @@ static Context* os_trap(Event ev, Context *context) {
 			break;	
 		}
 		now = now -> next;
+		printf("%d\n", now -> status);
 	}
 	if (next == NULL) {
 		assert(origin[cpu_current()].ctx != NULL);
