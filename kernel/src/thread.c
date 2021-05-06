@@ -87,14 +87,13 @@ static void sem_wait(sem_t *sem) {
 	sem -> count --;
 	int flag = 0;
 	if (sem -> count < 0) {
-	printf("%d\n", sem -> count);
 		flag = 1;
 		int id = cpu_current();
 		assert(current[id] != NULL);
 		current[id] -> status = BLOCKED;
 		task_t *tep = sem -> head;
 		sem -> head = current[id];
-		sem -> head -> next = tep;
+		sem -> head -> next2 = tep;
 		kmt->spin_unlock(&sem -> lock);
 		yield();
 	}
@@ -105,7 +104,7 @@ static void sem_signal(sem_t *sem) {
 	kmt -> spin_lock(&sem -> lock);
 	sem -> count++;
 	if (sem -> head != NULL) 
-		sem -> head -> status = SUITABLE, sem -> head = sem -> head -> next;
+		sem -> head -> status = SUITABLE, sem -> head = sem -> head -> next2;
 	kmt -> spin_unlock(&sem -> lock);
 }								
 

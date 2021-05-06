@@ -15,6 +15,7 @@ struct task{
 	void *stack;
 	int status;
 	struct task* next;
+	struct task* next2;
 };
 
 struct spinlock{
