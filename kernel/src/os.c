@@ -38,7 +38,6 @@ Context *empty;
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
-	assert(ienabled() == true);
 	int id = cpu_current();
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
@@ -49,6 +48,7 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	kmt -> spin_lock(&trap_lock);
 	task_t *next = NULL, *now = task_head;
+	assert(ienabled() == false);
 	while (now != NULL)	{
 		if (now -> status == RUNNING) {
 			next = now;
