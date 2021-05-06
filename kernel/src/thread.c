@@ -67,7 +67,6 @@ static void spin_lock(spinlock_t *lk) {
 static void spin_unlock(spinlock_t *lk) {
 	assert(ienabled() == false);
 	atomic_xchg(&lk -> lock, 0);
-	assert(ienabled() == false);
 	int id = cpu_current();
 	cnt[id]--;
 	assert(ienabled() == false);
