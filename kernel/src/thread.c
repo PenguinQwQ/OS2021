@@ -85,7 +85,7 @@ static void sem_init(sem_t *sem, const char *name, int value) {
 	sem -> head = NULL;
 }
 
-static void sem_wait(sem_t *sem) {
+static void sem_wait(sem_t *sem) {assert(0);
 	kmt -> spin_lock(&sem -> lock);
 	sem -> count --;
 	int flag = 0;
