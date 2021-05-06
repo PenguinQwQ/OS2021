@@ -96,6 +96,9 @@ static Context* os_trap(Event ev, Context *context) {
 		assert(ienabled() == false);
 		return origin[cpu_current()].ctx;
 	}
+	assert(current[id] != NULL);
+	assert(next != NULL);
+
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 	if (next -> status != BLOCKED) next -> status = RUNNING;
 
