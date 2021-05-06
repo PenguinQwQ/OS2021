@@ -85,7 +85,6 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 
 	if (next == NULL) {
-		assert(0);
 		next = current[id];
 	}
 	if (next == NULL) {
