@@ -57,10 +57,10 @@ int status[MAX_CPU];
 static void spin_lock(spinlock_t *lk) {
 	int i = ienabled();
 	iset(false);
+	while(atomic_xchg(&lk -> lock, 1));	
 	int id = cpu_current();
 	if (cnt[id] == 0) status[id] = i;
 	cnt[id] = cnt[id] + 1;
-	while(atomic_xchg(&lk -> lock, 1));	
 	assert(ienabled() == false);
 }
 
@@ -85,7 +85,7 @@ static void sem_init(sem_t *sem, const char *name, int value) {
 	sem -> head = NULL;
 }
 
-static void sem_wait(sem_t *sem) {assert(0);
+static void sem_wait(sem_t *sem) {
 	kmt -> spin_lock(&sem -> lock);
 	sem -> count --;
 	int flag = 0;
