@@ -84,12 +84,19 @@ static void sem_init(sem_t *sem, const char *name, int value) {
 static void sem_wait(sem_t *sem) {
 	kmt -> spin_lock(&sem -> lock);
 	sem -> count --;
+	int flag = 0;
 	if (sem -> count < 0) {
+		flag = 1;
 		int id = cpu_current();
 		assert(current[id] != NULL);
-		
-		
-	}	
+		current[id] -> status = BLOCKED;
+		task_t *tep = sem -> head;
+		sem -> head = current[id];
+		sem -> head -> next = tep;
+		kmt->spin_unlock(&sem -> lock);
+		yield();
+	}
+	if (flag == 0) kmt -> spin_unlock(&sem -> lock);
 }
 
 static void sem_signal(sem_t *sem) {

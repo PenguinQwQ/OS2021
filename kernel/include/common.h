@@ -25,7 +25,8 @@ struct spinlock{
 struct semaphore{
 	struct spinlock lock;
 	int count;
-	const char* name;	
+	const char* name;
+	struct task* head;	
 };
 
 
