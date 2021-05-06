@@ -60,6 +60,7 @@ static void spin_lock(spinlock_t *lk) {
 	int id = cpu_current();
 	if (cnt[id] == 0) status[id] = i;
 	cnt[id] = cnt[id] + 1;
+	assert(cnt[id] < 2);
 	while(atomic_xchg(&lk -> lock, 1));	
 	assert(ienabled() == false);
 }
