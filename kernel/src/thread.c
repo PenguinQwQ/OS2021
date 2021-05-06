@@ -79,6 +79,7 @@ static void sem_init(sem_t *sem, const char *name, int value) {
 	kmt -> spin_init(&sem -> lock, name);
 	sem -> name = name;
 	sem -> count = value;
+	sem -> head = NULL;
 }
 
 static void sem_wait(sem_t *sem) {
@@ -100,8 +101,12 @@ static void sem_wait(sem_t *sem) {
 }
 
 static void sem_signal(sem_t *sem) {
-	
-}
+	kmt -> spin_lock(&sem -> lock);
+	sem -> count++;
+	if (sem -> head != NULL) 
+		sem -> head -> status = SUITABLE, sem -> head = sem -> head -> next;
+	kmt -> spin_unlock(&sem -> lock);
+}								
 
 MODULE_DEF(kmt) = {
 	.init        = kmt_init,
