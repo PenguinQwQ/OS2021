@@ -18,13 +18,13 @@ static void os_init() {
   kmt->spin_init(&trap_lock, "os_trap");
   printf("restart\n");
   kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "dd");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ee");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ff");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "gg");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "hh");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "dd");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ee");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ff");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "gg");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "hh");
 }
 
 static void os_run() {
