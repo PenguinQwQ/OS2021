@@ -17,7 +17,7 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 	Area kstack;
 	kstack.start  = task -> stack, kstack.end = (char *)task -> stack + STACK_SIZE;
 	task -> ctx	  = kcontext(kstack, entry, arg);
-	task -> status = RUNNING;
+	task -> status = SUITABLE;
 	if (task_head == NULL) task_head = task;
 	else {
 		task_t *now = task_head;
@@ -75,6 +75,27 @@ static void spin_unlock(spinlock_t *lk) {
 	else assert(ienabled() == false);
 }
 
+static void sem_init(sem_t *sem, const char *name, int value) {
+	kmt -> spin_init(&sem -> lock, name);
+	sem -> name = name;
+	sem -> count = value;
+}
+
+static void sem_wait(sem_t *sem) {
+	kmt -> spin_lock(&sem -> lock);
+	sem -> count --;
+	if (sem -> count < 0) {
+		int id = cpu_current();
+		assert(current[id] != NULL);
+		
+		
+	}	
+}
+
+static void sem_signal(sem_t *sem) {
+	
+}
+
 MODULE_DEF(kmt) = {
 	.init        = kmt_init,
 	.create      = kmt_create,
@@ -82,4 +103,7 @@ MODULE_DEF(kmt) = {
 	.spin_init   = spin_init,
 	.spin_lock   = spin_lock,
 	.spin_unlock = spin_unlock,
+	.sem_init    = sem_init,
+	.sem_wait    = sem_wait,
+	.sem_signal  = sem_signal,
 };

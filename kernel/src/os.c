@@ -2,13 +2,15 @@
 #define MAX_CPU 128
 
 spinlock_t trap_lock;
-
+/*
 void func(void *args) {
 	int ti = 0;
 	while(1) {
 		printf("Hello from CPU#%d for %d times with arg %s!\n", cpu_current(), ti++, args);	  
 	}
 }
+*/
+
 int Lists_sum = 0;
 
 static void os_init() {
@@ -16,8 +18,8 @@ static void os_init() {
   pmm->init();
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "dd");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ee");
@@ -49,9 +51,9 @@ static Context* os_trap(Event ev, Context *context) {
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
 	while (now != NULL)	{
-		if (now -> status == RUNNING) {
+		if (now -> status == SUITABLE) {
 			next = now;
-			next -> status = BLOCKED;
+			next -> status = RUNNING;
 			break;	
 		}
 		now = now -> next;
@@ -61,8 +63,8 @@ static Context* os_trap(Event ev, Context *context) {
 	   	kmt -> spin_unlock(&trap_lock);
 		return context;
 	}
-	current[id] -> status = RUNNING;
-	next -> status = BLOCKED;
+	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
+	next -> status = RUNNING;
 	kmt -> spin_unlock(&trap_lock);
 	current[id] = next;
 	assert(ienabled() == false);
@@ -79,7 +81,7 @@ static void os_on_irq(int seq, int event, handler_t handler) {
 	// bubble sort
 	for (int j = 0; j < Lists_sum - 1; j++)
 			for (int i = 0; i < Lists_sum - 1 - j; i++)
-				if (Lists[i].seq < Lists[i + 1].seq) {
+				if (Lists[i].seq > Lists[i + 1].seq) {
 					int tep = Lists[i].seq;
 					Lists[i].seq = Lists[i + 1].seq;
 					Lists[i + 1].seq	= tep;
