@@ -2,14 +2,14 @@
 #define MAX_CPU 128
 
 spinlock_t trap_lock;
-/*
+
 void func(void *args) {
 	int ti = 0;
 	while(1) {
 		printf("Hello from CPU#%d for %d times with arg %s!\n", cpu_current(), ti++, args);	  
 	}
 }
-*/
+
 
 int Lists_sum = 0;
 
@@ -18,8 +18,8 @@ static void os_init() {
   pmm->init();
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "dd");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ee");
