@@ -73,6 +73,7 @@ static Context* os_trap(Event ev, Context *context) {
 		now = now -> next;
 	}
 	if (next == NULL) {
+		printf(" %d %d\n", task_head -> status, task_head->next -> status);	
 		if (current[id] != NULL && current[id] -> status != BLOCKED)
 			current[id] -> status = SUITABLE;
 		printf("%d %d\n", task_head -> status, task_head->next -> status);	
