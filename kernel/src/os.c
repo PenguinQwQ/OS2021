@@ -68,7 +68,6 @@ static Context* os_trap(Event ev, Context *context) {
 	else {
 		origin[cpu_current()].ctx = context;
 	}
-	assert(Lists_sum == 0);
 	for (int i = 0; i < Lists_sum; i++)
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL)
 			Lists[i].func(ev, context);
@@ -98,6 +97,8 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 	if (next -> status != BLOCKED) next -> status = RUNNING;
+
+	assert(cpu_current() == id);
 	kmt -> spin_unlock(&trap_lock);
 	current[id] = next;
 	assert(ienabled() == false);
