@@ -41,7 +41,6 @@ static Context* os_trap(Event ev, Context *context) {
 	int id = cpu_current();
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
-		return context;
 	}
 	else {
 		empty = context;
@@ -58,7 +57,10 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
-	if (next == NULL) next = current[id];
+	if (next == NULL) {
+		next = current[id];
+		assert(0);
+	}
 	if (next == NULL) {
 	   	kmt -> spin_unlock(&trap_lock);
 		//assert(empty == NULL);
