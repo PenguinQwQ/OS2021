@@ -16,15 +16,14 @@ static void os_init() {
   pmm->init();
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
-  printf("restart\n");
   kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "dd");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ee");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ff");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "gg");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "hh");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "dd");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ee");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ff");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "gg");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "hh");
 }
 
 static void os_run() {
@@ -34,7 +33,6 @@ static void os_run() {
 
 extern task_t *task_head;
 extern task_t *current[MAX_CPU];
-Context *empty;
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
@@ -42,10 +40,7 @@ static Context* os_trap(Event ev, Context *context) {
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
 	}
-	else {
-		empty = context;
-		assert(empty != NULL);
-	}
+
 	kmt -> spin_lock(&trap_lock);
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
