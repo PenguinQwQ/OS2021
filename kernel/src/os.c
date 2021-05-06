@@ -28,9 +28,9 @@ static void os_init() {
   pmm->init();
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
-  /*kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
-  kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");*/
-
+  kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
+  kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
+/*
   kmt -> sem_init(&empty, "empty", 5);
   kmt -> sem_init(&fill,  "fill" , 0);
   for (int i = 0; i < 4; i++) 
@@ -38,7 +38,7 @@ static void os_init() {
 	
   for (int i = 0; i < 5; i++) 
 	  kmt->create(pmm->alloc(sizeof(task_t)), "consumer", comsumer, NULL);
-	  
+*/	  
 }
 
 static void os_run() {
