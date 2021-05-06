@@ -78,6 +78,7 @@ static Context* os_trap(Event ev, Context *context) {
 			current[id] -> status = SUITABLE;
 		printf("%d %d\n", task_head -> status, task_head->next -> status);	
 		assert(origin[cpu_current()].ctx != NULL);
+		current[id] = &origin[cpu_current()];
 		kmt -> spin_unlock(&trap_lock);
 		return origin[cpu_current()].ctx;
 	}
