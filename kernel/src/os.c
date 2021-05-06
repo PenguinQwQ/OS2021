@@ -2,30 +2,40 @@
 #define MAX_CPU 128
 
 spinlock_t trap_lock;
-
+/*
 void func(void *args) {
 	int ti = 0;
 	while(1) {
 		printf("Hello from CPU#%d for %d times with arg %s!\n", cpu_current(), ti++, args);	  
 	}
 }
-
+*/
 
 int Lists_sum = 0;
+
+sem_t empty, fill;
+
+void producer() {
+	while(1){kmt->sem_wait(&empty); putch('('); kmt->sem_signal(&fill);}
+}
+
+void comsumer() {
+	while(1){kmt->sem_wait(&fill); putch(')'); kmt->sem_signal(&empty);}
+}
 
 static void os_init() {
   Lists_sum = 0;
   pmm->init();
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "dd");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ee");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "ff");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "gg");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "hello", func, "hh");
+
+  kmt -> sem_init(&empty, "empty", 5);
+  kmt -> sem_init(&fill,  "fill" , 0);
+  for (int i = 0; i < 4; i++) 
+	  kmt->create(pmm->alloc(sizeof(task_t)), "producer", producer, NULL);
+	
+  for (int i = 0; i < 5; i++) 
+	  kmt->create(pmm->alloc(sizeof(task_t)), "consumer", comsumer, NULL);
 }
 
 static void os_run() {
