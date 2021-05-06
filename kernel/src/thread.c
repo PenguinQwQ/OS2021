@@ -61,12 +61,15 @@ static void spin_lock(spinlock_t *lk) {
 	if (cnt[id] == 0) status[id] = i;
 	cnt[id] = cnt[id] + 1;
 	while(atomic_xchg(&lk -> lock, 1));	
+	assert(ienabled() == false);
 }
 
 static void spin_unlock(spinlock_t *lk) {
+	assert(ienabled() == false);
 	atomic_xchg(&lk -> lock, 0);
 	int id = cpu_current();
 	cnt[id]--;
+	assert(ienabled() == false);
 	if (cnt[id] == 0) {
 		if (status[id])
 			iset(true);
