@@ -62,14 +62,13 @@ static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	while (now != NULL)	{
 		if (now -> status == SUITABLE) {
-		printf("%s\n", now -> name);
 			next = now;
 			next -> status = RUNNING;
 			break;	
 		}
 		now = now -> next;
 	}
-	assert(next != NULL);
+	assert(task_head -> next != NULL);
 	if (next == NULL) next = current[id];
 	if (next == NULL) {
 	   	kmt -> spin_unlock(&trap_lock);
