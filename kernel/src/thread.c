@@ -70,6 +70,7 @@ static void spin_unlock(spinlock_t *lk) {
 	int id = cpu_current();
 	assert(lk-> cpu_id == id);
 	cnt[id]--;
+	lk -> cpu_id = MAX_CPU;
 	assert(atomic_xchg(&lk -> lock, 0) == 1);
 	assert(ienabled() == false);
 	if (cnt[id] == 0) {
