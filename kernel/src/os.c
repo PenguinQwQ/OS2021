@@ -110,6 +110,7 @@ static Context* os_trap(Event ev, Context *context) {
 	current[id] = next;
 	kmt -> spin_unlock(&trap_lock);
 	assert(ienabled() == false);
+	printf("%d\n", current[id] -> status);
 	assert(current[id] -> status != BLOCKED);
 	return next -> ctx;	
 }
