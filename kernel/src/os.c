@@ -62,12 +62,12 @@ task_t origin[MAX_CPU];
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	int id = cpu_current();
-	if (current[id] != NULL) {
-		current[id] -> ctx = context;
-	}
+	if (current[id] != NULL) current[id] -> ctx = context;
 	else {
-		origin[cpu_current()].ctx = context;
+		current[id] = &origin[id];
+		origin[id].ctx = context;
 	}
+
 	for (int i = 0; i < Lists_sum; i++)
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL)
 			Lists[i].func(ev, context);
@@ -83,6 +83,7 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
+
 	if (next == NULL) next = current[id];
 	if (next == NULL) {
 		assert(0);
