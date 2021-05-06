@@ -41,6 +41,7 @@ static Context* os_trap(Event ev, Context *context) {
 	int id = cpu_current();
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
+		return context;
 	}
 	else {
 		empty = context;
