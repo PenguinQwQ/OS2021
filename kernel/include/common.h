@@ -25,11 +25,10 @@ struct semaphore{
 	
 };
 
+
 struct Node{
-	struct handle{
-		handler_t func;
-		int seq;
-	}List[100];
-	int sum;	
-}event_handle[256];
+	handler_t func;
+	int seq;
+	int event;
+}Lists[65536];
 
