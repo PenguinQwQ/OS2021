@@ -21,6 +21,7 @@ struct task{
 struct spinlock{
 	const char *name;	
 	int  lock;
+	int  cpu_id;
 };
 
 struct semaphore{
