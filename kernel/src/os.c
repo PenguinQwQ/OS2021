@@ -83,7 +83,10 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
+	if (next == NULL) next = current[id];
 	if (next == NULL) {
+		kmt -> spin_unlock(&trap_lock);
+		return context;
 		if (current[id] != NULL && current[id] -> status != BLOCKED)
 			current[id] -> status = SUITABLE;
 		assert(origin[cpu_current()].ctx != NULL);
