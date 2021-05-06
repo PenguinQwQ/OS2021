@@ -75,7 +75,7 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
-	if (next == NULL) next = current[id];
+//	if (next == NULL) next = current[id];
 	if (next == NULL) {
 	/*	kmt -> spin_unlock(&trap_lock);
 		return context;
