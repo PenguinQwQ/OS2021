@@ -57,18 +57,13 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
-	if (next == NULL) {
-		next = current[id];
-		assert(0);
-	}
+	if (next == NULL) next = current[id];
 	if (next == NULL) {
 	   	kmt -> spin_unlock(&trap_lock);
-		//assert(empty == NULL);
-		assert(0);
 		return context;
 	}
-	next -> status = BLOCKED;
 	current[id] -> status = RUNNING;
+	next -> status = BLOCKED;
 	kmt -> spin_unlock(&trap_lock);
 	current[id] = next;
 	assert(ienabled() == false);
