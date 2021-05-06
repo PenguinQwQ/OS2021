@@ -79,6 +79,7 @@ static Context* os_trap(Event ev, Context *context) {
 	current[id] = next;
 	assert(ienabled() == false);
 	printf("%s\n", current[id] -> name);
+	assert(current[id] -> status != BLOCKED);
 	return next -> ctx;	
 }
 
