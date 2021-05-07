@@ -61,7 +61,6 @@ extern task_t *current[MAX_CPU];
 task_t origin[MAX_CPU];
 
 static Context* os_trap(Event ev, Context *context) {
-	return context;
 	assert(ienabled() == false);
 	int id = cpu_current();
 	if (current[id] != NULL) current[id] -> ctx = context;
@@ -79,6 +78,7 @@ static Context* os_trap(Event ev, Context *context) {
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
 	while (now != NULL)	{
+		assert(now -> status != BLOCKED);
 		if (now -> status == SUITABLE) {
 			next = now;
 			next -> status = RUNNING;
@@ -87,6 +87,7 @@ static Context* os_trap(Event ev, Context *context) {
 		now = now -> next;
 	}
 	assert(next != NULL);
+	/*
 	if (next == NULL) {
 		next = current[id];
 	}
@@ -103,17 +104,17 @@ static Context* os_trap(Event ev, Context *context) {
 		assert(ienabled() == false);
 		return origin[cpu_current()].ctx;
 	}
-	assert(next != NULL);
-
+*/
 	if (current[id] != NULL && \
 		current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
+	assert(current[id] == NULL || current[id] != next);
 	if (next -> status != BLOCKED) next -> status = RUNNING;
 
 	assert(cpu_current() == id);
 	current[id] = next;
 	kmt -> spin_unlock(&trap_lock);
 	assert(ienabled() == false);
-	assert(current[id] -> status != BLOCKED);
+	assert(current[id] -> status == RUNNING);
 	return next -> ctx;	
 }
 
