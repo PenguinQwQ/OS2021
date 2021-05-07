@@ -25,7 +25,6 @@ void comsumer() {
 int T = 0;
 static void os_init() {
   T++;
-  assert(T==1);
   Lists_sum = 0;
   pmm->init();
   kmt->init();
@@ -86,7 +85,7 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
-
+	assert(next != NULL);
 	if (next == NULL) {
 		next = current[id];
 	}
