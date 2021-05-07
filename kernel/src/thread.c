@@ -105,9 +105,7 @@ static void sem_wait(sem_t *sem) {
 		sem -> head -> next = tep;
 		kmt->spin_unlock(&sem -> lock);
 		yield();
-		assert(flag == 1);
-		assert(cpu_current() == id);
-		assert(current[id] -> status == RUNNING);
+		assert(current[cpu_current()] -> status == RUNNING);
 	}
 	if (flag == 0) kmt -> spin_unlock(&sem -> lock);
 }
