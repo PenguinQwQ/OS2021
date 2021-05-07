@@ -80,7 +80,7 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
 	}
-	assert(current[id] -> status == RUNNING);
+//	assert(current[id] -> status == RUNNING);
 	for (int i = 0; i < Lists_sum; i++)
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL)
 			Lists[i].func(ev, context);
@@ -88,7 +88,7 @@ static Context* os_trap(Event ev, Context *context) {
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
 	if (current[id] -> status == SUITABLE) {
-		assert(0);
+//		assert(0);
 		current[id] -> status = RUNNING;
 		assert(current[id] -> on == true);
 		kmt -> spin_unlock(&trap_lock);
@@ -108,10 +108,10 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	assert(current[id] != NULL);
 	if (tot == 0) {
-		assert(0);
-		kmt -> spin_unlock(&trap_lock);
-		assert(ienabled() == false);
-		return context;
+//		assert(0);
+//		kmt -> spin_unlock(&trap_lock);
+//		assert(ienabled() == false);
+//		return context;
 		assert(ienabled() == false);
 		if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 		current[id] -> on = false;
