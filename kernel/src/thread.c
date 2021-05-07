@@ -98,7 +98,6 @@ static void sem_wait(sem_t *sem) {
 	sem -> count --;
 	int flag = 0;
 	if (sem -> count < 0) {
-		printf("%d %s\n", sem -> count, sem->name);
 		flag = 1;
 		int id = cpu_current();
 		assert(current[id] != NULL);
@@ -126,9 +125,7 @@ static void sem_signal(sem_t *sem) {
 	if (sem -> head != NULL) {
 		assert(sem -> head -> task -> status == BLOCKED);
 		sem -> head -> task -> status = SUITABLE;
-		assert(current[cpu_current()] -> status!= SUITABLE);
-	/*	for (int i = 0; i < cpu_count(); i++)
-				assert(current[i] -> status != SUITABLE);*/
+		assert(current[cpu_current()] -> status != SUITABLE);
 		tep = sem -> head;
 		sem -> head = sem -> head -> next;
 		pmm -> free(tep);

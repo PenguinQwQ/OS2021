@@ -15,6 +15,7 @@ struct task{
 	Context *ctx;
 	void *stack;
 	int status;
+	bool on;
 	struct task* next;
 };
 
