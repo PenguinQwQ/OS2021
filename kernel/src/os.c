@@ -63,17 +63,19 @@ static void os_run() {
 extern task_t *task_head;
 extern task_t *current[MAX_CPU];
 task_t origin[MAX_CPU];
+int lst = 0;
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
+	if (lst != id) printf("%d\n", id);
+	lst = id;
 	if (current[id] != NULL) current[id] -> ctx = context;
 	else {
 		current[id] = &origin[id];
 		origin[id].ctx = context;
 		current[id] -> status = RUNNING;
-		printf("\n");
 	}
 	assert(current[id] -> status != SUITABLE);
 
