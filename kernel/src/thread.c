@@ -97,8 +97,8 @@ static void sem_wait(sem_t *sem) {
 	assert(ienabled() == false);
 	sem -> count --;
 	int flag = 0;
-		printf("%d %s\n", sem -> count, sem->name);
 	if (sem -> count < 0) {
+		printf("%d %s\n", sem -> count, sem->name);
 		flag = 1;
 		int id = cpu_current();
 		assert(current[id] != NULL);
