@@ -123,6 +123,7 @@ static void sem_signal(sem_t *sem) {
 	struct WaitList *tep;
 	if (sem -> head != NULL) {
 		sem -> head -> task -> status = SUITABLE;
+		printf("%s\n", sem -> head -> task -> name);
 		assert(sem -> head -> task != current[cpu_current()]);
 		tep = sem -> head;
 		sem -> head = sem -> head -> next;
