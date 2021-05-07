@@ -79,6 +79,7 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] = &origin[id];
 		origin[id].ctx = context;
 		current[id] -> status = RUNNING;
+		current[id] -> on = true;
 	}
 	assert(current[id] -> status == RUNNING);
 	for (int i = 0; i < Lists_sum; i++)
