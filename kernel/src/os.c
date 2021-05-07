@@ -81,6 +81,7 @@ static Context* os_trap(Event ev, Context *context) {
 	kmt -> spin_lock(&trap_lock);
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
+	assert(current[id] -> status != SUITABLE);
 	while (now != NULL)	{
 		if (now -> status == SUITABLE) {
 			next = now;
@@ -104,7 +105,6 @@ static Context* os_trap(Event ev, Context *context) {
 		return current[id] -> ctx;
 	}
 	assert(next != NULL);
-	assert(next -> status == RUNNING);
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 	assert(current[id] != next && next -> status == RUNNING);
 
