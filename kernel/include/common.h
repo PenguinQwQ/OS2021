@@ -15,7 +15,6 @@ struct task{
 	void *stack;
 	int status;
 	struct task* next;
-	struct task* next2;
 };
 
 struct spinlock{
@@ -24,11 +23,16 @@ struct spinlock{
 	int  cpu_id;
 };
 
+struct WaitList{
+	struct task *task;
+	struct WaitList *next;
+};
+
 struct semaphore{
 	struct spinlock lock;
 	int count;
 	const char* name;
-	struct task* head;	
+	struct WaitList *head;	
 };
 
 

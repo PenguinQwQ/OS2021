@@ -99,9 +99,10 @@ static void sem_wait(sem_t *sem) {
 		int id = cpu_current();
 		assert(current[id] != NULL);
 		current[id] -> status = BLOCKED;
-		task_t *tep = sem -> head;
-		sem -> head = current[id];
-		sem -> head -> next2 = tep;
+		struct WaitList *tep = sem -> head;
+		sem -> head = pmm -> alloc(sizeof(struct WaitList));
+		sem -> head -> task = current[id];
+		sem -> head -> next = tep;
 		kmt->spin_unlock(&sem -> lock);
 		yield();
 	}
@@ -111,8 +112,12 @@ static void sem_wait(sem_t *sem) {
 static void sem_signal(sem_t *sem) {
 	kmt -> spin_lock(&sem -> lock);
 	sem -> count++;
+	struct WaitList *tep;
 	if (sem -> head != NULL) 
-		sem -> head -> status = SUITABLE, sem -> head = sem -> head -> next2;
+		sem -> head -> task -> status = SUITABLE, \
+		tep = sem -> head, \
+		sem -> head = sem -> head -> next, \
+		pmm -> free(tep);
 	kmt -> spin_unlock(&sem -> lock);
 }								
 
