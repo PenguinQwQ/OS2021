@@ -101,9 +101,9 @@ static void sem_wait(sem_t *sem) {
 	kmt -> spin_lock(&trap_lock);
 	assert(ienabled() == false);
 	sem -> count --;
-	int flag = 0;
+//	int flag = 0;
 	if (sem -> count < 0) {
-		flag = 1;
+//		flag = 1;
 		int id = cpu_current();
 		assert(current[id] != NULL);
 	/*	current[id] -> status = BLOCKED;
@@ -121,10 +121,10 @@ static void sem_wait(sem_t *sem) {
 			kmt -> spin_lock(&trap_lock);
 		}
 	}
-	if (flag == 0) {
+//	if (flag == 0) {
 		kmt -> spin_unlock(&trap_lock);
 		kmt -> spin_unlock(&sem -> lock);
-	}
+//	}
 }
 
 static void sem_signal(sem_t *sem) {
