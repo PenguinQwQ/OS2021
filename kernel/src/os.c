@@ -22,8 +22,10 @@ void producer() {
 void comsumer() {
 	while(1){kmt->sem_wait(&fill); putch(')'); kmt->sem_signal(&empty);}
 }
-
+int T = 0;
 static void os_init() {
+  T++;
+  assert(T==1);
   Lists_sum = 0;
   pmm->init();
   kmt->init();

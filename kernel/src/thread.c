@@ -28,7 +28,6 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 }
 
 static void kmt_teardown(task_t *task) {
-	assert(0);
 	if (task_head == task) task_head = NULL;
 	else {
 		task_t *now = task_head;
