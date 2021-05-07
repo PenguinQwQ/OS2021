@@ -119,8 +119,8 @@ static Context* os_trap(Event ev, Context *context) {
 		assert(ienabled() == false);
 		return current[id] -> ctx;
 	}
-	assert(next != NULL);
 	next = valid[rand() % tot];
+	assert(next != NULL);
 	next -> status = RUNNING;
 	next -> times  = next -> times + 1;
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
