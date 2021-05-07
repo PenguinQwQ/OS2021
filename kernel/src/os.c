@@ -66,6 +66,7 @@ task_t origin[MAX_CPU];
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
+	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	if (current[id] != NULL) current[id] -> ctx = context;
 	else {
@@ -78,7 +79,6 @@ static Context* os_trap(Event ev, Context *context) {
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL)
 			Lists[i].func(ev, context);
 			
-	kmt -> spin_lock(&trap_lock);
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
 	assert(current[id] -> status != SUITABLE);
@@ -111,9 +111,9 @@ static Context* os_trap(Event ev, Context *context) {
 
 	assert(cpu_current() == id);
 	current[id] = next;
+	assert(current[id] -> status == RUNNING);
 	kmt -> spin_unlock(&trap_lock);
 	assert(ienabled() == false);
-	assert(current[id] -> status == RUNNING);
 	return next -> ctx;	
 }
 
