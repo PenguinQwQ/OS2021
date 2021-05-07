@@ -107,7 +107,6 @@ static void sem_wait(sem_t *sem) {
 		sem -> head -> task = current[id];
 		sem -> head -> next = tep;
 		kmt -> spin_unlock(&trap_lock);
-		assert(ienabled() == false);
 		kmt->spin_unlock(&sem -> lock);
 		yield();
 		assert(current[cpu_current()] -> status == RUNNING);

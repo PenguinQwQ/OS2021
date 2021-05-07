@@ -88,6 +88,7 @@ static Context* os_trap(Event ev, Context *context) {
 	while (now != NULL)	{
 		if (now -> status == SUITABLE) {
 			next = now;
+			assert(next != current[id]);
 			next -> status = RUNNING;
 			break;	
 		}
