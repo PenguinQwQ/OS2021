@@ -108,7 +108,6 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	assert(current[id] != NULL);
 	if (tot == 0) {
-		assert(0);
 		kmt -> spin_unlock(&trap_lock);
 		assert(ienabled() == false);
 		return context;
@@ -123,6 +122,7 @@ static Context* os_trap(Event ev, Context *context) {
 		assert(ienabled() == false);
 		return current[id] -> ctx;
 	}
+	printf("%d\n", tot);
 	next = valid[rand() % tot];
 	assert(next != NULL);
 	next -> status = RUNNING;
