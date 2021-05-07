@@ -50,7 +50,7 @@ static void os_init() {
  for (int i = 0; i < 4; i++) 
 	  kmt->create(pmm->alloc(sizeof(task_t)), "producer", producer, NULL);
 	
-  //for (int i = 0; i < 5; i++) 
+  for (int i = 0; i < 5; i++) 
 	  kmt->create(pmm->alloc(sizeof(task_t)), "consumer", comsumer, NULL);
 	  
 }
