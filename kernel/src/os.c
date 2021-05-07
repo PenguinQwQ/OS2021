@@ -32,13 +32,13 @@ static void os_init() {
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
-/*  kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
+  kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
-  kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");*/
+  kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
   
 /*
   kmt -> sem_init(&empty, "empty", 5);
@@ -69,11 +69,11 @@ static Context* os_trap(Event ev, Context *context) {
 		origin[id].ctx = context;
 		current[id] -> status = RUNNING;
 	}*/
-
+/*
 	for (int i = 0; i < Lists_sum; i++)
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL)
 			Lists[i].func(ev, context);
-			
+*/			
 	kmt -> spin_lock(&trap_lock);
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
