@@ -76,7 +76,7 @@ static Context* os_trap(Event ev, Context *context) {
 		origin[id].ctx = context;
 		current[id] -> status = RUNNING;
 	}
-	if (current[id] -> status != SUITABLE) {
+	if (current[id] -> status == SUITABLE) {
 		printf("%d %s\n", id, current[id] -> name);
 	}
 	assert(current[id] -> status != SUITABLE);
