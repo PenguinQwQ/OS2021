@@ -105,7 +105,7 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
-	assert(current[id] != next && next -> status == RUNNING);
+	assert(current[id] != next);
 
 	assert(cpu_current() == id);
 	current[id] = next;
