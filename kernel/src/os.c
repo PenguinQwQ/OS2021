@@ -123,7 +123,7 @@ static Context* os_trap(Event ev, Context *context) {
 		return current[id] -> ctx;
 	}
 	int nxt = rand() % tot;
-	printf("%d\n", nxt);
+	printf("%d\n", tot);
 	next = valid[nxt];
 	assert(next != NULL);
 	next -> status = RUNNING;
