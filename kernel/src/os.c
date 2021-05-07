@@ -61,6 +61,7 @@ extern task_t *current[MAX_CPU];
 task_t origin[MAX_CPU];
 
 static Context* os_trap(Event ev, Context *context) {
+	return context;
 	assert(ienabled() == false);
 	int id = cpu_current();
 	if (current[id] != NULL) current[id] -> ctx = context;
