@@ -5,16 +5,14 @@ task_t *task_head;
 task_t *current[MAX_CPU];
 extern spinlock_t trap_lock;
 
-spinlock_t lock_al;
 static void kmt_init() {
 	task_head = NULL;
 	for (int i = 0; i < MAX_CPU; i++)
 		current[i] = NULL;	
-	kmt -> spin_init(&lock_al, "all");
 }
 
 static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), void *arg) {
-	kmt -> spin_lock(&lock_al);
+	kmt -> spin_lock(&trap_lock);
 	task -> stack = pmm -> alloc(STACK_SIZE);
 	assert(task -> stack != NULL);
 	task -> name  = name;
@@ -30,12 +28,12 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 		while (now -> next != NULL) now = now -> next;
 		now -> next = task;
 	}
-	kmt -> spin_unlock(&lock_al);
+	kmt -> spin_unlock(&trap_lock);
 	return 0;
 }
 
 static void kmt_teardown(task_t *task) {
-	kmt -> spin_lock(&lock_al);
+	kmt -> spin_lock(&trap_lock);
 	if (task_head == task) task_head = NULL;
 	else {
 		task_t *now = task_head;
@@ -52,7 +50,7 @@ static void kmt_teardown(task_t *task) {
 	task -> ctx	  = NULL;
 	task -> next  = 0;
 	pmm  -> free(task);
-	kmt -> spin_unlock(&lock_al);
+	kmt -> spin_unlock(&trap_lock);
 }
 
 static void spin_init(spinlock_t *lk, const char *name) {
@@ -101,7 +99,6 @@ static void sem_init(sem_t *sem, const char *name, int value) {
 static void sem_wait(sem_t *sem) {
 	kmt -> spin_lock(&sem -> lock);
 	kmt -> spin_lock(&trap_lock);
-	kmt -> spin_lock(&lock_al);
 	assert(ienabled() == false);
 	sem -> count --;
 	int flag = 0;
@@ -114,13 +111,11 @@ static void sem_wait(sem_t *sem) {
 		sem -> head = pmm -> alloc(sizeof(struct WaitList));
 		sem -> head -> task = current[id];
 		sem -> head -> next = tep;
-		kmt -> spin_unlock(&lock_al);
 		kmt -> spin_unlock(&trap_lock);
 		kmt->spin_unlock(&sem -> lock);
 		yield();
 	}
 	if (flag == 0) {
-		kmt -> spin_unlock(&lock_al);
 		kmt -> spin_unlock(&trap_lock);
 		kmt -> spin_unlock(&sem -> lock);
 	}
@@ -129,7 +124,6 @@ static void sem_wait(sem_t *sem) {
 static void sem_signal(sem_t *sem) {
 	kmt -> spin_lock(&sem -> lock);
 	kmt -> spin_lock(&trap_lock);
-	kmt -> spin_lock(&lock_al);
 	sem -> count++;
 	struct WaitList *tep;
 	if (sem -> head != NULL) {
@@ -141,7 +135,6 @@ static void sem_signal(sem_t *sem) {
 		pmm -> free(tep);
 	}
 	assert(current[cpu_current()] -> status == RUNNING);
-	kmt -> spin_unlock(&lock_al);
 	kmt -> spin_unlock(&trap_lock);
 	kmt -> spin_unlock(&sem -> lock);
 }								
