@@ -128,6 +128,7 @@ static void sem_signal(sem_t *sem) {
 		tep = sem -> head;
 		sem -> head = sem -> head -> next;
 		pmm -> free(tep);
+		assert(sem -> head == NULL);
 	}
 	kmt -> spin_unlock(&trap_lock);
 	kmt -> spin_unlock(&sem -> lock);
