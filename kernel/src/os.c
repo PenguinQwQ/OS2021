@@ -68,6 +68,7 @@ static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
+	assert(current[id] -> status != BLOCKED);
 	if (current[id] != NULL) current[id] -> ctx = context;
 	else {
 		current[id] = &origin[id];
