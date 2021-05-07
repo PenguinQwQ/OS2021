@@ -63,6 +63,10 @@ static void os_run() {
 extern task_t *task_head;
 extern task_t *current[MAX_CPU];
 task_t origin[MAX_CPU];
+#define N 65536
+task_t *valid[N];
+int tot = 0;
+
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	kmt -> spin_lock(&trap_lock);
@@ -90,10 +94,10 @@ static Context* os_trap(Event ev, Context *context) {
 		assert(ienabled() == false);
 		return context;
 	}
-	int ti = INT_MAX;
+	tot = 0;
 	while (now != NULL)	{
 		if (now -> status == SUITABLE && now -> on == false) {
-			if (now -> times < ti) ti = now -> times, next = now;
+			valid[tot++] = now;
 		//	next = now;
 			assert(next != current[id]);
 		//	next -> status = RUNNING;
@@ -103,7 +107,7 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	assert(current[id] != NULL);
 
-	if (next == NULL) {
+	if (tot == 0) {
 		assert(ienabled() == false);
 		if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 		current[id] -> on = false;
@@ -116,6 +120,7 @@ static Context* os_trap(Event ev, Context *context) {
 		return current[id] -> ctx;
 	}
 	assert(next != NULL);
+	next = valid[rand() % tot];
 	next -> status = RUNNING;
 	next -> times  = next -> times + 1;
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
