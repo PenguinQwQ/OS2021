@@ -64,11 +64,11 @@ static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	int id = cpu_current();
 	if (current[id] != NULL) current[id] -> ctx = context;
-	else {
+	/*else {
 		current[id] = &origin[id];
 		origin[id].ctx = context;
 		current[id] -> status = RUNNING;
-	}
+	}*/
 
 	for (int i = 0; i < Lists_sum; i++)
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL)
