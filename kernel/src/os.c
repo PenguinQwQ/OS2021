@@ -122,8 +122,9 @@ static Context* os_trap(Event ev, Context *context) {
 		assert(ienabled() == false);
 		return current[id] -> ctx;
 	}
-	printf("%d\n", tot);
-	next = valid[rand() % tot];
+	int nxt = rand() % tot;
+	printf("%d\n", nxt);
+	next = valid[nxt];
 	assert(next != NULL);
 	next -> status = RUNNING;
 	next -> times  = next -> times + 1;
