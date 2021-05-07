@@ -127,6 +127,7 @@ static Context* os_trap(Event ev, Context *context) {
 	current[id] -> on = true;
 	assert(current[id] -> status == RUNNING);
 	kmt -> spin_unlock(&trap_lock);
+	assert(current[id] -> ctx->rip <= 0x200000 && current[id] -> ctx->rip >= 0x100000);
 	assert(ienabled() == false);
 	return current[id] -> ctx;	
 }
