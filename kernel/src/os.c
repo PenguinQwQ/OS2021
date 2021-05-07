@@ -69,7 +69,6 @@ static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
-	if (lst != id) printf("%d\n", id);
 	lst = id;
 	if (current[id] != NULL) current[id] -> ctx = context;
 	else {
