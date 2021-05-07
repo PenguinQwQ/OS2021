@@ -49,6 +49,7 @@ static void kmt_teardown(task_t *task) {
 static void spin_init(spinlock_t *lk, const char *name) {
 	lk -> name = name;
 	lk -> lock = 0;	
+	lk -> cpu_id = MAX_CPU;
 }
 
 int cnt[MAX_CPU];
@@ -57,6 +58,7 @@ int status[MAX_CPU];
 static void spin_lock(spinlock_t *lk) {
 	int i = ienabled();
 	iset(false);
+	assert(lk -> cpu_id != cpu_current() );
 	while(atomic_xchg(&lk -> lock, 1));	
 	int id = cpu_current();
 	if (cnt[id] == 0) status[id] = i;
