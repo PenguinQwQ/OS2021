@@ -32,6 +32,7 @@ static void os_init() {
   pmm->init();
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
+  dev -> init();
 /*
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
