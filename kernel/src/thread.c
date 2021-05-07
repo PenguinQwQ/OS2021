@@ -122,7 +122,7 @@ static void sem_wait(sem_t *sem) {
 		}*/
 	}
 	if (flag == 0) {
-		sem -> count--;
+//		sem -> count--;
 		kmt -> spin_unlock(&trap_lock);
 		kmt -> spin_unlock(&sem -> lock);
 	}
