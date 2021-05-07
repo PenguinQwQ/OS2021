@@ -113,11 +113,13 @@ static void sem_signal(sem_t *sem) {
 	kmt -> spin_lock(&sem -> lock);
 	sem -> count++;
 	struct WaitList *tep;
-	if (sem -> head != NULL) 
-		sem -> head -> task -> status = SUITABLE, \
-		tep = sem -> head, \
-		sem -> head = sem -> head -> next, \
+	if (sem -> head != NULL) {
+		sem -> head -> task -> status = SUITABLE;
+		assert(sem -> head -> task != current[cpu_current()]);
+		tep = sem -> head;
+		sem -> head = sem -> head -> next;
 		pmm -> free(tep);
+	}
 	kmt -> spin_unlock(&sem -> lock);
 }								
 
