@@ -74,8 +74,8 @@ static void spin_unlock(spinlock_t *lk) {
 	assert(lk-> cpu_id == id);
 	cnt[id]--;
 	lk -> cpu_id = MAX_CPU;
-	assert(atomic_xchg(&lk -> lock, 0) == 1);
 	assert(ienabled() == false);
+	assert(atomic_xchg(&lk -> lock, 0) == 1);
 	if (cnt[id] == 0) {
 		if (status[id])
 			iset(true);
@@ -126,7 +126,7 @@ static void sem_signal(sem_t *sem) {
 	if (sem -> head != NULL) {
 		assert(sem -> head -> task -> status == BLOCKED);
 		sem -> head -> task -> status = SUITABLE;
-//		assert(current[cpu_current()] -> status!= SUITABLE);
+		assert(current[cpu_current()] -> status!= SUITABLE);
 	/*	for (int i = 0; i < cpu_count(); i++)
 				assert(current[i] -> status != SUITABLE);*/
 		tep = sem -> head;
