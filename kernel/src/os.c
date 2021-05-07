@@ -93,7 +93,7 @@ static Context* os_trap(Event ev, Context *context) {
 		assert(current[id] -> on == true);
 		kmt -> spin_unlock(&trap_lock);
 		assert(ienabled() == false);
-		return context;
+		return current[id] -> ctx;
 	}
 	tot = 0;
 	while (now != NULL)	{
