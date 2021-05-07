@@ -117,9 +117,9 @@ static void sem_wait(sem_t *sem) {
 			kmt -> spin_unlock(&trap_lock);
 			kmt->spin_unlock(&sem -> lock);*/
 			yield();
-		/*	kmt -> spin_lock(&sem -> lock);
+			kmt -> spin_lock(&sem -> lock);
 			kmt -> spin_lock(&trap_lock);
-		}*/
+	//	}
 	}
 	if (flag == 0) {
 //		sem -> count--;
