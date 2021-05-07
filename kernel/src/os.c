@@ -32,6 +32,7 @@ static void os_init() {
   pmm->init();
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
+/*
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "cc");
@@ -42,16 +43,16 @@ static void os_init() {
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "hh");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "ii");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "jj");
-  
-/*
+*/
+
   kmt -> sem_init(&empty, "empty", 5);
   kmt -> sem_init(&fill,  "fill" , 0);
-  for (int i = 0; i < 4; i++) 
+//  for (int i = 0; i < 4; i++) 
 	  kmt->create(pmm->alloc(sizeof(task_t)), "producer", producer, NULL);
 	
-  for (int i = 0; i < 5; i++) 
+//  for (int i = 0; i < 5; i++) 
 	  kmt->create(pmm->alloc(sizeof(task_t)), "consumer", comsumer, NULL);
-*/	  
+	  
 }
 
 static void os_run() {
@@ -67,11 +68,11 @@ static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	int id = cpu_current();
 	if (current[id] != NULL) current[id] -> ctx = context;
-	/*else {
+	else {
 		current[id] = &origin[id];
 		origin[id].ctx = context;
 		current[id] -> status = RUNNING;
-	}*/
+	}
 /*
 	for (int i = 0; i < Lists_sum; i++)
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL)
@@ -81,7 +82,6 @@ static Context* os_trap(Event ev, Context *context) {
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
 	while (now != NULL)	{
-		assert(now -> status != BLOCKED);
 		if (now -> status == SUITABLE) {
 			next = now;
 			next -> status = RUNNING;
@@ -89,29 +89,23 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
-	assert(next != NULL);
-	/*
+
+	assert(current[id] != NULL);
+
 	if (next == NULL) {
-		next = current[id];
-	}
-	if (next == NULL) {
-		assert(0);
-		kmt -> spin_unlock(&trap_lock);
 		assert(ienabled() == false);
-		return context;
-		if (current[id] != NULL && current[id] -> status != BLOCKED)
-			current[id] -> status = SUITABLE;
+		if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
+
 		assert(origin[cpu_current()].ctx != NULL);
 		current[id] = &origin[cpu_current()];
+		current[id] -> status = RUNNING;
 		kmt -> spin_unlock(&trap_lock);
 		assert(ienabled() == false);
-		return origin[cpu_current()].ctx;
+		return current[id] -> ctx;
 	}
-*/
-	if (current[id] != NULL && \
-		current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
-	assert(current[id] == NULL || current[id] != next);
-	if (next -> status != BLOCKED) next -> status = RUNNING;
+
+	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
+	assert(current[id] != next && next -> status == RUNNING);
 
 	assert(cpu_current() == id);
 	current[id] = next;
