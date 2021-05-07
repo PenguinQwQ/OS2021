@@ -133,8 +133,8 @@ static void sem_signal(sem_t *sem) {
 		assert(sem -> head == NULL);
 	}
 	assert(current[cpu_current()] -> status == RUNNING);
-	kmt -> spin_unlock(&trap_lock);
 	kmt -> spin_unlock(&sem -> lock);
+	kmt -> spin_unlock(&trap_lock);
 }								
 
 MODULE_DEF(kmt) = {
