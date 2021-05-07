@@ -63,9 +63,10 @@ static void os_run() {
 extern task_t *task_head;
 extern task_t *current[MAX_CPU];
 task_t origin[MAX_CPU];
-
+extern spinlock_t lock_al;
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
+	kmt -> spin_lock(&lock_al);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	if (current[id] != NULL) {
@@ -88,6 +89,7 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> status = RUNNING;
 		assert(current[id] -> on == true);
 		kmt -> spin_unlock(&trap_lock);
+		kmt -> spin_unlock(&lock_al);
 		assert(ienabled() == false);
 		return context;
 	}
@@ -113,6 +115,7 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
 		kmt -> spin_unlock(&trap_lock);
+		kmt -> spin_unlock(&lock_al);
 		assert(ienabled() == false);
 		return current[id] -> ctx;
 	}
@@ -127,6 +130,7 @@ static Context* os_trap(Event ev, Context *context) {
 	current[id] -> on = true;
 	assert(current[id] -> status == RUNNING);
 	kmt -> spin_unlock(&trap_lock);
+	kmt -> spin_unlock(&lock_al);
 	assert(ienabled() == false);
 	return current[id] -> ctx;	
 }

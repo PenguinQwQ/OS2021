@@ -9,7 +9,7 @@
 
 extern struct task* task_head;
 extern struct task* current[128];
-extern spinlock_t trap_lock;
+extern spinlock_t trap_lock, lock_al;
 
 struct task{
 	const char *name;	
