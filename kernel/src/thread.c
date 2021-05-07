@@ -113,12 +113,12 @@ static void sem_wait(sem_t *sem) {
 		sem -> head -> task = current[id];
 		sem -> head -> next = tep;
 	/*	
-		while(sem -> count <= 0) {
+		while(sem -> count <= 0) {*/
 			kmt -> spin_unlock(&trap_lock);
-			kmt->spin_unlock(&sem -> lock);*/
+			kmt->spin_unlock(&sem -> lock);
 			yield();
-			kmt -> spin_unlock(&sem -> lock);
-			kmt -> spin_unlock(&trap_lock);
+		//	kmt -> spin_unlock(&sem -> lock);
+		//	kmt -> spin_unlock(&trap_lock);
 	//	}
 	}
 	if (flag == 0) {
