@@ -6,10 +6,7 @@ spinlock_t trap_lock;
 void func(void *args) {
 	int ti = 0;
 	while(1) {
-		int i = ienabled();
-		iset(false);
 		printf("Hello from CPU#%d for %d times with arg %s!\n", cpu_current(), ti++, args);	  
-		if (i)iset(true);
 	}
 }
 
