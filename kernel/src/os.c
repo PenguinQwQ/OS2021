@@ -92,17 +92,17 @@ static Context* os_trap(Event ev, Context *context) {
 		assert(ienabled() == false);
 		return context;
 	}
-
+	int ti = INT_MAX;
 	while (now != NULL)	{
 		if (now -> status == SUITABLE && now -> on == false) {
-			next = now;
+			if (now -> times < ti) ti = now -> times, next = now;
+		//	next = now;
 			assert(next != current[id]);
-			next -> status = RUNNING;
-			break;	
+		//	next -> status = RUNNING;
+		//	break;	
 		}
 		now = now -> next;
 	}
-
 	assert(current[id] != NULL);
 
 	if (next == NULL) {
@@ -118,6 +118,7 @@ static Context* os_trap(Event ev, Context *context) {
 		return current[id] -> ctx;
 	}
 	assert(next != NULL);
+	next -> status = RUNNING;
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 	current[id] -> on = false;
 	assert(current[id] != next && next -> status == RUNNING);

@@ -19,6 +19,8 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 	kstack.start  = task -> stack, kstack.end = (char *)task -> stack + STACK_SIZE;
 	task -> ctx	  = kcontext(kstack, entry, arg);
 	task -> status = SUITABLE;
+	task -> on = false;
+	task -> times = 0;
 	if (task_head == NULL) task_head = task;
 	else {
 		task_t *now = task_head;

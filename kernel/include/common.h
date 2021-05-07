@@ -1,6 +1,7 @@
 #include <kernel.h>
 #include <klib.h>
 #include <klib-macros.h>
+#include <limits.h>
 #define STACK_SIZE 4096 * 8
 #define SUITABLE  2
 #define RUNNING   1
@@ -16,6 +17,7 @@ struct task{
 	void *stack;
 	int status;
 	bool on;
+	int times;
 	struct task* next;
 };
 
