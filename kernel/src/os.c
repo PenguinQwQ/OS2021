@@ -66,6 +66,7 @@ static Context* os_trap(Event ev, Context *context) {
 	else {
 		current[id] = &origin[id];
 		origin[id].ctx = context;
+		current[id] -> status = RUNNING;
 	}
 
 	for (int i = 0; i < Lists_sum; i++)
@@ -110,7 +111,6 @@ static Context* os_trap(Event ev, Context *context) {
 	current[id] = next;
 	kmt -> spin_unlock(&trap_lock);
 	assert(ienabled() == false);
-	printf("%d\n", current[id] -> status);
 	assert(current[id] -> status != BLOCKED);
 	return next -> ctx;	
 }
