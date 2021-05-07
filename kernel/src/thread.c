@@ -126,15 +126,16 @@ static void sem_signal(sem_t *sem) {
 	if (sem -> head != NULL) {
 		assert(sem -> head -> task -> status == BLOCKED);
 		sem -> head -> task -> status = SUITABLE;
-		assert(sem -> head -> task != current[cpu_current()]);
+		for (int i = 0; i < cpu_count(); i++)
+				assert(current[i] -> status != SUITABLE);
 		tep = sem -> head;
 		sem -> head = sem -> head -> next;
 		pmm -> free(tep);
 		assert(sem -> head == NULL);
 	}
 	assert(current[cpu_current()] -> status == RUNNING);
-	kmt -> spin_unlock(&sem -> lock);
 	kmt -> spin_unlock(&trap_lock);
+	kmt -> spin_unlock(&sem -> lock);
 }								
 
 MODULE_DEF(kmt) = {
