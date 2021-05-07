@@ -104,7 +104,7 @@ static Context* os_trap(Event ev, Context *context) {
 		return current[id] -> ctx;
 	}
 	assert(next != NULL);
-
+	assert(next -> status == RUNNING);
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 	assert(current[id] != next && next -> status == RUNNING);
 
