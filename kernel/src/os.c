@@ -82,6 +82,7 @@ static Context* os_trap(Event ev, Context *context) {
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
 	assert(current[id] -> status != SUITABLE);
+
 	while (now != NULL)	{
 		if (now -> status == SUITABLE) {
 			next = now;
