@@ -116,7 +116,7 @@ static Context* os_trap(Event ev, Context *context) {
 	assert(current[id] -> status == RUNNING);
 	kmt -> spin_unlock(&trap_lock);
 	assert(ienabled() == false);
-	return next -> ctx;	
+	return current[id] -> ctx;	
 }
 
 static void os_on_irq(int seq, int event, handler_t handler) {
