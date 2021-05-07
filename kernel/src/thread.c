@@ -100,28 +100,29 @@ static void sem_wait(sem_t *sem) {
 	kmt -> spin_lock(&sem -> lock);
 	kmt -> spin_lock(&trap_lock);
 	assert(ienabled() == false);
-	sem -> count --;
+//	sem -> count --;
 //	int flag = 0;
-printf("%s\n", sem->name);
-	if (sem -> count < 0) {
+//  printf("%s\n", sem->name);
+//	if (sem -> count < 0) {
 //		flag = 1;
-		int id = cpu_current();
-		assert(current[id] != NULL);
+//		int id = cpu_current();
+//		assert(current[id] != NULL);
 	/*	current[id] -> status = BLOCKED;
 		struct WaitList *tep = sem -> head;
 		sem -> head = pmm -> alloc(sizeof(struct WaitList));
 		sem -> head -> task = current[id];
 		sem -> head -> next = tep;
 		*/
-		while(sem -> count < 0) {
+		while(sem -> count <= 0) {
 			kmt -> spin_unlock(&trap_lock);
 			kmt->spin_unlock(&sem -> lock);
 			yield();
 			kmt -> spin_lock(&sem -> lock);
 			kmt -> spin_lock(&trap_lock);
 		}
-	}
+//	}
 //	if (flag == 0) {
+		sem -> count--;
 		kmt -> spin_unlock(&trap_lock);
 		kmt -> spin_unlock(&sem -> lock);
 //	}
