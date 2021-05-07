@@ -94,6 +94,7 @@ static void sem_init(sem_t *sem, const char *name, int value) {
 static void sem_wait(sem_t *sem) {
 	kmt -> spin_lock(&sem -> lock);
 	kmt -> spin_lock(&trap_lock);
+	assert(ienabled() == false);
 	sem -> count --;
 	int flag = 0;
 	if (sem -> count < 0) {
@@ -106,6 +107,7 @@ static void sem_wait(sem_t *sem) {
 		sem -> head -> task = current[id];
 		sem -> head -> next = tep;
 		kmt -> spin_unlock(&trap_lock);
+		assert(ienabled() == false);
 		kmt->spin_unlock(&sem -> lock);
 		yield();
 		assert(current[cpu_current()] -> status == RUNNING);
