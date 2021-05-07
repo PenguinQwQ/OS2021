@@ -83,7 +83,6 @@ static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	if (current[id] -> status == SUITABLE)
 		printf("%s\n", current[id] -> name);
-	assert(current[id] -> status != SUITABLE);
 
 	while (now != NULL)	{
 		if (now -> status == SUITABLE) {
