@@ -12,7 +12,6 @@ static void kmt_init() {
 }
 
 static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), void *arg) {
-	while(1);
 	kmt -> spin_lock(&trap_lock);
 	task -> stack = pmm -> alloc(STACK_SIZE);
 	assert(task -> stack != NULL);
@@ -130,6 +129,7 @@ static void sem_wait(sem_t *sem) {
 }
 
 static void sem_signal(sem_t *sem) {
+	while(1);
 	kmt -> spin_lock(&sem -> lock);
 	kmt -> spin_lock(&trap_lock);
 	sem -> count++;
