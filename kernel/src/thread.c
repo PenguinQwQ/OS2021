@@ -142,7 +142,7 @@ static void sem_signal(sem_t *sem) {
 		sem -> head = sem -> head -> next;
 		pmm -> free(tep);
 	}
-	assert(current[cpu_current()] -> status == RUNNING);
+	//assert(current[cpu_current()] -> status == RUNNING);
 	
 	kmt -> spin_unlock(&trap_lock);
 	kmt -> spin_unlock(&sem -> lock);
