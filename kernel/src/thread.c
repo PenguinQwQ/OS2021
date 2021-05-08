@@ -129,7 +129,6 @@ static void sem_wait(sem_t *sem) {
 }
 
 static void sem_signal(sem_t *sem) {
-	while(1);
 	kmt -> spin_lock(&sem -> lock);
 	kmt -> spin_lock(&trap_lock);
 	sem -> count++;
