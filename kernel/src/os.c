@@ -19,11 +19,11 @@ int Lists_sum = 0;
 sem_t empty, fill;
 
 void producer() {
-	while(1){yield();}//kmt->sem_wait(&empty); putch('('); kmt->sem_signal(&fill);}
+	while(1){kmt->sem_wait(&empty); putch('('); kmt->sem_signal(&fill);}
 }
 
 void comsumer() {
-	while(1){yield();}//kmt->sem_wait(&fill); putch(')'); kmt->sem_signal(&empty);}
+	while(1){kmt->sem_wait(&fill); putch(')'); kmt->sem_signal(&empty);}
 }
 int T = 0;
 static void os_init() {
@@ -99,7 +99,9 @@ static Context* os_trap(Event ev, Context *context) {
 		return current[id] -> ctx;
 	}
 	tot = 0;
+	int cntt = 0;
 	while (now != NULL)	{
+		if (now -> on == false)cntt++;
 		if (now -> status == SUITABLE && now -> on == false) {
 			valid[tot++] = now;
 		//	next = now;
@@ -109,7 +111,7 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
-	printf("CPU#%d %d\n", id, tot);
+	printf("CPU#%d %d\n", id, cntt);
 	assert(current[id] != NULL);
 	if (tot == 0) {
 //		assert(0);
