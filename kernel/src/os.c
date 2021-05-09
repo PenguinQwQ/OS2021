@@ -46,8 +46,8 @@ static void os_init() {
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "ii");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "jj");
 
-*//* 
-  kmt -> sem_init(&empty, "empty", 10);
+*/ 
+/*  kmt -> sem_init(&empty, "empty", 10);
   kmt -> sem_init(&fill,  "fill" , 0);
  for (int i = 0; i < 4; i++) 
 	  kmt->create(pmm->alloc(sizeof(task_t)), "producer", producer, NULL);
@@ -98,17 +98,11 @@ static Context* os_trap(Event ev, Context *context) {
 		*/
 	}
 	tot = 0;
-
-//	task_t *tepp = NULL;
-//	int ti = INT_MAX;
-
-
 	while (now != NULL)	{
 		if (now -> status == SUITABLE && now -> on == false) {
 			valid[tot++] = now;
 		//	next = now;
 			assert(next != current[id]);
-//			if (now -> times[id] < ti) ti = now -> times[id], tepp = now;
 		//	next -> status = RUNNING;
 		//	break;	
 		}
@@ -133,8 +127,6 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	int nxt = rand() % tot;
 	next = valid[nxt];
-//	next = tepp;
-	next -> times[id]++;
 	assert(next != NULL);
 	next -> status = RUNNING;
 //	next -> times  = next -> times + 1;
