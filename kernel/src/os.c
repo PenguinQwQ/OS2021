@@ -69,6 +69,7 @@ task_t *valid[N];
 int tot = 0;
 
 static Context* os_trap(Event ev, Context *context) {
+	assert(0);
 	assert(ienabled() == false);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
@@ -139,8 +140,6 @@ static Context* os_trap(Event ev, Context *context) {
 	current[id] = next;
 	current[id] -> on = true;
 	assert(current[id] -> status == RUNNING);
-	printf("%s\n", current[id] -> name);
-	assert(0);
 	kmt -> spin_unlock(&trap_lock);
 	assert(ienabled() == false);
 	return current[id] -> ctx;	
