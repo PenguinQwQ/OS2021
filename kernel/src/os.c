@@ -46,7 +46,7 @@ static void os_init() {
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "ii");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "jj");
 
-*/ 
+*//* 
   kmt -> sem_init(&empty, "empty", 10);
   kmt -> sem_init(&fill,  "fill" , 0);
  for (int i = 0; i < 4; i++) 
@@ -54,7 +54,7 @@ static void os_init() {
 	
  for (int i = 0; i < 5; i++) 
 	  kmt->create(pmm->alloc(sizeof(task_t)), "consumer", comsumer, NULL);
-
+*/
 }
 
 static void os_run() {
