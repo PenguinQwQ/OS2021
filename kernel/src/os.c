@@ -33,7 +33,7 @@ static void os_init() {
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
   
-//  dev -> init();
+  dev -> init();
   /*
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
@@ -99,8 +99,8 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	tot = 0;
 
-	task_t *tepp = NULL;
-	int ti = INT_MAX;
+//	task_t *tepp = NULL;
+//	int ti = INT_MAX;
 
 
 	while (now != NULL)	{
@@ -108,7 +108,7 @@ static Context* os_trap(Event ev, Context *context) {
 			valid[tot++] = now;
 		//	next = now;
 			assert(next != current[id]);
-			if (now -> times[id] < ti) ti = now -> times[id], tepp = now;
+//			if (now -> times[id] < ti) ti = now -> times[id], tepp = now;
 		//	next -> status = RUNNING;
 		//	break;	
 		}
@@ -133,7 +133,7 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	int nxt = rand() % tot;
 	next = valid[nxt];
-	next = tepp;
+//	next = tepp;
 	next -> times[id]++;
 	assert(next != NULL);
 	next -> status = RUNNING;
