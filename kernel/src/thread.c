@@ -131,7 +131,8 @@ static void sem_wait(sem_t *sem) {
 
 static void sem_signal(sem_t *sem) {
 	kmt -> spin_lock(&sem -> lock);
-	kmt -> spin_lock(&trap_lock);
+	int flag = (trap_lock.cpu_id == cpu_current() && trap_lock.lock == 1);
+	if (!flag) kmt -> spin_lock(&trap_lock);
 	sem -> count++;
 	
 	struct WaitList *tep;
@@ -145,7 +146,7 @@ static void sem_signal(sem_t *sem) {
 	}
 //	assert(current[cpu_current()] -> status == RUNNING);
 	
-	kmt -> spin_unlock(&trap_lock);
+	if (!flag) kmt -> spin_unlock(&trap_lock);
 	kmt -> spin_unlock(&sem -> lock);
 }								
 
