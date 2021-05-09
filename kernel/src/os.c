@@ -150,7 +150,6 @@ static void os_on_irq(int seq, int event, handler_t handler) {
 	Lists[Lists_sum].seq   = seq;
 	Lists[Lists_sum].event = event;
 	Lists_sum              = Lists_sum + 1;
-	printf("%d %d\n", seq, event);
 	// bubble sort
 	for (int j = 0; j < Lists_sum - 1; j++)
 			for (int i = 0; i < Lists_sum - 1 - j; i++)
