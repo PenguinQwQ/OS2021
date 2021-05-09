@@ -83,7 +83,6 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> on = true;
 	}
 //	assert(current[id] -> status == RUNNING);
-	assert(ev. event != 5);
 	for (int i = 0; i < Lists_sum; i++) 
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL){
 			printf("%d %d\n", Lists[i].event, Lists[i].seq);
@@ -151,7 +150,7 @@ static void os_on_irq(int seq, int event, handler_t handler) {
 	Lists[Lists_sum].seq   = seq;
 	Lists[Lists_sum].event = event;
 	Lists_sum              = Lists_sum + 1;
-
+	assert(0);
 	// bubble sort
 	for (int j = 0; j < Lists_sum - 1; j++)
 			for (int i = 0; i < Lists_sum - 1 - j; i++)
