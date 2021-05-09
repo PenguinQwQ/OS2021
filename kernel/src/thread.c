@@ -139,7 +139,7 @@ static void sem_signal(sem_t *sem) {
 	if (sem -> head != NULL) {
 		assert(sem -> head -> task -> status == BLOCKED);
 		sem -> head -> task -> status = SUITABLE;
-		assert(current[cpu_current()] -> status != SUITABLE);
+	//	assert(current[cpu_current()] -> status != SUITABLE);
 		tep = sem -> head;
 		sem -> head = sem -> head -> next;
 		pmm -> free(tep);
