@@ -140,6 +140,7 @@ static Context* os_trap(Event ev, Context *context) {
 	current[id] -> on = true;
 	assert(current[id] -> status == RUNNING);
 	printf("%s\n", current[id] -> name);
+	assert(0);
 	kmt -> spin_unlock(&trap_lock);
 	assert(ienabled() == false);
 	return current[id] -> ctx;	
