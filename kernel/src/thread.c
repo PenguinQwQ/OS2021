@@ -21,13 +21,14 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 	task -> ctx	  = kcontext(kstack, entry, arg);
 	task -> status = SUITABLE;
 	task -> on = false;
-	task -> times = 0;
 	if (task_head == NULL) task_head = task;
 	else {
 		task_t *now = task_head;
 		while (now -> next != NULL) now = now -> next;
 		now -> next = task;
 	}
+	for (int i = 0; i < MAX_CPU; i++)
+		task -> times[i] = 0;
 	kmt -> spin_unlock(&trap_lock);
 	return 0;
 }
