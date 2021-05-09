@@ -33,7 +33,7 @@ static void os_init() {
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
   
-  dev -> init();
+ // dev -> init();
   /*
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
@@ -46,14 +46,14 @@ static void os_init() {
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "ii");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "jj");
 */
- /* kmt -> sem_init(&empty, "empty", 5);
+  kmt -> sem_init(&empty, "empty", 5);
   kmt -> sem_init(&fill,  "fill" , 0);
  for (int i = 0; i < 4; i++) 
 	  kmt->create(pmm->alloc(sizeof(task_t)), "producer", producer, NULL);
 	
  for (int i = 0; i < 5; i++) 
 	  kmt->create(pmm->alloc(sizeof(task_t)), "consumer", comsumer, NULL);
- */
+ 
 }
 
 static void os_run() {
@@ -88,7 +88,6 @@ static Context* os_trap(Event ev, Context *context) {
 			Lists[i].func(ev, context);
 			printf("%d %d\n", Lists[i].event, Lists[i].seq);
 	}
-	assert(ev.event != 5 && ev.event != 6);		
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
 	if (current[id] -> status == SUITABLE) {
