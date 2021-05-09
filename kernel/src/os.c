@@ -90,6 +90,7 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
+	assert(0);
 	if (current[id] -> status == SUITABLE) {
 //		assert(0);
 		current[id] -> status = RUNNING;
@@ -124,7 +125,6 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> on = true;
 		kmt -> spin_unlock(&trap_lock);
 		assert(ienabled() == false);
-	assert(0);
 		return current[id] -> ctx;
 	}
 	int nxt = rand() % tot;
