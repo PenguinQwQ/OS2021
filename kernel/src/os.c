@@ -90,8 +90,6 @@ static Context* os_trap(Event ev, Context *context) {
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
 	if (current[id] -> status == SUITABLE) {
-//		assert(0);
-		current[id] -> on = false;
 /*		current[id] -> status = RUNNING;
 		assert(current[id] -> on == true);
 		kmt -> spin_unlock(&trap_lock);
