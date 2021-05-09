@@ -68,7 +68,6 @@ task_t origin[MAX_CPU];
 #define N 65536
 task_t *valid[N];
 int tot = 0;
-
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	kmt -> spin_lock(&trap_lock);
@@ -99,9 +98,7 @@ static Context* os_trap(Event ev, Context *context) {
 		return current[id] -> ctx;
 	}
 	tot = 0;
-	int cntt = 0;
 	while (now != NULL)	{
-		if (now -> on == false)cntt++;
 		if (now -> status == SUITABLE && now -> on == false) {
 			valid[tot++] = now;
 		//	next = now;
@@ -111,7 +108,6 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
-	printf("CPU#%d %d\n", id, cntt);
 	assert(current[id] != NULL);
 	if (tot == 0) {
 //		assert(0);
