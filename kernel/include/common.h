@@ -17,7 +17,6 @@ struct task{
 	void *stack;
 	int status;
 	bool on;
-	int times;
 	struct task* next;
 };
 
