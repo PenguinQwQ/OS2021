@@ -109,6 +109,7 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
+	printf("CPU#%d %d\n", id, tot);
 	assert(current[id] != NULL);
 	if (tot == 0) {
 //		assert(0);
