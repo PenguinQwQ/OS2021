@@ -98,8 +98,8 @@ static void sem_init(sem_t *sem, const char *name, int value) {
 }
 
 static void sem_wait(sem_t *sem) {
-	kmt -> spin_lock(&sem -> lock);
 	kmt -> spin_lock(&trap_lock);
+	kmt -> spin_lock(&sem -> lock);
 	assert(ienabled() == false);
 //	sem -> count --;
 //	int flag = 0;
@@ -115,17 +115,17 @@ static void sem_wait(sem_t *sem) {
 //		sem -> head -> next = tep;
 		
 		while(sem -> count <= 0) {
-			kmt -> spin_unlock(&trap_lock);
 			kmt->spin_unlock(&sem -> lock);
+			kmt -> spin_unlock(&trap_lock);
 			yield();
-			kmt -> spin_lock(&sem -> lock);
 			kmt -> spin_lock(&trap_lock);
+			kmt -> spin_lock(&sem -> lock);
 	//	}
 	}
 //	if (flag == 0) {
 		sem -> count--;
-		kmt -> spin_unlock(&trap_lock);
 		kmt -> spin_unlock(&sem -> lock);
+		kmt -> spin_unlock(&trap_lock);
 //	}
 }
 
