@@ -99,7 +99,7 @@ static void sem_init(sem_t *sem, const char *name, int value) {
 
 static void sem_wait(sem_t *sem) {
 	kmt -> spin_lock(&trap_lock);
-	kmt -> spin_lock(&sem -> lock);
+//	kmt -> spin_lock(&sem -> lock);
 	assert(ienabled() == false);
 	sem -> count --;
 	int flag = 0;
@@ -115,7 +115,7 @@ static void sem_wait(sem_t *sem) {
 		sem -> head -> next = tep;
 	/*	
 		while(sem -> count <= 0) {*/
-			kmt->spin_unlock(&sem -> lock);
+//			kmt->spin_unlock(&sem -> lock);
 			kmt -> spin_unlock(&trap_lock);
 			yield();
 		//	kmt -> spin_unlock(&sem -> lock);
@@ -124,13 +124,13 @@ static void sem_wait(sem_t *sem) {
 	}
 	if (flag == 0) {
 //		sem -> count--;
-		kmt -> spin_unlock(&sem -> lock);
+//		kmt -> spin_unlock(&sem -> lock);
 		kmt -> spin_unlock(&trap_lock);
 	}
 }
 
 static void sem_signal(sem_t *sem) {
-	kmt -> spin_lock(&sem -> lock);
+//	kmt -> spin_lock(&sem -> lock);
 	int flag = (trap_lock.cpu_id == cpu_current() && trap_lock.lock == 1);
 	if (!flag) kmt -> spin_lock(&trap_lock);
 	sem -> count++;
@@ -147,7 +147,7 @@ static void sem_signal(sem_t *sem) {
 //	assert(current[cpu_current()] -> status == RUNNING);
 	
 	if (!flag)kmt -> spin_unlock(&trap_lock);
-	kmt -> spin_unlock(&sem -> lock);
+//	kmt -> spin_unlock(&sem -> lock);
 }								
 
 MODULE_DEF(kmt) = {
