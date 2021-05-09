@@ -147,7 +147,7 @@ static Context* os_trap(Event ev, Context *context) {
 
 static void os_on_irq(int seq, int event, handler_t handler) {
 	assert(Lists_sum < 65536);
-	printf("666\n");
+	printf("%d %d\n", event, seq);
 	Lists[Lists_sum].func  = handler;
 	Lists[Lists_sum].seq   = seq;
 	Lists[Lists_sum].event = event;
