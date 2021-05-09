@@ -19,11 +19,11 @@ int Lists_sum = 0;
 sem_t empty, fill;
 
 void producer() {
-	while(1){kmt->sem_wait(&empty); putch('('); kmt->sem_signal(&fill);}
+	while(1){yield();}//kmt->sem_wait(&empty); putch('('); kmt->sem_signal(&fill);}
 }
 
 void comsumer() {
-	while(1){kmt->sem_wait(&fill); putch(')'); kmt->sem_signal(&empty);}
+	while(1){yield();}//kmt->sem_wait(&fill); putch(')'); kmt->sem_signal(&empty);}
 }
 int T = 0;
 static void os_init() {
