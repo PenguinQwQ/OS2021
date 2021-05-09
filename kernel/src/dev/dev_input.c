@@ -181,7 +181,6 @@ static char keymap[256][2] = {
 // ------------------------------------------------------------------
 
 void dev_input_task(void *args) {
- assert(0);
   device_t *in = dev->lookup("input");
   uint32_t known_time = io_read(AM_TIMER_UPTIME).us;
 

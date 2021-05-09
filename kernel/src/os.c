@@ -134,11 +134,12 @@ static Context* os_trap(Event ev, Context *context) {
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 	current[id] -> on = false;
 	assert(current[id] != next && next -> status == RUNNING);
-
+	
 	assert(cpu_current() == id);
 	current[id] = next;
 	current[id] -> on = true;
 	assert(current[id] -> status == RUNNING);
+	printf("%s\n", current[id] -> name);
 	kmt -> spin_unlock(&trap_lock);
 	assert(ienabled() == false);
 	return current[id] -> ctx;	
