@@ -101,32 +101,32 @@ static void sem_wait(sem_t *sem) {
 	kmt -> spin_lock(&trap_lock);
 	kmt -> spin_lock(&sem -> lock);
 	assert(ienabled() == false);
-//	sem -> count --;
-//	int flag = 0;
+	sem -> count --;
+	int flag = 0;
 //  printf("%s\n", sem->name);
-//	if (sem -> count < 0) {
-//		flag = 1;
-//		int id = cpu_current();
-//		assert(current[id] != NULL);
-//		current[id] -> status = BLOCKED;
-//		struct WaitList *tep = sem -> head;
-//		sem -> head = pmm -> alloc(sizeof(struct WaitList));
-//		sem -> head -> task = current[id];
-//		sem -> head -> next = tep;
-		
-		while(sem -> count <= 0) {
+	if (sem -> count < 0) {
+		flag = 1;
+		int id = cpu_current();
+		assert(current[id] != NULL);
+		current[id] -> status = BLOCKED;
+		struct WaitList *tep = sem -> head;
+		sem -> head = pmm -> alloc(sizeof(struct WaitList));
+		sem -> head -> task = current[id];
+		sem -> head -> next = tep;
+	/*	
+		while(sem -> count <= 0) {*/
 			kmt->spin_unlock(&sem -> lock);
 			kmt -> spin_unlock(&trap_lock);
 			yield();
-			kmt -> spin_lock(&trap_lock);
-			kmt -> spin_lock(&sem -> lock);
+		//	kmt -> spin_unlock(&sem -> lock);
+		//	kmt -> spin_unlock(&trap_lock);
 	//	}
 	}
-//	if (flag == 0) {
-		sem -> count--;
+	if (flag == 0) {
+//		sem -> count--;
 		kmt -> spin_unlock(&sem -> lock);
 		kmt -> spin_unlock(&trap_lock);
-//	}
+	}
 }
 
 static void sem_signal(sem_t *sem) {
@@ -134,7 +134,7 @@ static void sem_signal(sem_t *sem) {
 	int flag = (trap_lock.cpu_id == cpu_current() && trap_lock.lock == 1);
 	if (!flag) kmt -> spin_lock(&trap_lock);
 	sem -> count++;
-/*	
+	
 	struct WaitList *tep;
 	if (sem -> head != NULL) {
 		assert(sem -> head -> task -> status == BLOCKED);
@@ -145,8 +145,8 @@ static void sem_signal(sem_t *sem) {
 		pmm -> free(tep);
 	}
 //	assert(current[cpu_current()] -> status == RUNNING);
-*/	
-	if (!flag) kmt -> spin_unlock(&trap_lock);
+	
+	if (!flag)kmt -> spin_unlock(&trap_lock);
 	kmt -> spin_unlock(&sem -> lock);
 }								
 
