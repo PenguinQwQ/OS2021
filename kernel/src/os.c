@@ -88,7 +88,7 @@ static Context* os_trap(Event ev, Context *context) {
 			Lists[i].func(ev, context);
 			printf("%d %d\n", Lists[i].event, Lists[i].seq);
 	}
-			
+	assert(ev.event != 5 && ev.event != 6);		
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
 	if (current[id] -> status == SUITABLE) {
@@ -147,7 +147,6 @@ static Context* os_trap(Event ev, Context *context) {
 
 static void os_on_irq(int seq, int event, handler_t handler) {
 	assert(Lists_sum < 65536);
-	printf("%d %d\n", event, seq);
 	Lists[Lists_sum].func  = handler;
 	Lists[Lists_sum].seq   = seq;
 	Lists[Lists_sum].event = event;
