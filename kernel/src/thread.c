@@ -65,6 +65,7 @@ int status[MAX_CPU];
 static void spin_lock(spinlock_t *lk) {
 	int i = ienabled();
 	iset(false);
+	assert(lk -> cpu_id != cpu_current() || lk -> lock == 0);
 	while(atomic_xchg(&lk -> lock, 1));	
 	int id = cpu_current();
 	if (cnt[id] == 0) status[id] = i;
