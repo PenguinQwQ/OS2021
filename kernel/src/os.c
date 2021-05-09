@@ -83,6 +83,7 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> on = true;
 	}
 //	assert(current[id] -> status == RUNNING);
+	assert(ev. event != 5);
 	for (int i = 0; i < Lists_sum; i++) 
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL){
 			printf("%d %d\n", Lists[i].event, Lists[i].seq);
