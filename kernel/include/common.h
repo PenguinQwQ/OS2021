@@ -11,6 +11,11 @@ extern struct task* task_head;
 extern struct task* current[128];
 extern spinlock_t trap_lock;
 
+struct spinlock{
+	const char *name;	
+	int  lock;
+	int  cpu_id;
+};
 struct task{
 	const char *name;	
 	Context *ctx;
@@ -19,14 +24,10 @@ struct task{
 	bool on;
 	bool sleep_flag;
 	int times;
+	struct spinlock lk;
 	struct task* next;
 };
 
-struct spinlock{
-	const char *name;	
-	int  lock;
-	int  cpu_id;
-};
 
 struct WaitList{
 	struct task *task;

@@ -44,7 +44,7 @@ static void kmt_teardown(task_t *task) {
 		}
 		now -> next = now -> next -> next;
 	}
-
+	kmt -> spin_init(&task -> lk, "thread");
 	pmm -> free(task -> stack);
 	task -> stack = NULL;
 	task -> name  = NULL;
