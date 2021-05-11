@@ -33,7 +33,7 @@ static void os_init() {
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
   
-  dev -> init();
+//  dev -> init();
   /*
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
@@ -47,7 +47,7 @@ static void os_init() {
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "jj");
 
 */
-/*
+
   kmt -> sem_init(&empty, "empty", 10);
   kmt -> sem_init(&fill,  "fill" , 0);
  for (int i = 0; i < 4; i++) 
@@ -55,7 +55,7 @@ static void os_init() {
 	
  for (int i = 0; i < 5; i++) 
 	  kmt->create(pmm->alloc(sizeof(task_t)), "consumer", comsumer, NULL);
-*/
+
 }
 
 static void os_run() {
@@ -67,13 +67,16 @@ extern task_t *task_head;
 extern task_t *current[MAX_CPU];
 task_t origin[MAX_CPU];
 #define N 65536
-task_t *valid[N];
+task_t *valid[N], *lst[N];
 int tot = 0;
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
+
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
+	if (lst[id] != NULL) lst[id] -> sleep_flag = false;
+	
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
 		assert(current[id] -> on == true);
@@ -85,6 +88,8 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> on = true;
 	}
 
+	lst[id] = current[id];
+	lst[id] -> sleep_flag = true;
 	panic_on(current[id] == NULL, "null current");
 	panic_on(current[id] -> on == false, "may be crazy");
 
@@ -99,6 +104,7 @@ static Context* os_trap(Event ev, Context *context) {
 	tot = 0;
 	while (now != NULL)	{
 		if (now -> status == SUITABLE && now -> on == false) {
+			if (now != current[id] && now -> sleep_flag == true) continue;
 			valid[tot++] = now;
 		}
 		now = now -> next;
@@ -116,6 +122,7 @@ static Context* os_trap(Event ev, Context *context) {
 	current[id] = valid[nxt];
 	assert(current[id] != NULL);
 	current[id] -> status = RUNNING;
+	current[id] -> sleep_flag = false;
 	current[id] -> on = true;
 	assert(current[id] -> status == RUNNING);
 	kmt -> spin_unlock(&trap_lock);
