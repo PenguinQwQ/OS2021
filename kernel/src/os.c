@@ -68,6 +68,7 @@ task_t origin[MAX_CPU];
 #define N 65536
 task_t *valid[N];
 int tot = 0;
+
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
 	kmt -> spin_lock(&trap_lock);
@@ -82,38 +83,27 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
 	}
-//	assert(current[id] -> status == RUNNING);
+
+	panic_on(current[id] == NULL, "null current");
+	panic_on(current[id] -> on == false, "may be crazy");
+
 	for (int i = 0; i < Lists_sum; i++) 
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL){
 			Lists[i].func(ev, context);
 	}
 	task_t *next = NULL, *now = task_head;
 	assert(ienabled() == false);
-	if (current[id] -> status == SUITABLE) {
-/*		current[id] -> status = RUNNING;
-		assert(current[id] -> on == true);
-		kmt -> spin_unlock(&trap_lock);
-		assert(ienabled() == false);
-		return current[id] -> ctx;
-		*/
-	}
+	
 	tot = 0;
 	while (now != NULL)	{
 		if (now -> status == SUITABLE && now -> on == false) {
 			valid[tot++] = now;
-		//	next = now;
 			assert(next != current[id]);
-		//	next -> status = RUNNING;
-		//	break;	
 		}
 		now = now -> next;
 	}
 	assert(current[id] != NULL);
 	if (tot == 0) {
-//		assert(0);
-//		kmt -> spin_unlock(&trap_lock);
-//		assert(ienabled() == false);
-//		return context;
 		assert(ienabled() == false);
 		if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 		current[id] -> on = false;
@@ -129,7 +119,6 @@ static Context* os_trap(Event ev, Context *context) {
 	next = valid[nxt];
 	assert(next != NULL);
 	next -> status = RUNNING;
-//	next -> times  = next -> times + 1;
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 	current[id] -> on = false;
 	assert(current[id] != next && next -> status == RUNNING);
