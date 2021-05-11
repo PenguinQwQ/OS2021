@@ -33,7 +33,7 @@ static void os_init() {
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
   
-//  dev -> init();
+  dev -> init();
   /*
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
@@ -67,7 +67,7 @@ extern task_t *task_head;
 extern task_t *current[MAX_CPU];
 task_t origin[MAX_CPU];
 #define N 65536
-task_t *valid[N], lst[N];
+task_t *valid[N];
 int tot = 0;
 
 static Context* os_trap(Event ev, Context *context) {
