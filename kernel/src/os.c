@@ -33,7 +33,7 @@ static void os_init() {
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
   
-  dev -> init();
+//  dev -> init();
   /*
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "aa");
   kmt -> create(pmm -> alloc(sizeof(task_t)), "hello", func, "bb");
@@ -67,7 +67,7 @@ extern task_t *task_head;
 extern task_t *current[MAX_CPU];
 task_t origin[MAX_CPU];
 #define N 65536
-task_t *valid[N];
+task_t *valid[N], *lst[N];
 int tot = 0;
 
 static Context* os_trap(Event ev, Context *context) {
@@ -84,7 +84,9 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
 	}
-
+	if (lst[id] != NULL) lst[id] -> sleep_flag = false;
+	lst[id] = current[id];
+	lst[id] -> sleep_flag = true;
 	panic_on(current[id] == NULL, "null current");
 	panic_on(current[id] -> on == false, "may be crazy");
 
@@ -99,6 +101,7 @@ static Context* os_trap(Event ev, Context *context) {
 	tot = 0;
 	while (now != NULL)	{
 		if (now -> status == SUITABLE && now -> on == false) {
+			if (now -> sleep_flag == true && now != current[id]) continue;
 			valid[tot++] = now;
 		}
 		now = now -> next;
