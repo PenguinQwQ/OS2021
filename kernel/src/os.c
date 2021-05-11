@@ -91,8 +91,10 @@ static Context* os_trap(Event ev, Context *context) {
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL){
 			Lists[i].func(ev, context);
 	}
-	task_t *next = NULL, *now = task_head;
+	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
+	current[id] -> on = false;
 	
+	task_t *next = NULL, *now = task_head;
 	tot = 0;
 	while (now != NULL)	{
 		if (now -> status == SUITABLE && now -> on == false) {
@@ -104,8 +106,6 @@ static Context* os_trap(Event ev, Context *context) {
 
 	if (tot == 0) {
 		assert(ienabled() == false);
-		if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
-		current[id] -> on = false;
 		assert(origin[cpu_current()].ctx != NULL);
 		current[id] = &origin[cpu_current()];
 		current[id] -> status = RUNNING;
@@ -119,8 +119,6 @@ static Context* os_trap(Event ev, Context *context) {
 	next = valid[nxt];
 	assert(next != NULL);
 	next -> status = RUNNING;
-	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
-	current[id] -> on = false;
 	assert(current[id] != next && next -> status == RUNNING);
 	
 	assert(cpu_current() == id);
