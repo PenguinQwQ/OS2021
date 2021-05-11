@@ -94,39 +94,30 @@ static Context* os_trap(Event ev, Context *context) {
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 	current[id] -> on = false;
 	
-	task_t *next = NULL, *now = task_head;
+	task_t *now = task_head;
 	tot = 0;
 	while (now != NULL)	{
 		if (now -> status == SUITABLE && now -> on == false) {
 			valid[tot++] = now;
-			assert(next != current[id]);
 		}
 		now = now -> next;
 	}
 
 	if (tot == 0) {
-		assert(ienabled() == false);
-		assert(origin[cpu_current()].ctx != NULL);
 		current[id] = &origin[cpu_current()];
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
 		kmt -> spin_unlock(&trap_lock);
-		assert(ienabled() == false);
 		return current[id] -> ctx;
 	}
 
 	int nxt = rand() % tot;
-	next = valid[nxt];
-	assert(next != NULL);
-	next -> status = RUNNING;
-	assert(next -> status == RUNNING);
-	
-	assert(cpu_current() == id);
-	current[id] = next;
+	current[id] = valid[nxt];
+	assert(current[id] != NULL);
+	current[id] -> status = RUNNING;
 	current[id] -> on = true;
 	assert(current[id] -> status == RUNNING);
 	kmt -> spin_unlock(&trap_lock);
-	assert(ienabled() == false);
 	return current[id] -> ctx;	
 }
 
