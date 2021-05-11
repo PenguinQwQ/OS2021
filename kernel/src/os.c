@@ -101,7 +101,10 @@ static Context* os_trap(Event ev, Context *context) {
 	tot = 0;
 	while (now != NULL)	{
 		if (now -> status == SUITABLE && now -> on == false) {
-			if (now -> sleep_flag == true && now != current[id]) continue;
+			if (now -> sleep_flag == true && now != current[id]) {
+				now = now -> next;
+				continue;	
+			}
 			valid[tot++] = now;
 		}
 		now = now -> next;
