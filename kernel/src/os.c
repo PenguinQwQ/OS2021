@@ -72,11 +72,8 @@ int tot = 0;
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
-
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
-	if (lst[id] != NULL) lst[id] -> sleep_flag = false;
-	
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
 		assert(current[id] -> on == true);
@@ -111,7 +108,6 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 
 	if (tot == 0) {
-		printf("66\n");
 		current[id] = &origin[cpu_current()];
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
@@ -123,7 +119,6 @@ static Context* os_trap(Event ev, Context *context) {
 	current[id] = valid[nxt];
 	assert(current[id] != NULL);
 	current[id] -> status = RUNNING;
-	current[id] -> sleep_flag = false;
 	current[id] -> on = true;
 	assert(current[id] -> status == RUNNING);
 	kmt -> spin_unlock(&trap_lock);
