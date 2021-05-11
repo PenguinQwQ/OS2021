@@ -111,6 +111,7 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 
 	if (tot == 0) {
+		printf("66\n");
 		current[id] = &origin[cpu_current()];
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
