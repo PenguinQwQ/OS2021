@@ -24,7 +24,6 @@ struct task{
 	bool on;
 	bool sleep_flag;
 	int times;
-	struct spinlock lk;
 	struct task* next;
 };
 
