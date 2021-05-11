@@ -119,6 +119,7 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 
 	int nxt = rand() % tot;
+	assert(current[id] != valid[nxt]);
 	current[id] = valid[nxt];
 	assert(current[id] != NULL);
 	current[id] -> status = RUNNING;
