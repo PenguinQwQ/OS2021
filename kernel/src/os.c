@@ -92,7 +92,6 @@ static Context* os_trap(Event ev, Context *context) {
 			Lists[i].func(ev, context);
 	}
 	task_t *next = NULL, *now = task_head;
-	assert(ienabled() == false);
 	
 	tot = 0;
 	while (now != NULL)	{
@@ -102,7 +101,7 @@ static Context* os_trap(Event ev, Context *context) {
 		}
 		now = now -> next;
 	}
-	assert(current[id] != NULL);
+
 	if (tot == 0) {
 		assert(ienabled() == false);
 		if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
@@ -115,6 +114,7 @@ static Context* os_trap(Event ev, Context *context) {
 		assert(ienabled() == false);
 		return current[id] -> ctx;
 	}
+
 	int nxt = rand() % tot;
 	next = valid[nxt];
 	assert(next != NULL);
