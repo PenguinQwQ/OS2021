@@ -119,7 +119,7 @@ static Context* os_trap(Event ev, Context *context) {
 	next = valid[nxt];
 	assert(next != NULL);
 	next -> status = RUNNING;
-	assert(current[id] != next && next -> status == RUNNING);
+	assert(next -> status == RUNNING);
 	
 	assert(cpu_current() == id);
 	current[id] = next;
