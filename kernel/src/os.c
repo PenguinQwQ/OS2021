@@ -67,7 +67,7 @@ extern task_t *task_head;
 extern task_t *current[MAX_CPU];
 task_t origin[MAX_CPU];
 #define N 65536
-task_t *valid[N], *lst[N];
+task_t *valid[N], lst[N];
 int tot = 0;
 
 static Context* os_trap(Event ev, Context *context) {
@@ -85,8 +85,6 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> on = true;
 	}
 
-	lst[id] = current[id];
-	lst[id] -> sleep_flag = true;
 	panic_on(current[id] == NULL, "null current");
 	panic_on(current[id] -> on == false, "may be crazy");
 
@@ -101,7 +99,6 @@ static Context* os_trap(Event ev, Context *context) {
 	tot = 0;
 	while (now != NULL)	{
 		if (now -> status == SUITABLE && now -> on == false) {
-			if (now != current[id] && now -> sleep_flag == true) continue;
 			valid[tot++] = now;
 		}
 		now = now -> next;
