@@ -33,7 +33,7 @@ static void os_init() {
   kmt->init();
   kmt->spin_init(&trap_lock, "os_trap");
   
-  dev -> init();
+//  dev -> init();
   /*
   kmt -> sem_init(&empty, "empty", 10);
   kmt -> sem_init(&fill,  "fill" , 0);
