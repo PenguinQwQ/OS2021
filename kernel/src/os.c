@@ -66,7 +66,7 @@ static void os_init() {
 
 static void os_run() {
   iset(true);
-  while(1)yield();
+  while(1);
 }
 
 extern task_t *task_head;
