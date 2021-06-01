@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include <sys/mman.h>
+#include <fcntl,h>
 
 struct fat_header{
 	uint8_t BS_jmpBoot[3];
@@ -31,7 +32,7 @@ struct fat_header{
 
 int main(int argc, char *argv[]) {
 	assert(sizeof(struct fat_header) == 512);
-	int fd = open("fs.img", "r");
+	int fd = open("fs.img", 0);
 	assert(fd > 0);
 	struct fat_hender *disk;
 	disk = mmap(NULL, 128 * 1024 *1024, PROT_READ, MAP_PRIVATE, fd, 0);
