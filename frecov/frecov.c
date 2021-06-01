@@ -29,6 +29,6 @@ struct fat_header{
 };
 
 int main(int argc, char *argv[]) {
-	panic_on(sizeof(struct fat_header) != 512, "bad header!");
+	assert(sizeof(struct fat_header) == 512);
 
 }
