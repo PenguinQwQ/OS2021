@@ -31,10 +31,13 @@ struct fat_header{
 }__attribute__((packed));
 
 int main(int argc, char *argv[]) {
-	assert(sizeof(struct fat_header) == 512);
 	int fd = open("fs.img", 0);
 	assert(fd > 0);
 	struct fat_hender *disk;
 	disk = mmap(NULL, 128 * 1024 *1024, PROT_READ, MAP_PRIVATE, fd, 0);
+
 	assert(disk != NULL);
+	assert(sizeof(struct fat_header) == 512);
+	assert(disk -> Signature_word == 0x55aa);
+	return 0;
 }
