@@ -26,7 +26,7 @@ struct fat_header{
 	uint8_t BS_FilSysType[8];
 	uint8_t BS_empty[448];
 	uint8_t Signature_word[2];	
-};
+}__attributed__((packed));
 
 int main(int argc, char *argv[]) {
 	assert(sizeof(struct fat_header) == 512);
