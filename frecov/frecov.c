@@ -33,7 +33,7 @@ struct fat_header{
 int main(int argc, char *argv[]) {
 	int fd = open("fs.img", 0);
 	assert(fd > 0);
-	struct fat_hender *disk;
+	struct fat_header *disk;
 	disk = mmap(NULL, 128 * 1024 *1024, PROT_READ, MAP_PRIVATE, fd, 0);
 
 	assert(disk != NULL);
