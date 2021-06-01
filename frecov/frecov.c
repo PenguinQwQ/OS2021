@@ -19,9 +19,9 @@ struct fat_header{
 	uint8_t BPB_HiddSec[4];
 	uint8_t BPB_TotSec32[4];
 	uint8_t BS_DrvNum;
-	uint8_t BS_Reserved;
+	uint8_t BS_Reserved1;
 	uint8_t BS_BootSig;
-	uint8_t BS_VolID;
+	uint8_t BS_VolID[4];
 	uint8_t BS_VolLab[11];
 	uint8_t BS_FilSysType[8];
 	uint8_t BS_empty[448];
