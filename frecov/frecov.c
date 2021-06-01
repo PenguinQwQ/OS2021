@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include <sys/mman.h>
-#include <fcntl,h>
+#include <fcntl.h>
 
 struct fat_header{
 	uint8_t BS_jmpBoot[3];
