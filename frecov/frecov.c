@@ -38,6 +38,6 @@ int main(int argc, char *argv[]) {
 
 	assert(disk != NULL);
 	assert(sizeof(struct fat_header) == 512);
-	assert(disk -> Signature_word == 0x55aa);
+	assert((unsigned short)disk -> Signature_word == 0x55aa);
 	return 0;
 }
