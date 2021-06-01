@@ -48,8 +48,8 @@ int main(int argc, char *argv[]) {
 	assert(disk -> Signature_word == 0xaa55);
 	
 	uint32_t fat1, fat2;
-	fat1 = (uint32_t)BPB_RsvdSecCnt * 512;
-	fat2 = fat1 + BPB_FATSz32 * 512;
+	fat1 = (uint32_t)disk -> BPB_RsvdSecCnt * 512;
+	fat2 = fat1 + disk -> BPB_FATSz32 * 512;
 	printf("%x %x\n", fat1, fat2);
 
 
