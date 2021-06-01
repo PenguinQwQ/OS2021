@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
+#include <assert.h>
 
 struct fat_header{
 	uint8_t BS_jmpBoot[3];
