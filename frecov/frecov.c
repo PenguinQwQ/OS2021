@@ -10,7 +10,7 @@ struct fat_header{
 	uint8_t BS_OEMName[8];
 	uint8_t BPB_BytsPerSer[2];
 	uint8_t BPB_SecPerClus;
-	uint8_t BPB_RsvdSecCnt[2];
+	uint16_t BPB_RsvdSecCnt;
 	uint8_t BPB_NumFATs;
 	uint8_t BPB_RootEntCnt[2];
 	uint8_t BPB_TotSec16[2];
@@ -46,7 +46,12 @@ int main(int argc, char *argv[]) {
 	assert(disk != NULL);
 	assert(sizeof(struct fat_header) == 512);
 	assert(disk -> Signature_word == 0xaa55);
+	
+	uint32_t fat1, fat2;
+	fat1 = (uint32_t)BPB_RsvdSecCnt * 512;
+	fat2 = fat1 + BPB_FATSz32 * 512;
+	printf("%x %x\n", fat1, fat2);
 
-	printf("%x\n", disk -> BPB_FATSz32);
+
 	return 0;
 }
