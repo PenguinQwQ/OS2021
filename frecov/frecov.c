@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 
 	assert(disk != NULL);
 	assert(sizeof(struct fat_header) == 512);
-	printf("%u\n", disk -> Signature_word);
+	printf("%x\n", disk -> Signature_word);
 	assert(disk -> Signature_word == 0x55aa);
 	return 0;
 }
