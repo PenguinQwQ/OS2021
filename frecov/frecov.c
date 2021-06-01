@@ -27,7 +27,7 @@ struct fat_header{
 	uint8_t BS_VolLab[11];
 	uint8_t BS_FilSysType[8];
 	uint8_t BS_empty[448];
-	uint8_t Signature_word[2];	
+	uint16_t Signature_word;	
 }__attribute__((packed));
 
 int main(int argc, char *argv[]) {
@@ -38,6 +38,6 @@ int main(int argc, char *argv[]) {
 
 	assert(disk != NULL);
 	assert(sizeof(struct fat_header) == 512);
-	assert((unsigned short)disk -> Signature_word == 0x55aa);
+	assert(disk -> Signature_word == 0x55aa);
 	return 0;
 }
