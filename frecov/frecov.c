@@ -19,7 +19,7 @@ struct fat_header{
 	uint8_t BPB_SecPerTr[2];
 	uint8_t BPB_NumHead[2];
 	uint8_t BPB_HiddSec[4];
-	uint8_t BPB_TotSec32[4];
+	uint32_t BPB_TotSec32;
 	uint8_t BS_DrvNum;
 	uint8_t BS_Reserved1;
 	uint8_t BS_BootSig;
@@ -39,5 +39,6 @@ int main(int argc, char *argv[]) {
 	assert(disk != NULL);
 	assert(sizeof(struct fat_header) == 512);
 	assert(disk -> Signature_word == 0xaa55);
+	printf("%d \n", disk -> BPB_TotSec32);
 	return 0;
 }
