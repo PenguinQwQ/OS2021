@@ -255,8 +255,11 @@ int find_info(struct short_file * now) {
 	FILE *fp = popen(file_name, "r");
 	static char buf[1024];
 	fscanf(fp, "%s", buf);
-	pclose(fp);
+	printf("%s", buf);
+	fscanf(fp, "%s", buf);
 	printf("%s\n", buf);
+	pclose(fp);
+	buf
 	return 1;	
 }
 void deal() {
