@@ -328,7 +328,17 @@ void checker() {
 		fflush(stderr);
 	}
 	fclose(fd);
-
+	int cor_name = 0, cor_all = 0;
+	for (int i = 0; i < SumBmp; i++) {
+		for (int j = 0; j < SumBmp; j++) {
+			if (strcmp(e[i].name, f[j].name) == 0) {
+				if (strcmp(e[i].sum, f[j].sum) == 0) cor_all ++;	
+				cor_name++;
+				break;
+			}	
+		}
+	}
+	printf("%lf %lf\n", cor_name / SumBmp, cor_all / SumBmp);
 }
 #endif
 
