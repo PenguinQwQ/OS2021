@@ -342,8 +342,8 @@ int main(int argc, char *argv[]) {
 	freopen("/tmp/ans.txt", "w", stdout);
 	#endif
 
-//	divide();
-//	deal();
+	divide();
+	deal();
 
 	#ifdef check
 	checker();
