@@ -299,6 +299,9 @@ void deal() {
 	}
 }
 
+void check() {
+}
+
 int main(int argc, char *argv[]) {
 	int fd = open("fs.img", 0);
 	assert(fd > 0);
@@ -325,5 +328,9 @@ int main(int argc, char *argv[]) {
 
 	divide();
 	deal();
+
+	#ifdef check
+	check();
+	#endif
 	return 0;
 }
