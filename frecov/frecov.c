@@ -171,6 +171,13 @@ uint8_t* findClus(int loc, int sum) {
 		if (val < minn) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]); 
 			printf("%x %d\n", divided[3][i], val);
+			start = (uint8_t *)(p + divided[3][i]);
+			for (int j = loc; j < sum; j++) printf("%x ", *start), start = start + 1;
+			for (int j = 0; j < loc; j++) printf("%x ", *start), start = start + 1;
+			printf("\n");
+			for (int j = loc; j < sum; j++) printf("%x ", line[j]);
+			for (int j = 0; j < loc; j++) printf("%x ", line[j]);
+			printf("\n");
 		}
 	}
 	assert (ans != NULL);
