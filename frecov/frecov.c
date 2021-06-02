@@ -277,7 +277,6 @@ void deal() {
 				printf("%d\n", MAX_c);
 			}
 			tep = tep + 1;
-			return;
 		}
 	}
 }
