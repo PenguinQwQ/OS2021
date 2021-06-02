@@ -133,8 +133,7 @@ void get_name(char c) {
 }
 
 void SolveLongName(struct long_file * now) {
-	while (now -> LDIR_Attr == 0xff) {
-		printf("6\n");
+	while (now -> LDIR_Attr == 0x0f) {
 		for (int i = 0; i < 10; i += 2)
 			if (now -> LDIR_Name1[i] == '\0' && now -> LDIR_Name1[i + 1]=='\0') return;	
 			else get_name(now -> LDIR_Name1[i]);
