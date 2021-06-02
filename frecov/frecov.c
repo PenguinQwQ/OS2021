@@ -139,7 +139,10 @@ void deal() {
 			   (uintptr_t) p + divided[1][i] + disk -> BPB_SecPerClus * 512) {
 
 			if (tep -> DIR_Name[8] != 'B' && tep -> DIR_Name[9] != 'M' && \
-				tep -> DIR_Name[10] != 'P') continue;
+				tep -> DIR_Name[10] != 'P') {
+				tep = tep + 1;
+				continue;
+			}
 			
 			n_now = 0;
 
