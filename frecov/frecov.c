@@ -111,7 +111,7 @@ int judge_bmphead(uint32_t loc) {
 void divide() {
 	uint32_t loc = FirstData;
 	for (int i = 0; i < TotClus; i++, loc += disk -> BPB_SecPerClus * 512) {
-		// empty // 
+
 		int id = judge_empty(loc);
 		if (id == -1) id = judge_dir(loc);
 		if (id == -1) id = judge_bmphead(loc);
@@ -122,6 +122,37 @@ void divide() {
 		#endif
 	}
 
+}
+
+static char name[512];
+static int n_now = 0;
+ 
+void get_name(char c) {
+	if ((uint8_t)c != 0x20) name[n_now++] = c;
+}
+
+void deal() {
+	for (int i = 0; i < cnt[1]; i++) {
+		struct short_file *tep = (struct long_file)divided[1][i];
+
+		while ((uint32_t)tep < dibided[1][i] + disk -> BPB_SecPerClus * 512) {
+			if (tep -> DIR_Name[8] != 'B' && tep -> DIR_Name[9] != 'M' && \
+				tep -> DIR_Name[10] != 'P') continue;
+			
+			n_now = 0;
+
+			if (tep -> DIR_Name[6] != '~') {
+				for (int j = 0; j < 8; j++)
+					get_name(tep -> DIR_Name[j]);
+				name[n_now++] = '.';
+				for (int j = 8; j < 11; j++)
+					get_name(tep -> DIR_Name[j]);
+			}
+			else {
+				printf("long");	
+				
+			}
+	}		
 }
 
 int main(int argc, char *argv[]) {
@@ -145,6 +176,6 @@ int main(int argc, char *argv[]) {
 	p = (uint8_t *)disk;
 
 	divide();
-
+	deal();
 	return 0;
 }
