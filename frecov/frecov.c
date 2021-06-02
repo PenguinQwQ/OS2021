@@ -300,14 +300,23 @@ void deal() {
 	}
 }
 
+#ifdef check
+struct chk{
+	char sum[64];
+	char name[64];
+}e[1024];
+
 void checker() {
 	FILE *fd = fopen("/tmp/ans.txt", "r");
 	assert(fd != NULL);
 	char buf[1024];
-	fscanf(fd, "%s", buf);
-	fprintf(stderr, "%s\n", buf);
+	for (int i = 0; i < 97; i++) {
+		fscanf(fd, "%s %s", e[i].sum, e[i].name);
+		fprintf(stderr, "%s %s\n", e[i].sum, e[i].name);
+	}
 	fclose(fd);
 }
+#endif
 
 int main(int argc, char *argv[]) {
 	int fd = open("fs.img", 0);
