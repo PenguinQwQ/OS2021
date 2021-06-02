@@ -47,14 +47,14 @@ int main(int argc, char *argv[]) {
 	assert(sizeof(struct fat_header) == 512);
 	assert(disk -> Signature_word == 0xaa55);
 	
-	uint32_t fat1, fat2, FirstData, root_dir;
+	uint32_t fat1, fat2, FirstData, RootDir;
 	fat1 = (uint32_t)disk -> BPB_RsvdSecCnt * disk -> BPB_BytsPerSer;
 	fat2 = fat1 + disk -> BPB_FATSz32 * disk -> BPB_BytsPerSer;
 	FirstData = (disk -> BPB_RsvdSecCnt + (disk -> BPB_NumFATs * disk -> BPB_GATSz32))\
 	            * disk -> BPB_BytsPerSer;
-	rootdir = FirstData + (disk -> BPB_RootClus - 2) * disk -> BPB_SecPerClus \
+	RootDir = FirstData + (disk -> BPB_RootClus - 2) * disk -> BPB_SecPerClus \
 			  * disk -> BPB_BytsPerSer;
-	printf("%x %x %x %x\n", fat1, fat2, root_dir, disk -> BPB_RootClus);
+	printf("%x %x %x %x\n", fat1, fat2, RootDir, disk -> BPB_RootClus);
 
 	return 0;
 }
