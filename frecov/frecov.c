@@ -163,7 +163,7 @@ static int ti = 0;
 uint8_t* findClus(int loc, int sum) {
 	int minn = INT_MAX;
 	uint8_t* ans = NULL;
-	for (int i = 0; i < tot; i++) {
+	for (int i = 0; i < tot[3]; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
 		int val = 0;
 		for (int j = loc; j < sum; j++) val += (*start) - line[j], start = start + 1;
