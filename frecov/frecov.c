@@ -167,7 +167,7 @@ int find_info(struct short_file * now) {
 	struct bmp *tep = (struct bmp *)(p + loc);
 	if (tep -> bfType != 0x4d42) return 0;
 
-	char file_name[64];
+	static char file_name[1024];
 	sprintf(file_name, "/tmp/%s", name);
 	FILE *fd = fopen(file_name, "w");
 	assert(fd != NULL);
