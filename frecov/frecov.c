@@ -230,7 +230,7 @@ int find_info(struct short_file * now) {
 		printf("%x\n", divided[3][i]);
 	}
 	printf("\n");
-	fllush(stdout);
+	fflush(stdout);
 	assert(id != -1);
 	
 	while (sum) {
