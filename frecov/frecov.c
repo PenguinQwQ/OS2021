@@ -62,7 +62,10 @@ struct bmp{
 	uint16_t bfType;
 	uint32_t bfSize;
 	uint8_t bf_rev[4];
-	uint32_t bf_off; 	
+	uint32_t bf_off; 
+	uint32_t bf_size_2;
+	uint32_t width;
+	uint32_t height;
 }__attribute__((packed));
 
 uint32_t fat1, fat2, FirstData, RootDir, TotClus;
@@ -160,6 +163,7 @@ int find_info(struct short_file * now) {
 	loc = cal_Clus(loc);
 	struct bmp *tep = (struct bmp *)(p + loc);
 	if (tep -> bfType != 0x4d42) return 0;
+	printf("%x %x ", tep -> width, tep -> height);
 	return 1;	
 }
 
@@ -224,6 +228,5 @@ int main(int argc, char *argv[]) {
 
 	divide();
 	deal();
-	printf("%x\n", cal_Clus(0x3fb8));
 	return 0;
 }
