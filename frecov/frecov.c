@@ -170,7 +170,7 @@ uint8_t* findClus(int loc, int sum, int id) {
 	int minn = INT_MAX;
 	uint8_t* ans = NULL;
 
-	for (int i = id + 1; i < tot[3]; i++) {
+	for (int i = 0; i < tot[3]; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
 		int val = 0;
 		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
