@@ -194,7 +194,7 @@ int find_info(struct short_file * now) {
 	int skip = 4 - (((width * 24) >> 3) & 3), sum = cnt * height;
 	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
 
-	int now_loc = 0, off -> tep_bf_off;
+	int now_loc = 0, off = tep -> bf_off;
 	while (sum) {
 		line[now_loc++] = *start;
 		fwrite(start, 1, 1, fd);
