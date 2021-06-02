@@ -160,14 +160,19 @@ void SolveLongName(struct long_file * now) {
 static uint8_t line[65536];
 static int ti = 0;
 
+int pd(uint8_t a, uint8_t b) {
+	if (a > b) return a - b;
+	else return b - a;
+} 
+
 uint8_t* findClus(int loc, int sum) {
 	int minn = INT_MAX;
 	uint8_t* ans = NULL;
 	for (int i = 0; i < tot[3]; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
-		uint8_t val = 0;
-		for (int j = loc; j < sum; j++) val += (*start) - line[j], start = start + 1;
-		for (int j = 0; j < loc; j++)   val += (*start) - line[j], start = start + 1;
+		int val = 0;
+		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
+		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]); 
 			printf("%x %d\n", divided[3][i], val);
