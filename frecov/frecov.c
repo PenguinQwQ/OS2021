@@ -347,7 +347,7 @@ void checker() {
 					fprintf(stderr, "%d %s\n", i, e[i].name);	
 			}
 			else
-				fprintf("stderr", "%d Wa %s\n", i, e[i].name);
+				fprintf(stderr, "%d Wa %s\n", i, e[i].name);
 		}
 	}
 	fprintf(stderr, "%lf %lf\n", (double)cor_name / SumBmp, (double)cor_all / SumBmp);
