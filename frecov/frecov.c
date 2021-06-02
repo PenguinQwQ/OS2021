@@ -175,14 +175,14 @@ uint8_t* findClus(int loc, int sum) {
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]); 
-			printf("%x %d\n", divided[3][i], val);
+/*			printf("%x %d\n", divided[3][i], val);
 			start = (uint8_t *)(p + divided[3][i]);
 			for (int j = loc; j < sum; j++) printf("%x ", *start), start = start + 1;
 			for (int j = 0; j < loc; j++) printf("%x ", *start), start = start + 1;
 			printf("\n");
 			for (int j = loc; j < sum; j++) printf("%x ", line[j]);
 			for (int j = 0; j < loc; j++) printf("%x ", line[j]);
-			printf("\n");
+			printf("\n");*/
 		}
 	}
 	assert (ans != NULL);
@@ -207,7 +207,7 @@ int find_info(struct short_file * now) {
 
 	int height = tep -> height, width = tep -> width, cnt = ((tep -> width * 24 + 31) >> 5) << 2;
 	int skip = 4 - (((width * 24) >> 3) & 3), sum = cnt * height;
-//	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
+	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
 
 	int now_loc = 0, off = tep -> bf_off;
 	while (sum) {
@@ -217,7 +217,6 @@ int find_info(struct short_file * now) {
 		off = off + 1;
 		if (off == disk -> BPB_BytsPerSer * disk -> BPB_SecPerClus) {
 			start = findClus(now_loc, cnt), off = 0;
-			return 0;
 		}
 		if (now_loc == cnt) now_loc = 0; 
 		sum--;
@@ -258,7 +257,6 @@ void deal() {
 				SolveLongName((struct long_file *)lst);
 				int success = find_info(tep);
 				if (success) printf(" %d %x %s \n", tep -> DIR_FileSize, loc - 32, name);
-				return;
 			}
 			tep = tep + 1;
 		}
