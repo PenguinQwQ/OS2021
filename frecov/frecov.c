@@ -240,6 +240,7 @@ int find_info(struct short_file * now) {
 		if (now_loc == cnt) now_loc = 0; 
 		sum--;
 	}
+	printf("over\n");
 	fclose(fd);	
 	return 1;	
 }
