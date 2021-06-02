@@ -259,7 +259,6 @@ int find_info(struct short_file * now) {
 	fscanf(fp, "%s", buf);
 	printf("%s\n", buf);
 	pclose(fp);
-	buf
 	return 1;	
 }
 void deal() {
