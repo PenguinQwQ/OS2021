@@ -158,7 +158,7 @@ int find_info(struct short_file * now) {
 	uint32_t loc = now -> FstClusHl;
 	loc = (loc << 16) | now -> FstClusLO;
 	loc = cal_Clus(loc);
-	struct bmp tep* = (struct bmp *)(p + loc);
+	struct bmp *tep = (struct bmp *)(p + loc);
 	if (tep -> bfType != 0x4d42) return 0;
 	return 1;	
 }
@@ -193,7 +193,7 @@ void deal() {
 
 			if (n_now == 0) {
 				SolveLongName((struct long_file *)lst);
-				int sucess = find_info(tep);
+				int success = find_info(tep);
 				if (success) printf("L %x %s \n", loc - 32, name);
 
 			}
