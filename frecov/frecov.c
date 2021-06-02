@@ -216,7 +216,9 @@ int find_info(struct short_file * now) {
 	int height = tep -> height, width = tep -> width, cnt = ((tep -> width * 24 + 31) >> 5) << 2;
 	int skip = 4 - (((width * 24) >> 3) & 3), sum = cnt * height;
 	assert(sum <= 10000000);
+	#ifdef DEBUG
 	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
+	#endif
 
 	int now_loc = 0, off = tep -> bf_off;
 	MAX_c = INT_MAX;
@@ -280,8 +282,10 @@ void deal() {
 			if (n_now == 0) {
 				SolveLongName((struct long_file *)lst);
 				int success = find_info(tep);
+				#ifdef DEBUG
 				if (success) printf(" %d %x %s \n", tep -> DIR_FileSize, loc - 32, name);
 				printf("%d\n", MAX_c);
+				#endif
 			}
 			tep = tep + 1;
 		}
