@@ -23,7 +23,7 @@ struct fat_header{
 	uint32_t BPB_FATSz32;
 	uint8_t BPB_ExtFlags[2];
 	uint8_t BPB_FSVer[2];
-	uint8_t BPB_RootClus[4];
+	uint32_t BPB_RootClus;
 	uint8_t BPB_FSInfo[2];
 	uint8_t BPB_BkBootSec[2];
 	uint8_t BPB_Reserved[12];
@@ -47,11 +47,12 @@ int main(int argc, char *argv[]) {
 	assert(sizeof(struct fat_header) == 512);
 	assert(disk -> Signature_word == 0xaa55);
 	
-	uint32_t fat1, fat2;
+	uint32_t fat1, fat2, root_dir;
 	fat1 = (uint32_t)disk -> BPB_RsvdSecCnt * 512;
 	fat2 = fat1 + disk -> BPB_FATSz32 * 512;
-	printf("%x %x\n", fat1, fat2);
+	root_dir = fat2 + disk -> BPB_FATSz32 * 512 + BPB_SecPerClus * 512;
 
+	printf("%x %x %x\n", fat1, fat2, root_dir);
 
 	return 0;
 }
