@@ -257,6 +257,7 @@ int find_info(struct short_file * now) {
 	static char buf[1024];
 	fscanf(fp, "%s", buf);
 	printf("%s %s\n", buf, name);
+	fflush(stdout);
 	SumBmp++;
 	pclose(fp);
 	return 1;	
