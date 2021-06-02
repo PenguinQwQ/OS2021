@@ -8,7 +8,7 @@
 struct fat_header{
 	uint8_t BS_jmpBoot[3];
 	uint8_t BS_OEMName[8];
-	uint8_t BPB_BytsPerSer[2];
+	uint16_t BPB_BytsPerSer;
 	uint8_t BPB_SecPerClus;
 	uint16_t BPB_RsvdSecCnt;
 	uint8_t BPB_NumFATs;
@@ -47,12 +47,13 @@ int main(int argc, char *argv[]) {
 	assert(sizeof(struct fat_header) == 512);
 	assert(disk -> Signature_word == 0xaa55);
 	
-	uint32_t fat1, fat2, root_dir;
-	fat1 = (uint32_t)disk -> BPB_RsvdSecCnt * 512;
-	fat2 = fat1 + disk -> BPB_FATSz32 * 512;
-	root_dir = fat1 + disk -> BPB_NumFATs * disk -> BPB_FATSz32 * 512 + \
-	           (disk -> BPB_RootClus - 2) * disk -> BPB_SecPerClus * 512;
-
+	uint32_t fat1, fat2, FirstData, root_dir;
+	fat1 = (uint32_t)disk -> BPB_RsvdSecCnt * disk -> BPB_BytsPerSer;
+	fat2 = fat1 + disk -> BPB_FATSz32 * disk -> BPB_BytsPerSer;
+	FirstData = (disk -> BPB_RsvdSecCnt + (disk -> BPB_NumFATs * disk -> BPB_GATSz32))\
+	            * disk -> BPB_BytsPerSer;
+	rootdir = FirstData + (disk -> BPB_RootClus - 2) * disk -> BPB_SecPerClus \
+			  * disk -> BPB_BytsPerSer;
 	printf("%x %x %x %x\n", fat1, fat2, root_dir, disk -> BPB_RootClus);
 
 	return 0;
