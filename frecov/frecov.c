@@ -132,10 +132,10 @@ void get_name(char c) {
 }
 
 void deal() {
-	for (int i = 0; i < cnt[1]; i++) {
-		struct short_file *tep = (struct long_file)divided[1][i];
+	for (int i = 0; i < tot[1]; i++) {
+		struct short_file *tep = (struct long_file *)divided[1][i];
 
-		while ((uint32_t)tep < dibided[1][i] + disk -> BPB_SecPerClus * 512) {
+		while ((uint32_t)tep < divided[1][i] + disk -> BPB_SecPerClus * 512) {
 			if (tep -> DIR_Name[8] != 'B' && tep -> DIR_Name[9] != 'M' && \
 				tep -> DIR_Name[10] != 'P') continue;
 			
