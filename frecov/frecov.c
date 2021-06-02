@@ -147,6 +147,20 @@ void SolveLongName(struct long_file * now) {
 	}
 }
 
+int find_info(struxt short_file * now) {
+	uint32_t loc = now -> FstClusHI;
+	loc = (loc << 16) | now -> FstClusLO;
+	printf("%x\n", loc);
+	return 1;
+}
+
+
+
+
+
+
+
+
 void deal() {
 	for (int i = 0; i < tot[1]; i++) {
 	
@@ -171,16 +185,14 @@ void deal() {
 				name[n_now++] = '.';
 				for (int j = 8; j < 11; j++)
 					get_name(tep -> DIR_Name[j]);
-			//	printf("%x %s\n", loc - 32, name);
 				if (lst -> DIR_others_1[0] == 0x0f) n_now = 0, name[n_now] = '\0';
-				else printf("S %x %s\n", loc - 32, name);
+	//			else printf("S %x %s\n", loc - 32, name);
 			}
 
 			if (n_now == 0) {
-			//	printf("%x long\n", loc - 32);	
 				SolveLongName((struct long_file *)lst);
-				printf("L %x %s\n", loc - 32, name);
-				
+	//			printf("L %x %s\n", loc - 32, name);
+				find_info(now);
 			}
 			tep = tep + 1;
 		}
