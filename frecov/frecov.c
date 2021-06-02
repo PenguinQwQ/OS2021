@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 	fat2 = fat1 + disk -> BPB_FATSz32 * 512;
 	root_dir = fat2 + disk -> BPB_FATSz32 * 512 + disk -> BPB_SecPerClus * 512;
 
-	printf("%x %x %x\n", fat1, fat2, root_dir);
+	printf("%x %x %x %x\n", fat1, fat2, root_dir, BPB_Root_Clus);
 
 	return 0;
 }
