@@ -300,7 +300,7 @@ void deal() {
 	}
 }
 
-void check() {
+void checker() {
 	FILE *fd = fopen("/tmp/ans.txt");
 	char buf[1024];
 	fscanf(fd, "%s", buf);
@@ -336,7 +336,7 @@ int main(int argc, char *argv[]) {
 	deal();
 
 	#ifdef check
-	check();
+	checker();
 	#endif
 	return 0;
 }
