@@ -178,7 +178,7 @@ uint8_t* findClus(int loc, int sum) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]); 
 		}
 	}
-	if (val < MAX_c) MAX_c = val;
+	if (minn < MAX_c) MAX_c = minn;
 	assert (ans != NULL);
 	return ans;
 }
