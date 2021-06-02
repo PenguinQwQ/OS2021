@@ -301,12 +301,12 @@ void deal() {
 }
 
 void checker() {
-	FILE *fd = popen("/tmp/ans.txt", "r");
+	FILE *fd = fopen("/tmp/ans.txt", "r");
 	assert(fd != NULL);
 	char buf[1024];
 	fscanf(fd, "%s", buf);
 	printf("%s\n", buf);
-	pclose(fd);
+	fclose(fd);
 }
 
 int main(int argc, char *argv[]) {
@@ -333,8 +333,8 @@ int main(int argc, char *argv[]) {
 	freopen("/tmp/ans.txt", "w", stdout);
 	#endif
 
-	divide();
-	deal();
+//	divide();
+//	deal();
 
 	#ifdef check
 	checker();
