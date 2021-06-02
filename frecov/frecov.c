@@ -339,7 +339,7 @@ void checker() {
 #endif
 
 int main(int argc, char *argv[]) {
-	int fd = open("fs.img", 0);
+	int fd = open(argv[1], 0);
 	assert(fd > 0);
 	disk = mmap(NULL, 128 * 1024 *1024, PROT_READ, MAP_PRIVATE, fd, 0);
 	
