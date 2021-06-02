@@ -165,10 +165,11 @@ uint8_t* findClus(int loc, int sum) {
 	uint8_t* ans = NULL;
 	for (int i = 0; i < tot[3]; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
-		int val = 0;
+		uint8_t val = 0;
 		for (int j = loc; j < sum; j++) val += (*start) - line[j], start = start + 1;
 		for (int j = 0; j < loc; j++)   val += (*start) - line[j], start = start + 1;
 		if (val < minn) minn = val, ans = (uint8_t *)(p + divided[3][i]); 
+		printf("%d\n", val);
 	}
 	assert (ans != NULL);
 	return ans;
@@ -241,6 +242,7 @@ void deal() {
 				SolveLongName((struct long_file *)lst);
 				int success = find_info(tep);
 				if (success) printf(" %d %x %s \n", tep -> DIR_FileSize, loc - 32, name);
+				exit(0);
 
 			}
 			tep = tep + 1;
