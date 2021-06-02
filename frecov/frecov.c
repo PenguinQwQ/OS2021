@@ -311,7 +311,6 @@ struct chk{
 void checker() {
 	FILE *fd = fopen("/tmp/ans.txt", "r");
 	assert(fd != NULL);
-	char buf[1024];
 	SumBmp = 97;
 	for (int i = 0; i < SumBmp; i++) {
 		fscanf(fd, "%s %s", e[i].sum, e[i].name);
@@ -322,7 +321,6 @@ void checker() {
 
 	FILE *fd = fopen("/tmp/std.txt", "r");
 	assert(fd != NULL);
-	char buf[1024];
 	SumBmp = 97;
 	for (int i = 0; i < SumBmp; i++) {
 		fscanf(fd, "%s %s", f[i].sum, f[i].name);
