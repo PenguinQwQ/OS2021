@@ -177,9 +177,8 @@ int find_info(struct short_file * now) {
 	fclose(fd);
 
 	int height = tep -> height, width = tep -> width, cnt = ((tep -> width * 24 + 31) >> 5) << 2;
-	int skip = 4 - (((width * 24) >> 3) & 3);
-	for (int i = 0; i < tot[3] * 1000; i++);
-	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
+	int skip = 4 - (((width * 24) >> 3) & 3), sum = cnt * height;
+	 printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
 	return 1;	
 }
 
@@ -214,7 +213,7 @@ void deal() {
 			if (n_now == 0) {
 				SolveLongName((struct long_file *)lst);
 				int success = find_info(tep);
-				if (success) printf(" %x %s \n", loc - 32, name);
+				if (success) printf(" %d %x %s \n", tep -> DIR_FileSize, loc - 32, name);
 
 			}
 			tep = tep + 1;
