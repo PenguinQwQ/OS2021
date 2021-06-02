@@ -248,9 +248,17 @@ int find_info(struct short_file * now) {
 	ans_file[ans_loc] = '\0';
 	fwrite(ans_file, ans_loc, 1, fd);
 	fclose(fd);	
+
+	/// output ///
+
+	sprintf(file_name, "sha1sum /tmp/%s", name);
+	FILE fp = popen(file_name, "r");
+	static char buf[1024];
+	fscanf(fp, "%s", buf);
+	pclose(fp);
+	printf("%s\n", buf);
 	return 1;	
 }
-
 void deal() {
 	for (int i = 0; i < tot[1]; i++) {
 	
@@ -276,7 +284,6 @@ void deal() {
 				for (int j = 8; j < 11; j++)
 					get_name(tep -> DIR_Name[j]);
 				if (lst -> DIR_others_1[0] == 0x0f) n_now = 0, name[n_now] = '\0';
-	//			else printf("S %x %s\n", loc - 32, name);
 			}
 
 			if (n_now == 0) {
