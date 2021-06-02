@@ -213,7 +213,7 @@ void deal() {
 			if (n_now == 0) {
 				SolveLongName((struct long_file *)lst);
 				int success = find_info(tep);
-				if (success) printf(" %d %x %s \n", tep -> DIR_FileSize, loc - 32, name);
+				if (success) printf(" %d %x %s \n", (int)tep -> DIR_FileSize, loc - 32, name);
 
 			}
 			tep = tep + 1;
