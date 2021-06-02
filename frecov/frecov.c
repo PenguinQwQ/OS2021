@@ -222,11 +222,14 @@ int find_info(struct short_file * now) {
 	
 	int id = -1;
 	printf("\n");
-	for (int i = 0; i < tot[3]; i++)
+	for (int i = 0; i < tot[3]; i++) {
 		if (divided[3][i] == loc) {
 			id = i;
 			break;	
 		}
+		printf("%x ", divided[3][i]);
+	}
+	printf("\n");
 	assert(id != -1);
 	
 	while (sum) {
