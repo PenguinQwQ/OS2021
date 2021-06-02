@@ -132,6 +132,21 @@ void get_name(char c) {
 	name[n_now] = '\0';
 }
 
+void SolveLongName(struct long_file * now) {
+	while (now -> LDIR_Attr == 0xff) {
+		for (int i = 0; i < 10; i += 2)
+			if (now -> LDIR_Name1[i] == '\0' && now -> LDTR_Name1[i + 1]=='\0') return;	
+			get_name(now -> LDTR_Name1[i]);
+		for (int i = 0; i < 12; i += 2)
+			if (now -> LDIR_Name2[i] == '\0' && now -> LDTR_Name2[i + 1]=='\0') return;	
+			get_name(now -> LDTR_Name2[i]);
+		for (int i = 0; i < 4; i += 2)
+			if (now -> LDIR_Name3[i] == '\0' && now -> LDTR_Name3[i + 1]=='\0') return;	
+			get_name(now -> LDTR_Name3[i]);
+		now = now - 1;
+	}
+}
+
 void deal() {
 	for (int i = 0; i < tot[1]; i++) {
 	
@@ -156,12 +171,15 @@ void deal() {
 				name[n_now++] = '.';
 				for (int j = 8; j < 11; j++)
 					get_name(tep -> DIR_Name[j]);
-				printf("%x %s\n", loc - 32, name);
+			//	printf("%x %s\n", loc - 32, name);
 				if (lst -> DIR_others_1[0] == 0x0f) n_now = 0;
+				else printf("S %x %s\m". loc - 32, name);
 			}
 
 			if (n_now == 0) {
-				printf("%x long\n", loc - 32);	
+			//	printf("%x long\n", loc - 32);	
+				SolveLongName(lst);
+				printf("L %x %s\n", loc - 32, name);
 				
 			}
 			tep = tep + 1;
