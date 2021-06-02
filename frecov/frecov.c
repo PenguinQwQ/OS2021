@@ -178,7 +178,7 @@ void deal() {
 
 			if (n_now == 0) {
 			//	printf("%x long\n", loc - 32);	
-				SolveLongName(lst);
+				SolveLongName((struct long_file *)lst);
 				printf("L %x %s\n", loc - 32, name);
 				
 			}
