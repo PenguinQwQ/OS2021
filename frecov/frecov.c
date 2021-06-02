@@ -69,7 +69,7 @@ uint32_t cal_Clus(int num) {
 	return FirstData + (num - 2) * disk -> BPB_SecPerClus  * disk -> BPB_BytsPerSer;
 }
 
-void judge_empty(uint32_t loc) {
+int judge_empty(uint32_t loc) {
 	int bj = 0;
 	for (int i = 0; i < 32; i++)
 		if (*(p + loc) != 0) {
@@ -83,7 +83,7 @@ void judge_empty(uint32_t loc) {
 	return -1;
 }
 
-void judge_dir(uint32_t loc) {
+int judge_dir(uint32_t loc) {
 	struct short_file *tep = (struct short_file *)(p + loc);
 	int cnt = 0;
 	for (int i = 1; i <= 20; i++) {
@@ -99,7 +99,7 @@ void judge_dir(uint32_t loc) {
 	return -1;
 }
 
-void judge_bmp_head(uint32_t loc) {
+int judge_bmphead(uint32_t loc) {
 	uint16_t *tep = (uint16_t *)(p + loc);
 	if (*tep == 0x4d42) {
 		divided[2][tot[2]++] = loc;
