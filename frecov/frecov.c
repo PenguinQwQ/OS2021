@@ -215,6 +215,6 @@ int main(int argc, char *argv[]) {
 
 	divide();
 	deal();
-	printf("%x\n". cal_Clus(0x3fb8));
+	printf("%x\n", cal_Clus(0x3fb8));
 	return 0;
 }
