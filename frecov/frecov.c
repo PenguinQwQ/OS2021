@@ -195,7 +195,7 @@ uint8_t* findClus(int loc, int sum, int id) {
 	assert (ans != NULL);
 	return ans;
 }
-uint8_t ans_file[1000000];
+uint8_t ans_file[10000000];
 
 int find_info(struct short_file * now) {
 	uint32_t loc = now -> FstClusHl;
@@ -215,7 +215,7 @@ int find_info(struct short_file * now) {
 
 	int height = tep -> height, width = tep -> width, cnt = ((tep -> width * 24 + 31) >> 5) << 2;
 	int skip = 4 - (((width * 24) >> 3) & 3), sum = cnt * height;
-	assert(sum <= 1000000);
+	assert(sum <= 10000000);
 	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
 
 	int now_loc = 0, off = tep -> bf_off;
