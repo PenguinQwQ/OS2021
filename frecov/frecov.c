@@ -192,7 +192,7 @@ void deal() {
 			if (n_now == 0) {
 				SolveLongName((struct long_file *)lst);
 	//			printf("L %x %s\n", loc - 32, name);
-				int sucess = find_info(now);
+				int sucess = find_info(tep);
 
 			}
 			tep = tep + 1;
