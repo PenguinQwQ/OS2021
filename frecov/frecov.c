@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <fcntl.h>
+#define MAX_NUM 262144 * 2
 
 struct fat_header{
 	uint8_t BS_jmpBoot[3];
@@ -57,11 +58,23 @@ struct long_file{
 	char LDIR_Name3[4];
 }__attribute__((packed));
 
-uint32_t fat1, fat2, FirstData, RootDir;
+uint32_t fat1, fat2, FirstData, RootDir, TotClus;
 struct fat_header *disk;
+uint8_t *p;
+
+uint32_t divided[4][MAX_NUM];
+uint32_t tot[4];
 
 uint32_t cal_Clus(int num) {
 	return FirstData + (num - 2) * disk -> BPB_SecPerClus  * disk -> BPB_BytsPerSer;
+}
+
+void divide() {
+	uint32_t loc = FirstData, bj = 0;
+	for (int i = 0; i < TotClus; i++, loc += disk -> SecPerClus * 512) {
+		printf("%d\n", i);
+	}
+
 }
 
 int main(int argc, char *argv[]) {
@@ -80,8 +93,11 @@ int main(int argc, char *argv[]) {
 	FirstData = (disk -> BPB_RsvdSecCnt + (disk -> BPB_NumFATs * disk -> BPB_FATSz32))\
 	            * disk -> BPB_BytsPerSer;
 	RootDir = cal_Clus(disk -> BPB_RootClus);
-	
-	printf("%x\n", RootDir);
+	TotClus = (disk -> BPB_TOTsz32 - (disk -> BPB_RsvdSecCnt + disk -> BPB_NUMFATs *\
+			   						  disk -> BPB_FATSz32)) / disk -> BPB_SecPerClus;
+	p = (uint8_t *)disk;
+
+	divide();
 
 	return 0;
 }
