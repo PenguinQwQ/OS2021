@@ -172,7 +172,7 @@ void deal() {
 				for (int j = 8; j < 11; j++)
 					get_name(tep -> DIR_Name[j]);
 			//	printf("%x %s\n", loc - 32, name);
-				if (lst -> DIR_others_1[0] == 0x0f) n_now = 0;
+				if (lst -> DIR_others_1[0] == 0x0f) n_now = 0, name[n_now] = '\0';
 				else printf("S %x %s\n", loc - 32, name);
 			}
 
