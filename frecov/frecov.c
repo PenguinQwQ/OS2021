@@ -314,8 +314,6 @@ void checker() {
 	SumBmp = 97;
 	for (int i = 0; i < SumBmp; i++) {
 		fscanf(fd, "%s %s", e[i].sum, e[i].name);
-		fprintf(stderr, "%s %s\n", e[i].sum, e[i].name);
-		fflush(stderr);
 	}
 	fclose(fd);
 
@@ -324,8 +322,6 @@ void checker() {
 	SumBmp = 97;
 	for (int i = 0; i < SumBmp; i++) {
 		fscanf(fd, "%s %s", f[i].sum, f[i].name);
-		fprintf(stderr, "%s %s\n", f[i].sum, f[i].name);
-		fflush(stderr);
 	}
 	fclose(fd);
 	int cor_name = 0, cor_all = 0;
@@ -338,7 +334,7 @@ void checker() {
 			}	
 		}
 	}
-	printf("%lf %lf\n", cor_name / SumBmp, cor_all / SumBmp);
+	printf("%lf %lf\n", (double)cor_name / SumBmp, (double)cor_all / SumBmp);
 }
 #endif
 
