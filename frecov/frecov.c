@@ -135,7 +135,7 @@ void get_name(char c) {
 void deal() {
 	for (int i = 0; i < tot[1]; i++) {
 	
-		struct short_file *tep = (struct short_file *)(p + divided[1][i]);
+		struct short_file *tep = (struct short_file *)(p + divided[1][i]), *lst;
 		uint32_t loc = divided[1][i];
 
 		while ((uintptr_t)tep < \
@@ -148,6 +148,7 @@ void deal() {
 			}
 			
 			n_now = 0;
+			lst = tep - 1;
 
 			if (tep -> DIR_Name[6] != '~') {
 				for (int j = 0; j < 8; j++)
@@ -155,10 +156,11 @@ void deal() {
 				name[n_now++] = '.';
 				for (int j = 8; j < 11; j++)
 					get_name(tep -> DIR_Name[j]);
-				printf("%x %d %s\n", loc - 32, i, name);
+				if (lst -> DIR_Attr == 0x0f) n_now = 0;
 			}
-			else {
-				printf("long\n");	
+
+			if (n_now == 0) {
+				printf("%x long\n", loc - 32);	
 				
 			}
 			tep = tep + 1;
