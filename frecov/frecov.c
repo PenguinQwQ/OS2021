@@ -166,22 +166,33 @@ int pd(uint8_t a, uint8_t b) {
 } 
 int MAX_c;
 
-uint8_t* findClus(int loc, int sum, uint32_t Clus) {
+uint8_t* findClus(int loc, int sum, int id) {
 	int minn = INT_MAX;
 	uint8_t* ans = NULL;
 	
 
 
-	for (int i = 0; i < tot[3]; i++) {
+	for (int i = id + 1; i < tot[3]; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
 		int val = 0;
 		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
-			minn = val, ans = (uint8_t *)(p + divided[3][i]); 
+			minn = val, ans = (uint8_t *)(p + divided[3][i]);
+			if (val < 5000) return ans; 
 		}
 	}
 	if (minn < MAX_c) MAX_c = minn;
+
+	for (int i = 0; i < id; i++) {
+		uint8_t *start = (uint8_t *)(p + divided[3][i]);
+		int val = 0;
+		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
+		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
+		if (val < minn) {
+			minn = val, ans = (uint8_t *)(p + divided[3][i]);
+		}
+	}
 	assert (ans != NULL);
 	return ans;
 }
@@ -208,13 +219,22 @@ int find_info(struct short_file * now) {
 
 	int now_loc = 0, off = tep -> bf_off;
 	MAX_c = INT_MAX;
+	
+	int id = -1;
+	for (int i = 0; i < cnt[3]; i++)
+		if (divided[3][i] == loc) {
+			id = i;
+			break;	
+		}
+	assert(id != -1);
+	
 	while (sum) {
 		line[now_loc++] = *start;
 		fwrite(start, 1, 1, fd);
 		start = start + 1;
 		off = off + 1;
 		if (off == disk -> BPB_BytsPerSer * disk -> BPB_SecPerClus) {
-			start = findClus(now_loc, cnt, loc), off = 0;
+			start = findClus(now_loc, cnt, id), off = 0;
 		}
 		if (now_loc == cnt) now_loc = 0; 
 		sum--;
@@ -283,7 +303,6 @@ int main(int argc, char *argv[]) {
 	p = (uint8_t *)disk;
 
 	divide();
-	printf("%d\n", tot[0]);
 	deal();
 	return 0;
 }
