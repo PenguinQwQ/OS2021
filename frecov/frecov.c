@@ -20,7 +20,7 @@ struct fat_header{
 	uint8_t BPB_SecPerTr[2];
 	uint8_t BPB_NumHead[2];
 	uint8_t BPB_HiddSec[4];
-	uint8_t BPB_TotSec32[4];
+	uint32_t BPB_TotSec32;
 	uint32_t BPB_FATSz32;
 	uint8_t BPB_ExtFlags[2];
 	uint8_t BPB_FSVer[2];
@@ -71,7 +71,7 @@ uint32_t cal_Clus(int num) {
 
 void divide() {
 	uint32_t loc = FirstData, bj = 0;
-	for (int i = 0; i < TotClus; i++, loc += disk -> SecPerClus * 512) {
+	for (int i = 0; i < TotClus; i++, loc += disk -> BPB_SecPerClus * 512) {
 		printf("%d\n", i);
 	}
 
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 	FirstData = (disk -> BPB_RsvdSecCnt + (disk -> BPB_NumFATs * disk -> BPB_FATSz32))\
 	            * disk -> BPB_BytsPerSer;
 	RootDir = cal_Clus(disk -> BPB_RootClus);
-	TotClus = (disk -> BPB_TOTsz32 - (disk -> BPB_RsvdSecCnt + disk -> BPB_NUMFATs *\
+	TotClus = (disk -> BPB_Totsec32 - (disk -> BPB_RsvdSecCnt + disk -> BPB_NumFATs *\
 			   						  disk -> BPB_FATSz32)) / disk -> BPB_SecPerClus;
 	p = (uint8_t *)disk;
 
