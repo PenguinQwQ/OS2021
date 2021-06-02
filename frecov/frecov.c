@@ -128,9 +128,9 @@ void divide() {
 		if (id == -1) id = judge_bmphead(loc);
 		if (id == -1) id = 3, divided[3][tot[3]++] = loc;
 			
-	//	#ifdef DEBUG
+		#ifdef DEBUG
 		printf("loc=0x%x id=%d\n", loc, id);
-	//	#endif
+		#endif
 	}
 
 }
@@ -221,16 +221,12 @@ int find_info(struct short_file * now) {
 	MAX_c = INT_MAX;
 	
 	int id = -1;
-	printf("\n");
 	for (int i = 0; i < tot[3]; i++) {
-		if (divided[3][i] == loc) {
+		if (divided[3][i] == loc + disk -> BPB_BytsPerSer * disk -> BPB_SecPerClus) {
 			id = i;
 			break;	
 		}
-		printf("%x\n", divided[3][i]);
 	}
-	printf("\n");
-	fflush(stdout);
 	assert(id != -1);
 	
 	while (sum) {
