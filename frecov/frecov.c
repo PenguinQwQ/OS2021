@@ -164,6 +164,7 @@ int pd(uint8_t a, uint8_t b) {
 	if (a > b) return a - b;
 	else return b - a;
 } 
+int Max_c;
 
 uint8_t* findClus(int loc, int sum) {
 	int minn = INT_MAX;
@@ -175,16 +176,9 @@ uint8_t* findClus(int loc, int sum) {
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]); 
-/*			printf("%x %d\n", divided[3][i], val);
-			start = (uint8_t *)(p + divided[3][i]);
-			for (int j = loc; j < sum; j++) printf("%x ", *start), start = start + 1;
-			for (int j = 0; j < loc; j++) printf("%x ", *start), start = start + 1;
-			printf("\n");
-			for (int j = loc; j < sum; j++) printf("%x ", line[j]);
-			for (int j = 0; j < loc; j++) printf("%x ", line[j]);
-			printf("\n");*/
 		}
 	}
+	if (val < MAX_c) MAX_c = val;
 	assert (ans != NULL);
 	return ans;
 }
@@ -210,6 +204,7 @@ int find_info(struct short_file * now) {
 	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
 
 	int now_loc = 0, off = tep -> bf_off;
+	MAX_c = INT_MAX;
 	while (sum) {
 		line[now_loc++] = *start;
 		fwrite(start, 1, 1, fd);
@@ -221,7 +216,8 @@ int find_info(struct short_file * now) {
 		if (now_loc == cnt) now_loc = 0; 
 		sum--;
 	}
-	fclose(fd);
+	fclose(fd);	
+	printf("%d\n", MAX_c);
 	return 1;	
 }
 
