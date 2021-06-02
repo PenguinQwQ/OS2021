@@ -50,7 +50,8 @@ int main(int argc, char *argv[]) {
 	uint32_t fat1, fat2, root_dir;
 	fat1 = (uint32_t)disk -> BPB_RsvdSecCnt * 512;
 	fat2 = fat1 + disk -> BPB_FATSz32 * 512;
-	root_dir = fat2 + disk -> BPB_FATSz32 * 512 + disk -> BPB_RootClus * 512;
+	root_dir = fat1 + disk -> NUMFATs * disk -> BPB_FATSz32 * 512 + \
+	           disk -> BPB_RootClus * 512;
 
 	printf("%x %x %x %x\n", fat1, fat2, root_dir, disk -> BPB_RootClus);
 
