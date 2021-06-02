@@ -116,7 +116,10 @@ void divide() {
 		if (id == -1) id = judge_dir(loc);
 		if (id == -1) id = judge_bmphead(loc);
 		if (id == -1) id = 3, divided[3][tot[3]++] = loc;
+		
+		#ifdef DEBUG
 		printf("loc=0x%x id=%d\n", loc, id);
+		#endif
 	}
 
 }
