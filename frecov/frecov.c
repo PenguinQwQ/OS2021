@@ -133,7 +133,6 @@ void get_name(char c) {
 
 void deal() {
 	for (int i = 0; i < tot[1]; i++) {
-		printf("666\n");
 		struct short_file *tep = (struct short_file *)(p + divided[1][i]);
 
 		while ((uintptr_t)tep < \
@@ -155,6 +154,7 @@ void deal() {
 				printf("long\n");	
 				
 			}
+			tep = tep + 1;
 		}
 	}
 }
