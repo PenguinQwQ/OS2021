@@ -164,11 +164,23 @@ int pd(uint8_t a, uint8_t b) {
 	if (a > b) return a - b;
 	else return b - a;
 } 
-int MAX_c;
+int MAX_c, unique;
 
 uint8_t* findClus(int loc, int sum, int id) {
 	int minn = INT_MAX;
 	uint8_t* ans = NULL;
+
+	for (int i = id; i < tot[3]; i++) {
+		uint8_t *start = (uint8_t *)(p + divided[3][i]);
+		int val = 0;
+		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
+		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
+		if (val < minn) {
+			minn = val, ans = (uint8_t *)(p + divided[3][i]); unique = i + 1;
+			if (val < 5000) return ans; 
+		}
+	}
+	if (minn < MAX_c) MAX_c = minn;
 
 	for (int i = 0; i < tot[3]; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
@@ -177,20 +189,8 @@ uint8_t* findClus(int loc, int sum, int id) {
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]);
-//			if (val < 5000) return ans; 
 		}
 	}
-	if (minn < MAX_c) MAX_c = minn;
-
-/*	for (int i = 0; i < tot[3]; i++) {
-		uint8_t *start = (uint8_t *)(p + divided[3][i]);
-		int val = 0;
-		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
-		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
-		if (val < minn) {
-			minn = val, ans = (uint8_t *)(p + divided[3][i]);
-		}
-	}*/
 	assert (ans != NULL);
 	return ans;
 }
@@ -234,6 +234,7 @@ int find_info(struct short_file * now) {
 		off = off + 1;
 		if (off == disk -> BPB_BytsPerSer * disk -> BPB_SecPerClus) {
 			start = findClus(now_loc, cnt, id), off = 0;
+			id = unique;
 		}
 		if (now_loc == cnt) now_loc = 0; 
 		sum--;
