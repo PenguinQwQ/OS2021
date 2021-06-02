@@ -37,6 +37,26 @@ struct fat_header{
 	uint16_t Signature_word;	
 }__attribute__((packed));
 
+struct short_file{
+	uint8_t DIR_Name[11];
+	uint8_t DIR_others_1[9];
+	uint16_t FstClusHl;
+	uint8_t ti[4];
+	uint16_t FstClusLO;
+	uint8_t DIR_FileSize[4];
+}__attribute__((packed));
+
+struct long_file{
+	uint8_t LDIR_Ord;
+	char LDIR_Name1[10];
+	uint8_t LDIR_Attr;
+	uint8_t LDIR_Type;
+	uint8_t LDIR_CHksum;
+	char LDIR_Name2[12];
+	uint8_t LDIR_FstClusOI[2];
+	char LDIR_Name3[4];
+}__attribute__((packed));
+
 int main(int argc, char *argv[]) {
 	int fd = open("fs.img", 0);
 	assert(fd > 0);
@@ -46,6 +66,8 @@ int main(int argc, char *argv[]) {
 	assert(disk != NULL);
 	assert(sizeof(struct fat_header) == 512);
 	assert(disk -> Signature_word == 0xaa55);
+	assert(sizeof(struct short_file) == 32);
+	assert(sizeof(struct long_file)  == 32);
 	
 	uint32_t fat1, fat2, FirstData, RootDir;
 	fat1 = (uint32_t)disk -> BPB_RsvdSecCnt * disk -> BPB_BytsPerSer;
@@ -55,7 +77,7 @@ int main(int argc, char *argv[]) {
 	RootDir = FirstData + (disk -> BPB_RootClus - 2) * disk -> BPB_SecPerClus \
 			  * disk -> BPB_BytsPerSer;
 
-	printf("%x %x %x %x\n", fat1, fat2, RootDir, disk -> BPB_RootClus);
+	printf("%x %x %x\n", fat1, fat2, RootDir);
 
 	return 0;
 }
