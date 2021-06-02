@@ -134,6 +134,7 @@ void get_name(char c) {
 void deal() {
 	for (int i = 0; i < tot[1]; i++) {
 		struct short_file *tep = (struct short_file *)(p + divided[1][i]);
+		printf("%d %s\n", i, tep -> DIR_Name);
 
 		while ((uintptr_t)tep < \
 			   (uintptr_t) p + divided[1][i] + disk -> BPB_SecPerClus * 512) {
@@ -143,7 +144,6 @@ void deal() {
 				continue;
 			}
 			
-			printf("%s\n", tep -> DIR_Name);
 			n_now = 0;
 
 			if (tep -> DIR_Name[6] != '~') {
