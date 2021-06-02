@@ -177,18 +177,16 @@ uint8_t* findClus(int loc, int sum, int id) {
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]); unique = i + 1;
-			if (val < 10000) {printf("%d %d\n", id, i);return ans; }
 		}
 	}
 	if (minn < MAX_c) MAX_c = minn;
 
-	for (int i = 0; i < tot[3]; i++) {
+	for (int i = 0; i < id; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
 		int val = 0;
 		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
-			if (val < 10000) {printf("%d %d\n", id, i);return ans; }
 			minn = val, ans = (uint8_t *)(p + divided[3][i]); unique = i + 1;
 		}
 	}
