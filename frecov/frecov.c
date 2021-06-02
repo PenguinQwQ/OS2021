@@ -306,7 +306,7 @@ void deal() {
 struct chk{
 	char sum[64];
 	char name[64];
-}e[1024];
+}e[1024], f[1024];
 
 void checker() {
 	FILE *fd = fopen("/tmp/ans.txt", "r");
@@ -319,6 +319,18 @@ void checker() {
 		fflush(stderr);
 	}
 	fclose(fd);
+
+	FILE *fd = fopen("/tmp/std.txt", "r");
+	assert(fd != NULL);
+	char buf[1024];
+	SumBmp = 97;
+	for (int i = 0; i < SumBmp; i++) {
+		fscanf(fd, "%s %s", f[i].sum, f[i].name);
+		fprintf(stderr, "%s %s\n", f[i].sum, f[i].name);
+		fflush(stderr);
+	}
+	fclose(fd);
+
 }
 #endif
 
