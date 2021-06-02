@@ -305,6 +305,7 @@ void check() {
 	char buf[1024];
 	fscanf(fd, "%s", buf);
 	printf("%s\n", buf);
+	close(fd);
 }
 
 int main(int argc, char *argv[]) {
