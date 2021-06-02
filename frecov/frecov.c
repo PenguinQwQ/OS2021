@@ -155,7 +155,7 @@ void deal() {
 				name[n_now++] = '.';
 				for (int j = 8; j < 11; j++)
 					get_name(tep -> DIR_Name[j]);
-				printf("%x %d %s\n", loc, i, name);
+				printf("%x %d %s\n", loc - 32, i, name);
 			}
 			else {
 				printf("long\n");	
