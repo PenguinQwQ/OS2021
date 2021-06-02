@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
 	            * disk -> BPB_BytsPerSer;
 	RootDir = FirstData + (disk -> BPB_RootClus - 2) * disk -> BPB_SecPerClus \
 			  * disk -> BPB_BytsPerSer;
+
 	printf("%x %x %x %x\n", fat1, fat2, RootDir, disk -> BPB_RootClus);
 
 	return 0;
