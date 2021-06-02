@@ -318,6 +318,10 @@ int main(int argc, char *argv[]) {
 	TotClus = (disk -> BPB_TotSec32 - (disk -> BPB_RsvdSecCnt + disk -> BPB_NumFATs *\
 			   						  disk -> BPB_FATSz32)) / disk -> BPB_SecPerClus;
 	p = (uint8_t *)disk;
+	
+	#ifdef check
+	freopen("/tmp/ans.txt", "w", stdout);
+	#endif
 
 	divide();
 	deal();
