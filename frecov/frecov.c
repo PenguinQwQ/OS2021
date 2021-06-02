@@ -193,7 +193,7 @@ int find_info(struct short_file * now) {
 
 	int height = tep -> height, width = tep -> width, cnt = ((tep -> width * 24 + 31) >> 5) << 2;
 	int skip = 4 - (((width * 24) >> 3) & 3), sum = cnt * height;
-	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
+//	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
 
 	int now_loc = 0, off = tep -> bf_off;
 	while (sum) {
