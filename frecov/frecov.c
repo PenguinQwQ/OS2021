@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <fcntl.h>
+#define check
 #define MAX_NUM 262144 * 2
 
 struct fat_header{
@@ -300,6 +301,10 @@ void deal() {
 }
 
 void check() {
+	FILE *fd = fopen("/tmp/ans.txt");
+	char buf[1024];
+	fscanf(fd, "%s", buf);
+	printf("%s\n", buf);
 }
 
 int main(int argc, char *argv[]) {
