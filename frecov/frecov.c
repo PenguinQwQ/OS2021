@@ -194,13 +194,15 @@ int find_info(struct short_file * now) {
 	int skip = 4 - (((width * 24) >> 3) & 3), sum = cnt * height;
 	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
 
-	int now_loc = 0;
+	int now_loc = 0, off = tep_bf_off;
 	while (sum) {
 		line[now_loc++] = *start;
 		fwrite(start, 1, 1, fd);
-		start = findClus(now_loc, cnt);
+		start = start + 1;
+		off = off + 1;
+		if (off == disk -> BPB_BytsPerSer * disk -> BPB_SecPerClus)
+			start = findClus(now_loc, cnt), off = 0;
 		if (now_loc == cnt) now_loc = 0; 
-		printf("%d\n", sum);
 		sum--;
 	}
 	fclose(fd);
