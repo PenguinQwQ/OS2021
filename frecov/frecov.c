@@ -6,7 +6,7 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 #define MAX_NUM 262144 * 2
-
+#define check
 struct fat_header{
 	uint8_t BS_jmpBoot[3];
 	uint8_t BS_OEMName[8];
