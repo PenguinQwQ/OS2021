@@ -1,10 +1,11 @@
-#include <stdio.1>
+#include <stdio.h>
 #include <limits.h>
 #include <string.h>
 #include <stdint.h>
 #include <assert.h>
 #include <sys/mman.h>
 #include <fcntl.h>
+#define check
 #define MAX_NUM 262144 * 2
 struct fat_header{
 	uint8_t BS_jmpBoot[3];
@@ -310,6 +311,7 @@ void deal() {
 	}
 }
 
+#ifdef check
 struct chk{
 	char sum[64];
 	char name[64];
