@@ -169,7 +169,7 @@ int MAX_c;
 uint8_t* findClus(int loc, int sum, int id) {
 	int minn = INT_MAX;
 	uint8_t* ans = NULL;
-/*
+
 	for (int i = id + 1; i < tot[3]; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
 		int val = 0;
@@ -177,12 +177,12 @@ uint8_t* findClus(int loc, int sum, int id) {
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]);
-			if (val < 5000) return ans; 
+//			if (val < 5000) return ans; 
 		}
 	}
 	if (minn < MAX_c) MAX_c = minn;
-*/
-	for (int i = 0; i < tot[3]; i++) {
+
+/*	for (int i = 0; i < tot[3]; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
 		int val = 0;
 		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
@@ -190,7 +190,7 @@ uint8_t* findClus(int loc, int sum, int id) {
 		if (val < minn) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]);
 		}
-	}
+	}*/
 	assert (ans != NULL);
 	return ans;
 }
@@ -277,6 +277,7 @@ void deal() {
 				printf("%d\n", MAX_c);
 			}
 			tep = tep + 1;
+			return;
 		}
 	}
 }
