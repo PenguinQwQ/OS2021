@@ -129,12 +129,12 @@ static int n_now = 0;
  
 void get_name(char c) {
 	if ((uint8_t)c != 0x20) name[n_now++] = c;
+	name[n_now] = '\0';
 }
 
 void deal() {
 	for (int i = 0; i < tot[1]; i++) {
 		struct short_file *tep = (struct short_file *)(p + divided[1][i]);
-		printf("%d %s\n", i, tep -> DIR_Name);
 
 		while ((uintptr_t)tep < \
 			   (uintptr_t) p + divided[1][i] + disk -> BPB_SecPerClus * 512) {
@@ -152,6 +152,7 @@ void deal() {
 				name[n_now++] = '.';
 				for (int j = 8; j < 11; j++)
 					get_name(tep -> DIR_Name[j]);
+				printf("%d %s\n", i, tep -> DIR_Name);
 			}
 			else {
 				printf("long\n");	
