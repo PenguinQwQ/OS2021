@@ -195,6 +195,7 @@ uint8_t* findClus(int loc, int sum, int id) {
 	assert (ans != NULL);
 	return ans;
 }
+uint8_t ans_file[1000000];
 
 int find_info(struct short_file * now) {
 	uint32_t loc = now -> FstClusHl;
@@ -214,6 +215,7 @@ int find_info(struct short_file * now) {
 
 	int height = tep -> height, width = tep -> width, cnt = ((tep -> width * 24 + 31) >> 5) << 2;
 	int skip = 4 - (((width * 24) >> 3) & 3), sum = cnt * height;
+	assert(sum <= 1000000);
 	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
 
 	int now_loc = 0, off = tep -> bf_off;
@@ -228,19 +230,21 @@ int find_info(struct short_file * now) {
 	}
 	assert(id != -1);
 	
+	int ans_loc = 0;
 	while (sum) {
 		line[now_loc++] = *start;
-		fwrite(start, 1, 1, fd);
+		ans_file[ans_loc++] = *start;
 		start = start + 1;
 		off = off + 1;
 		if (off == disk -> BPB_BytsPerSer * disk -> BPB_SecPerClus) {
 			start = findClus(now_loc, cnt, id), off = 0;
 			id = unique;
-			printf("p\n");
 		}
 		if (now_loc == cnt) now_loc = 0; 
 		sum--;
 	}
+	ans_file[ans_loc] = '\0';
+	fwite(ans_file, ans_loc, 1, fd);
 	fclose(fd);	
 	return 1;	
 }
