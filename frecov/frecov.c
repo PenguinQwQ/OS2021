@@ -301,11 +301,11 @@ void deal() {
 }
 
 void checker() {
-	FILE *fd = fopen("/tmp/ans.txt");
+	FILE *fd = fopen("/tmp/ans.txt", "r");
 	char buf[1024];
 	fscanf(fd, "%s", buf);
 	printf("%s\n", buf);
-	close(fd);
+	fclose(fd);
 }
 
 int main(int argc, char *argv[]) {
