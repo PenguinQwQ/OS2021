@@ -148,7 +148,7 @@ void SolveLongName(struct long_file * now) {
 }
 
 int find_info(struct short_file * now) {
-	uint32_t loc = now -> FstClusHI;
+	uint32_t loc = now -> FstClusHl;
 	loc = (loc << 16) | now -> FstClusLO;
 	printf("%x\n", loc);
 	return 1;
