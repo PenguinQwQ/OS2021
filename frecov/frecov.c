@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 	FirstData = (disk -> BPB_RsvdSecCnt + (disk -> BPB_NumFATs * disk -> BPB_FATSz32))\
 	            * disk -> BPB_BytsPerSer;
 	RootDir = cal_Clus(disk -> BPB_RootClus);
-	TotClus = (disk -> BPB_Totsec32 - (disk -> BPB_RsvdSecCnt + disk -> BPB_NumFATs *\
+	TotClus = (disk -> BPB_TotSec32 - (disk -> BPB_RsvdSecCnt + disk -> BPB_NumFATs *\
 			   						  disk -> BPB_FATSz32)) / disk -> BPB_SecPerClus;
 	p = (uint8_t *)disk;
 
