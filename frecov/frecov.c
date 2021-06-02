@@ -188,7 +188,7 @@ uint8_t* findClus(int loc, int sum, int id) {
 		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
-			minn = val, ans = (uint8_t *)(p + divided[3][i]);
+			minn = val, ans = (uint8_t *)(p + divided[3][i]); unique = i + 1;
 		}
 	}
 	assert (ans != NULL);
