@@ -302,6 +302,7 @@ void deal() {
 
 void checker() {
 	FILE *fd = fopen("/tmp/ans.txt", "r");
+	assert(fd != NULL);
 	char buf[1024];
 	fscanf(fd, "%s", buf);
 	printf("%s\n", buf);
