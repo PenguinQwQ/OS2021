@@ -166,7 +166,7 @@ int pd(uint8_t a, uint8_t b) {
 } 
 int MAX_c, unique;
 
-uint8_t* findClus(int loc, int sum, int id) {
+uint8_t* findClus(int loc, int sum, int id, int skip) {
 	int minn = INT_MAX;
 	uint8_t* ans = NULL;
 
@@ -176,6 +176,7 @@ uint8_t* findClus(int loc, int sum, int id) {
 		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
+			printf("%d %d %d\n", val, id, i);
 			minn = val, ans = (uint8_t *)(p + divided[3][i]); unique = i + 1;
 		}
 	}
@@ -235,7 +236,7 @@ int find_info(struct short_file * now) {
 		start = start + 1;
 		off = off + 1;
 		if (off == disk -> BPB_BytsPerSer * disk -> BPB_SecPerClus) {
-			start = findClus(now_loc, cnt, id), off = 0;
+			start = findClus(now_loc, cnt, id, skip), off = 0;
 			id = unique;
 		}
 		if (now_loc == cnt) now_loc = 0; 
