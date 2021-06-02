@@ -337,17 +337,18 @@ void checker() {
 	for (int i = 0; i < SumBmp; i++) {
 		for (int j = 0; j < SumBmp; j++) {
 			if (strcmp(e[i].name, f[j].name) == 0) {
+				cor_name++;
 				if (strcmp(e[i].sum, f[j].sum) == 0) {
 					cor_all ++;	
-					fprintf(stderr, "%s %s\n", e[i].sum, e[i].name);
-				cor_name++;
-				break;
+					fprintf(stderr, "%d %s %s\n", i, e[i].sum, e[i].name);
+					break;
 				}
 				else 
-					fprintf(stderr, "%s\n", e[i].name);	
+					fprintf(stderr, "%d %s\n", i, e[i].name);	
+			}
+			else
+				fprintf("stderr", "%d Wa %s\n", i, e[i].name);
 		}
-		else
-			fprintf("stderr", "Wa %s\n", e[i].name);
 	}
 	fprintf(stderr, "%lf %lf\n", (double)cor_name / SumBmp, (double)cor_all / SumBmp);
 }
