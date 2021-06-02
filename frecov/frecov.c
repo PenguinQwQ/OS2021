@@ -221,6 +221,7 @@ int find_info(struct short_file * now) {
 	MAX_c = INT_MAX;
 	
 	int id = -1;
+	printf("\n");
 	for (int i = 0; i < tot[3]; i++)
 		if (divided[3][i] == loc) {
 			id = i;
