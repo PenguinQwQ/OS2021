@@ -217,7 +217,6 @@ int find_info(struct short_file * now) {
 		sum--;
 	}
 	fclose(fd);	
-	printf("%d\n", MAX_c);
 	return 1;	
 }
 
@@ -253,6 +252,7 @@ void deal() {
 				SolveLongName((struct long_file *)lst);
 				int success = find_info(tep);
 				if (success) printf(" %d %x %s \n", tep -> DIR_FileSize, loc - 32, name);
+				printf("%d\n", MAX_c);
 			}
 			tep = tep + 1;
 		}
