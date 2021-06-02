@@ -227,7 +227,7 @@ int find_info(struct short_file * now) {
 			id = i;
 			break;	
 		}
-		printf("%x ", divided[3][i]);
+		printf("%x\n", divided[3][i]);
 	}
 	printf("\n");
 	assert(id != -1);
