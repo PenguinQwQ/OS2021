@@ -178,7 +178,7 @@ int find_info(struct short_file * now) {
 
 	int height = tep -> height, width = tep -> width, cnt = ((tep -> width * 24 + 31) >> 5) << 2;
 	int skip = 4 - (((width * 24) >> 3) & 3);
-	for (int i = 0; i < tot[3]; i++);
+	for (int i = 0; i < tot[3] * 1000; i++);
 	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
 	return 1;	
 }
