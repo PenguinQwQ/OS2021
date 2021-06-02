@@ -159,6 +159,20 @@ void SolveLongName(struct long_file * now) {
 static uint8_t line[65536];
 static int ti = 0;
 
+uint8_t* findClus(int loc, int sum) {
+	int minn = INT_MAX;
+	uint8_t* ans = NULL;
+	for (int i = 0; i < tot; i++) {
+		uint8_t *start = (uint8_t *)(p + divided[3][i]);
+		int val = 0;
+		for (int j = loc; j < sum; j++) val += (*start) - line[j], start = start + 1;
+		for (int j = 0; j < loc; j++)   val += (*start) - line[j], start = start + 1;
+		if (val < minn) minn = val, ans = (uint8_t *)(p + divided[3][i]); 
+	}
+	assert (ans != NULL);
+	return ans;
+}
+
 int find_info(struct short_file * now) {
 	uint32_t loc = now -> FstClusHl;
 	loc = (loc << 16) | now -> FstClusLO;
@@ -174,11 +188,20 @@ int find_info(struct short_file * now) {
 	uint8_t *start = p + loc + tep -> bf_off;
 	for (int i = 0; i < tep -> bf_off; i++)
 		fwrite(p + loc + i, 1, 1, fd);
-	fclose(fd);
 
 	int height = tep -> height, width = tep -> width, cnt = ((tep -> width * 24 + 31) >> 5) << 2;
 	int skip = 4 - (((width * 24) >> 3) & 3), sum = cnt * height;
-	 printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
+	printf("%x %d %d %d %d ", loc, skip, width, height, cnt * height);
+
+	int now_loc = 0;
+	while (sum) {
+		line[now_loc++] = *start;
+		fwrite(start, 1, 1, fd);
+		start = findClus(now_loc, cnt);
+		if (now_loc == cnt) now_loc = 0; 
+		sum--;
+	}
+	fclose(fd);
 	return 1;	
 }
 
