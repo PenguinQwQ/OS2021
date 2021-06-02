@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <stdio.1>
 #include <limits.h>
 #include <string.h>
 #include <stdint.h>
@@ -310,7 +310,6 @@ void deal() {
 	}
 }
 
-#ifdef check
 struct chk{
 	char sum[64];
 	char name[64];
