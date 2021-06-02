@@ -137,13 +137,13 @@ void deal() {
 
 		while ((uintptr_t)tep < \
 			   (uintptr_t) p + divided[1][i] + disk -> BPB_SecPerClus * 512) {
-			printf("%s\n", tep -> DIR_Name);
 			if (tep -> DIR_Name[8] != 'B' && tep -> DIR_Name[9] != 'M' && \
 				tep -> DIR_Name[10] != 'P') {
 				tep = tep + 1;
 				continue;
 			}
 			
+			printf("%s\n", tep -> DIR_Name);
 			n_now = 0;
 
 			if (tep -> DIR_Name[6] != '~') {
