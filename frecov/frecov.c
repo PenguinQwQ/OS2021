@@ -200,7 +200,7 @@ uint8_t* findClus(int loc, int sum, int id, int skip) {
 		}
 	}
 	assert (ans != NULL);
-	if (ans == NULL) return (uint8_t *) (p + divided[3][i]);
+	if (ans == NULL) assert(0);//return (uint8_t *) (p + divided[3][id]);
 	return ans;
 }
 uint8_t ans_file[10000000];
