@@ -164,7 +164,7 @@ int pd(uint8_t a, uint8_t b) {
 	if (a > b) return a - b;
 	else return b - a;
 } 
-int Max_c;
+int MAX_c;
 
 uint8_t* findClus(int loc, int sum) {
 	int minn = INT_MAX;
