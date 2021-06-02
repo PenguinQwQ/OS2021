@@ -166,9 +166,12 @@ int pd(uint8_t a, uint8_t b) {
 } 
 int MAX_c;
 
-uint8_t* findClus(int loc, int sum) {
+uint8_t* findClus(int loc, int sum, uint32_t Clus) {
 	int minn = INT_MAX;
 	uint8_t* ans = NULL;
+	
+
+
 	for (int i = 0; i < tot[3]; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
 		int val = 0;
@@ -211,7 +214,7 @@ int find_info(struct short_file * now) {
 		start = start + 1;
 		off = off + 1;
 		if (off == disk -> BPB_BytsPerSer * disk -> BPB_SecPerClus) {
-			start = findClus(now_loc, cnt), off = 0;
+			start = findClus(now_loc, cnt, loc), off = 0;
 		}
 		if (now_loc == cnt) now_loc = 0; 
 		sum--;
@@ -263,7 +266,7 @@ int main(int argc, char *argv[]) {
 	int fd = open("fs.img", 0);
 	assert(fd > 0);
 	disk = mmap(NULL, 128 * 1024 *1024, PROT_READ, MAP_PRIVATE, fd, 0);
-
+	
 	assert(disk != NULL);
 	assert(sizeof(struct fat_header) == 512);
 	assert(disk -> Signature_word == 0xaa55);
@@ -280,6 +283,7 @@ int main(int argc, char *argv[]) {
 	p = (uint8_t *)disk;
 
 	divide();
+	printf("%d\n", tot[0]);
 	deal();
 	return 0;
 }
