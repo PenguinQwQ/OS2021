@@ -72,7 +72,7 @@ uint32_t cal_Clus(int num) {
 int judge_empty(uint32_t loc) {
 	int bj = 0;
 	for (int i = 0; i < 32; i++)
-		if (*(p + loc) != 0) {
+		if (*(p + i) != 0) {
 			bj = 1;
 			break;
 		}
