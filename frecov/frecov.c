@@ -236,11 +236,11 @@ int find_info(struct short_file * now) {
 		if (off == disk -> BPB_BytsPerSer * disk -> BPB_SecPerClus) {
 			start = findClus(now_loc, cnt, id), off = 0;
 			id = unique;
+			printf("p\n");
 		}
 		if (now_loc == cnt) now_loc = 0; 
 		sum--;
 	}
-	printf("over\n");
 	fclose(fd);	
 	return 1;	
 }
