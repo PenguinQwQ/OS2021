@@ -242,7 +242,6 @@ void deal() {
 				SolveLongName((struct long_file *)lst);
 				int success = find_info(tep);
 				if (success) printf(" %d %x %s \n", tep -> DIR_FileSize, loc - 32, name);
-				exit(0);
 
 			}
 			tep = tep + 1;
