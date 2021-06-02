@@ -58,6 +58,13 @@ struct long_file{
 	char LDIR_Name3[4];
 }__attribute__((packed));
 
+struct bmp{
+	uint16_t bfType;
+	uint32_t bfSize;
+	uint8_t bf_rev[4];
+	uint32_t bf_off; 	
+}__attribute__((packed));
+
 uint32_t fat1, fat2, FirstData, RootDir, TotClus;
 struct fat_header *disk;
 uint8_t *p;
@@ -151,8 +158,8 @@ int find_info(struct short_file * now) {
 	uint32_t loc = now -> FstClusHl;
 	loc = (loc << 16) | now -> FstClusLO;
 	loc = cal_Clus(loc);
-
-	if (loc == 0) return 0;
+	struct bmp tep* = (struct bmp *)(p + loc);
+	if (tep -> bfType != 0x4d42) return 0;
 	return 1;	
 }
 
@@ -186,8 +193,8 @@ void deal() {
 
 			if (n_now == 0) {
 				SolveLongName((struct long_file *)lst);
-				printf("L %x %s ", loc - 32, name);
 				int sucess = find_info(tep);
+				if (success) printf("L %x %s \n", loc - 32, name);
 
 			}
 			tep = tep + 1;
