@@ -181,7 +181,7 @@ uint8_t* findClus(int loc, int sum, int id, int skip) {
 		if (val < minn) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]); unique = i + 1;
 			if (minn < MAX_c) MAX_c = minn;
-			if (val <= 50000) { return ans;}
+			if (val <= 10000) { return ans;}
 		}
 	}
 	if (minn < MAX_c) MAX_c = minn;
