@@ -134,10 +134,13 @@ void get_name(char c) {
 
 void deal() {
 	for (int i = 0; i < tot[1]; i++) {
+	
 		struct short_file *tep = (struct short_file *)(p + divided[1][i]);
+		uint32_t loc = divided[1][i];
 
 		while ((uintptr_t)tep < \
 			   (uintptr_t) p + divided[1][i] + disk -> BPB_SecPerClus * 512) {
+			loc += 32;
 			if (tep -> DIR_Name[8] != 'B' && tep -> DIR_Name[9] != 'M' && \
 				tep -> DIR_Name[10] != 'P') {
 				tep = tep + 1;
@@ -152,7 +155,7 @@ void deal() {
 				name[n_now++] = '.';
 				for (int j = 8; j < 11; j++)
 					get_name(tep -> DIR_Name[j]);
-				printf("%d %s\n", i, name);
+				printf("%x %d %s\n", loc, i, name);
 			}
 			else {
 				printf("long\n");	
