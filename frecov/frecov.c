@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <fcntl.h>
-#define check
 #define MAX_NUM 262144 * 2
 
 struct fat_header{
@@ -359,11 +358,11 @@ int main(int argc, char *argv[]) {
 	p = (uint8_t *)disk;
 	
 	#ifdef check
-	//freopen("/tmp/ans.txt", "w", stdout);
+	freopen("/tmp/ans.txt", "w", stdout);
 	#endif
 
-	//divide();
-	//deal();
+	divide();
+	deal();
 
 	#ifdef check
 	checker();
