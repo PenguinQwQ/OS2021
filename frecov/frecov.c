@@ -69,10 +69,54 @@ uint32_t cal_Clus(int num) {
 	return FirstData + (num - 2) * disk -> BPB_SecPerClus  * disk -> BPB_BytsPerSer;
 }
 
+void judge_empty(uint32_t loc) {
+	int bj = 0;
+	for (int i = 0; i < 32; i++)
+		if (*(p + loc) != 0) {
+			bj = 1;
+			break;
+		}
+	if (bj == 0) {
+		divided[0][tot[0]++] = loc;
+		return 0;	
+	}
+	return -1;
+}
+
+void judge_dir(uint32_t loc) {
+	struct short_file *tep = (struct short_file *)(p + loc);
+	int cnt = 0;
+	for (int i = 1; i <= 20; i++) {
+		if (tep -> DIR_NAME[8] == 'B' && tep -> DIR_NAME[9] == 'M' && \
+			tep -> DIR_NAME[10] == 'P')
+				cnt++;
+		tep = tep + 1;	
+	}
+	if (cnt >= 3) {
+		divided[1][tot[1]++] = loc;
+		return 1;	
+	}
+	return -1;
+}
+
+void judge_bmp_head(uint32_t loc) {
+	uint16_t *tep = (uint16_t *)(p + loc);
+	if (*tep == 0x4d42) {
+		divided[2][tot[2]++] = loc;
+		return 2;	
+	}	
+	return -1;
+}
+
 void divide() {
-	uint32_t loc = FirstData, bj = 0;
+	uint32_t loc = FirstData;
 	for (int i = 0; i < TotClus; i++, loc += disk -> BPB_SecPerClus * 512) {
-		printf("%x\n", loc);
+		// empty // 
+		int id = judge_empty(loc);
+		if (id == -1) id = judge_dir(loc);
+		if (id == -1) id = judge_bmphead(loc);
+		if (id == -1) id = 3, divided[3][tot[3]++] = loc;
+		printf("%x %d\n", loc, id);
 	}
 
 }
