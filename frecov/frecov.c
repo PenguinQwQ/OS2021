@@ -200,6 +200,7 @@ int find_info(struct short_file * now) {
 		fwrite(start, 1, 1, fd);
 		start = findClus(now_loc, cnt);
 		if (now_loc == cnt) now_loc = 0; 
+		printf("%d\n", sum);
 		sum--;
 	}
 	fclose(fd);
