@@ -168,7 +168,7 @@ int find_info(struct short_file * now) {
 	if (tep -> bfType != 0x4d42) return 0;
 
 	char file_name[64];
-	sprintf(file_name, "/tep/file-%d.bmp", ti++);
+	sprintf(file_name, "/tmp/%s", name);
 	FILE *fd = fopen(file_name, "w");
 	assert(fd != NULL);
 	uint8_t *start = p + loc + tep -> bf_off;
@@ -176,7 +176,7 @@ int find_info(struct short_file * now) {
 		fwrite(p + loc + i, 1, 1, fd);
 	fclose(fd);
 
-	int height = tep -> height, width tep -> width, cnt = ((tep -> width * 3 + 31) >> 5) << 2;
+	int height = tep -> height, width = tep -> width, cnt = ((tep -> width * 3 + 31) >> 5) << 2;
 	return 1;	
 }
 
