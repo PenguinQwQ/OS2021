@@ -197,6 +197,7 @@ uint8_t* findClus(int loc, int sum, int id, int skip) {
 	return ans;
 }
 uint8_t ans_file[10000000];
+int SumBmp = 0;
 
 int find_info(struct short_file * now) {
 	uint32_t loc = now -> FstClusHl;
@@ -257,6 +258,7 @@ int find_info(struct short_file * now) {
 	static char buf[1024];
 	fscanf(fp, "%s", buf);
 	printf("%s %s\n", buf, name);
+	SumBmp++;
 	pclose(fp);
 	return 1;	
 }
@@ -310,7 +312,7 @@ void checker() {
 	FILE *fd = fopen("/tmp/ans.txt", "r");
 	assert(fd != NULL);
 	char buf[1024];
-	for (int i = 0; i < 97; i++) {
+	for (int i = 0; i < SumBmp; i++) {
 		fscanf(fd, "%s %s", e[i].sum, e[i].name);
 		fprintf(stderr, "%s %s\n", e[i].sum, e[i].name);
 		fflush(stderr);
@@ -340,11 +342,11 @@ int main(int argc, char *argv[]) {
 	p = (uint8_t *)disk;
 	
 	#ifdef check
-//	freopen("/tmp/ans.txt", "w", stdout);
+	freopen("/tmp/ans.txt", "w", stdout);
 	#endif
 
-//	divide();
-//	deal();
+	divide();
+	deal();
 
 	#ifdef check
 	checker();
