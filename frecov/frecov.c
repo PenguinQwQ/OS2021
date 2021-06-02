@@ -72,7 +72,7 @@ uint32_t cal_Clus(int num) {
 void divide() {
 	uint32_t loc = FirstData, bj = 0;
 	for (int i = 0; i < TotClus; i++, loc += disk -> BPB_SecPerClus * 512) {
-		printf("%x\n", i * 512);
+		printf("%x\n", loc);
 	}
 
 }
