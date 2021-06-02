@@ -203,6 +203,7 @@ int find_info(struct short_file * now) {
 		off = off + 1;
 		if (off == disk -> BPB_BytsPerSer * disk -> BPB_SecPerClus)
 			start = findClus(now_loc, cnt), off = 0;
+		return 0;
 		if (now_loc == cnt) now_loc = 0; 
 		sum--;
 	}
