@@ -87,8 +87,8 @@ int judge_dir(uint32_t loc) {
 	struct short_file *tep = (struct short_file *)(p + loc);
 	int cnt = 0;
 	for (int i = 1; i <= 20; i++) {
-		if (tep -> DIR_NAME[8] == 'B' && tep -> DIR_NAME[9] == 'M' && \
-			tep -> DIR_NAME[10] == 'P')
+		if (tep -> DIR_Name[8] == 'B' && tep -> DIR_Name[9] == 'M' && \
+			tep -> DIR_Name[10] == 'P')
 				cnt++;
 		tep = tep + 1;	
 	}
