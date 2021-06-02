@@ -330,11 +330,11 @@ int main(int argc, char *argv[]) {
 	p = (uint8_t *)disk;
 	
 	#ifdef check
-	freopen("/tmp/ans.txt", "w", stdout);
+//	freopen("/tmp/ans.txt", "w", stdout);
 	#endif
 
-	divide();
-	deal();
+//	divide();
+//	deal();
 
 	#ifdef check
 	checker();
