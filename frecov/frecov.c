@@ -152,7 +152,8 @@ void deal() {
 				printf("long");	
 				
 			}
-	}		
+		}
+	}
 }
 
 int main(int argc, char *argv[]) {
