@@ -313,6 +313,7 @@ void checker() {
 	for (int i = 0; i < 97; i++) {
 		fscanf(fd, "%s %s", e[i].sum, e[i].name);
 		fprintf(stderr, "%s %s\n", e[i].sum, e[i].name);
+		fflush(stderr);
 	}
 	fclose(fd);
 }
@@ -339,11 +340,11 @@ int main(int argc, char *argv[]) {
 	p = (uint8_t *)disk;
 	
 	#ifdef check
-	freopen("/tmp/ans.txt", "w", stdout);
+//	freopen("/tmp/ans.txt", "w", stdout);
 	#endif
 
-	divide();
-	deal();
+//	divide();
+//	deal();
 
 	#ifdef check
 	checker();
