@@ -319,7 +319,7 @@ void checker() {
 	}
 	fclose(fd);
 
-	FILE *fd = fopen("/tmp/std.txt", "r");
+	fd = fopen("/tmp/std.txt", "r");
 	assert(fd != NULL);
 	SumBmp = 97;
 	for (int i = 0; i < SumBmp; i++) {
