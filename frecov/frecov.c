@@ -87,7 +87,6 @@ int judge_dir(uint32_t loc) {
 	struct short_file *tep = (struct short_file *)(p + loc);
 	int cnt = 0;
 	for (int i = 1; i <= 20; i++) {
-		printf("6\n");
 		if (tep -> DIR_Name[8] == 'B' && tep -> DIR_Name[9] == 'M' && \
 			tep -> DIR_Name[10] == 'P')
 				cnt++;
@@ -135,6 +134,7 @@ void get_name(char c) {
 
 void SolveLongName(struct long_file * now) {
 	while (now -> LDIR_Attr == 0xff) {
+		printf("6\n");
 		for (int i = 0; i < 10; i += 2)
 			if (now -> LDIR_Name1[i] == '\0' && now -> LDIR_Name1[i + 1]=='\0') return;	
 			else get_name(now -> LDIR_Name1[i]);
