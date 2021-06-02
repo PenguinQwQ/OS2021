@@ -335,8 +335,10 @@ void checker() {
 	fclose(fd);
 	int cor_name = 0, cor_all = 0;
 	for (int i = 0; i < SumBmp; i++) {
+		int ok = 0;
 		for (int j = 0; j < SumBmp; j++) {
 			if (strcmp(e[i].name, f[j].name) == 0) {
+				ok = 1;
 				cor_name++;
 				if (strcmp(e[i].sum, f[j].sum) == 0) {
 					cor_all ++;	
@@ -345,10 +347,10 @@ void checker() {
 				}
 				else 
 					fprintf(stderr, "%d %s\n", i, e[i].name);	
+				break;
 			}
-			else
-				fprintf(stderr, "%d Wa %s\n", i, e[i].name);
 		}
+		if (!ok) fprintf(stderr, "%d Wa %s\n", i, e[i].name);
 	}
 	fprintf(stderr, "%lf %lf\n", (double)cor_name / SumBmp, (double)cor_all / SumBmp);
 }
