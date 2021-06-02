@@ -57,10 +57,16 @@ struct long_file{
 	char LDIR_Name3[4];
 }__attribute__((packed));
 
+uint32_t fat1, fat2, FirstData, RootDir;
+struct fat_header *disk;
+
+uint32_t cal_Clus(int num) {
+	return FirstData + (num - 2) * disk -> BPB_SecPerClus  * disk -> BPB_BytsPerSer;
+}
+
 int main(int argc, char *argv[]) {
 	int fd = open("fs.img", 0);
 	assert(fd > 0);
-	struct fat_header *disk;
 	disk = mmap(NULL, 128 * 1024 *1024, PROT_READ, MAP_PRIVATE, fd, 0);
 
 	assert(disk != NULL);
@@ -69,15 +75,13 @@ int main(int argc, char *argv[]) {
 	assert(sizeof(struct short_file) == 32);
 	assert(sizeof(struct long_file)  == 32);
 	
-	uint32_t fat1, fat2, FirstData, RootDir;
 	fat1 = (uint32_t)disk -> BPB_RsvdSecCnt * disk -> BPB_BytsPerSer;
 	fat2 = fat1 + disk -> BPB_FATSz32 * disk -> BPB_BytsPerSer;
 	FirstData = (disk -> BPB_RsvdSecCnt + (disk -> BPB_NumFATs * disk -> BPB_FATSz32))\
 	            * disk -> BPB_BytsPerSer;
-	RootDir = FirstData + (disk -> BPB_RootClus - 2) * disk -> BPB_SecPerClus \
-			  * disk -> BPB_BytsPerSer;
-
-	printf("%x %x %x\n", fat1, fat2, RootDir);
+	RootDir = cal_Clus(disk -> BPB_RootClus);
+	
+	printf("%x\n", RootDir);
 
 	return 0;
 }
