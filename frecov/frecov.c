@@ -244,7 +244,7 @@ int find_info(struct short_file * now) {
 		sum--;
 	}
 	ans_file[ans_loc] = '\0';
-	fwite(ans_file, ans_loc, 1, fd);
+	fwrite(ans_file, ans_loc, 1, fd);
 	fclose(fd);	
 	return 1;	
 }
