@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 	uint32_t fat1, fat2, FirstData, RootDir;
 	fat1 = (uint32_t)disk -> BPB_RsvdSecCnt * disk -> BPB_BytsPerSer;
 	fat2 = fat1 + disk -> BPB_FATSz32 * disk -> BPB_BytsPerSer;
-	FirstData = (disk -> BPB_RsvdSecCnt + (disk -> BPB_NumFATs * disk -> BPB_GATSz32))\
+	FirstData = (disk -> BPB_RsvdSecCnt + (disk -> BPB_NumFATs * disk -> BPB_FATSz32))\
 	            * disk -> BPB_BytsPerSer;
 	RootDir = FirstData + (disk -> BPB_RootClus - 2) * disk -> BPB_SecPerClus \
 			  * disk -> BPB_BytsPerSer;
