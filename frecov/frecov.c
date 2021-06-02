@@ -135,14 +135,14 @@ void get_name(char c) {
 void SolveLongName(struct long_file * now) {
 	while (now -> LDIR_Attr == 0xff) {
 		for (int i = 0; i < 10; i += 2)
-			if (now -> LDIR_Name1[i] == '\0' && now -> LDTR_Name1[i + 1]=='\0') return;	
-			get_name(now -> LDTR_Name1[i]);
+			if (now -> LDIR_Name1[i] == '\0' && now -> LDIR_Name1[i + 1]=='\0') return;	
+			get_name(now -> LDIR_Name1[i]);
 		for (int i = 0; i < 12; i += 2)
-			if (now -> LDIR_Name2[i] == '\0' && now -> LDTR_Name2[i + 1]=='\0') return;	
-			get_name(now -> LDTR_Name2[i]);
+			if (now -> LDIR_Name2[i] == '\0' && now -> LDIR_Name2[i + 1]=='\0') return;	
+			get_name(now -> LDIR_Name2[i]);
 		for (int i = 0; i < 4; i += 2)
-			if (now -> LDIR_Name3[i] == '\0' && now -> LDTR_Name3[i + 1]=='\0') return;	
-			get_name(now -> LDTR_Name3[i]);
+			if (now -> LDIR_Name3[i] == '\0' && now -> LDIR_Name3[i + 1]=='\0') return;	
+			get_name(now -> LDIR_Name3[i]);
 		now = now - 1;
 	}
 }
