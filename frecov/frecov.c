@@ -182,7 +182,7 @@ uint8_t* findClus(int loc, int sum, int id, int skip) {
 		if (val < minn) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]); unique = i + 1;
 			if (minn < MAX_c) MAX_c = minn;
-			if (val <= 20000) { return ans;}
+		//	if (val <= 20000) { return ans;}
 		}
 	}
 	if (minn < MAX_c) MAX_c = minn;
@@ -311,7 +311,7 @@ void deal() {
 	}
 }
 
-#ifdef check
+//#ifdef check
 struct chk{
 	char sum[64];
 	char name[64];
