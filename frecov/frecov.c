@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <fcntl.h>
-#define check
+//#define check
 #define MAX_NUM 262144 * 2
 struct fat_header{
 	uint8_t BS_jmpBoot[3];
@@ -311,7 +311,7 @@ void deal() {
 	}
 }
 
-//#ifdef check
+#ifdef check
 struct chk{
 	char sum[64];
 	char name[64];
