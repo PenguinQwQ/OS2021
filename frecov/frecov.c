@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <fcntl.h>
-#define check
+//#define check
 #define MAX_NUM 262144 * 2
 struct fat_header{
 	uint8_t BS_jmpBoot[3];
@@ -175,7 +175,7 @@ uint8_t* findClus(int loc, int sum, int id, int skip) {
 		int bias = sum - loc - 1, bj = 0;
 		for (int j = 0; j < skip; j++)
 			if (bias - j >= 0 && *(start + bias - j) != 0) bj = 1;
-		if (bj)continue;
+//		if (bj)continue;
 		int val = 0;
 		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
@@ -192,7 +192,7 @@ uint8_t* findClus(int loc, int sum, int id, int skip) {
 		int bias = sum - loc - 1, bj = 0;
 		for (int j = 0; j < skip; j++)
 			if (bias - j >= 0 && *(start + bias - j) != 0) bj = 1;
-		if (bj)continue;
+//		if (bj)continue;
 		int val = 0;
 		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
