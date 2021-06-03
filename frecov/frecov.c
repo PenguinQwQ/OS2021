@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <fcntl.h>
-#define check
+//#define check
 #define MAX_NUM 262144 * 2
 struct fat_header{
 	uint8_t BS_jmpBoot[3];
@@ -182,7 +182,7 @@ uint8_t* findClus(int loc, int sum, int id, int skip) {
 		if (val < minn) {
 			minn = val, ans = (uint8_t *)(p + divided[3][i]); unique = i + 1;
 			if (minn < MAX_c) MAX_c = minn;
-		//	if (val <= 20000) { return ans;}
+			if (val <= 50000) { return ans;}
 		}
 	}
 	if (minn < MAX_c) MAX_c = minn;
