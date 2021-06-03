@@ -172,11 +172,11 @@ uint8_t* findClus(int loc, int sum, int id, int skip) {
 
 	for (int i = id; i < tot[3]; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
-		int bias = sum - loc - 1, bj = 0;
+/*		int bias = sum - loc - 1, bj = 0;
 		for (int j = 0; j < skip; j++)
 			if (bias - j >= 0 && *(start + bias - j) != 0) bj = 1;
-//		if (bj)continue;
-		int val = 0;
+		if (bj)continue;
+*/		int val = 0;
 		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
@@ -189,11 +189,11 @@ uint8_t* findClus(int loc, int sum, int id, int skip) {
 
 	for (int i = 0; i < id; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
-		int bias = sum - loc - 1, bj = 0;
+/*		int bias = sum - loc - 1, bj = 0;
 		for (int j = 0; j < skip; j++)
 			if (bias - j >= 0 && *(start + bias - j) != 0) bj = 1;
-//		if (bj)continue;
-		int val = 0;
+		if (bj)continue;
+*/		int val = 0;
 		for (int j = loc; j < sum; j++) val += pd(*start, line[j]), start = start + 1;
 		for (int j = 0; j < loc; j++)   val += pd(*start, line[j]), start = start + 1;
 		if (val < minn) {
