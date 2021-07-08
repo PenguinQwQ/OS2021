@@ -189,7 +189,7 @@ uint8_t* findClus(int loc, int sum, int id, int skip) {
 	}
 	if (minn < MAX_c) MAX_c = minn;
 
-	for (int i = 0; i < id; i++) {
+	for (int i = 0; i < tot[3]; i++) {
 		uint8_t *start = (uint8_t *)(p + divided[3][i]);
 
 		int bias = sum - loc - 1, bj = 0;
