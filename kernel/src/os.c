@@ -48,6 +48,7 @@ static void os_init() {
   Lists_sum = 0;
   pmm->init();
   kmt->init();
+  vfs->init();
   kmt->spin_init(&trap_lock, "os_trap");
   
   dev -> init();
