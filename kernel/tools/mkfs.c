@@ -61,12 +61,10 @@ void solve(DIR *dir, char *s) {
 			now -> count = 1;
 			now -> inode = ptr -> d_ino;
 			int less = (len >= MAX_LENGTH ? MAX_LENGTH : len);
-			printf("%d\n", len);
 			for (int i = 0; i < less; i++) now -> name[i] = ptr -> d_name[i + bias];
 			len -= less;
 			bias += MAX_LENGTH;
 		}
-		printf("%s %s\n", now -> name, ptr -> d_name);
 //		if (strcmp(ptr -> d_name, ".git") == 0)continue;
 		char *p = malloc(1024);
 		strcpy(p, s);
@@ -101,7 +99,7 @@ void solve(DIR *dir, char *s) {
 				flag = 1;
 				uint8_t *tep = disk + GetClusLoc(clus);
 				sz = fread(tep, 1, 4096, fp);	
-//				printf("%s %s %d %d\n", p, now -> name, sz, now -> NxtClus);
+				printf("%s %s %d %d\n", p, now -> name, sz, now -> NxtClus);
 			}
 			fclose(fp);
 		}
