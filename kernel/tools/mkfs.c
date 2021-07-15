@@ -47,7 +47,7 @@ uint32_t GetNext(uint32_t now, uint32_t sz) {
 
 void solve(DIR *dir, char *s) {
 	struct dirent *ptr;
-	struct file *now = (struct file *)(disk + GetClusLoc(clus) - MAX_LENGTH);
+	struct file *now = (struct file *)(disk + GetClusLoc(clus) - MAX_LENGTH * 2);
 	int CurrentClus = clus;
 	while ((ptr = readdir(dir)) != NULL) {
 		uint16_t len = (uint16_t)strlen(ptr -> d_name);
