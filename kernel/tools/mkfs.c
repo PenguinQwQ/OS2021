@@ -7,15 +7,17 @@
 #include <fcntl.h>
 #include <string.h>
 #include <sys/mman.h>
+#define MAX_LENGTH 32
 
 struct file{
-	char name[16];
-	uint8_t others;
-	uint8_t type;
-	uint16_t len;
+	char name[32];
+	uint32_t type;
+	uint32_t len;
+	uint32_t inode;
 	uint32_t NxtClus;
 	uint32_t count;
 	uint32_t size;
+	uint8_t others[8];
 }__attribute__((packed));
 
 
@@ -50,39 +52,39 @@ void solve(DIR *dir, char *s) {
 	while ((ptr = readdir(dir)) != NULL) {
 		uint16_t len = (uint16_t)strlen(ptr -> d_name);
 		int bias = 0;
+		now -> others[0] = 1;
 		while (len) {
 			now -> len = len;
 			now -> size = ptr -> d_reclen;
 			now -> type = ptr -> d_type;
 			now -> count = 1;
-			int less = (len >= 16 ? 16 : len);
+			int less = (len >= MAX_LENGTH ? MAX_LENGTH : len);
 			for (int i = 0; i < less; i++) now -> name[i] = ptr -> d_name[i + bias];
 			len -= less;
-			bias += 16;
-			now = (struct file *)(disk + GetNext((uintptr_t)now - (uintptr_t)disk, 32));
+			bias += MAX_LENGTH;
+			now = (struct file *)(disk + GetNext((uintptr_t)now - (uintptr_t)disk, MAX_LENGTH * 2));
 		}
-		
+//		if (strcmp(ptr -> d_name, ".git") == 0)continue;
 		char *p = malloc(1024);
 		strcpy(p, s);
 		strcat(p, "/");
 		strcat(p, ptr -> d_name);
-		printf("%s\n", p);
 		if (ptr -> d_type == DT_DIR) {
 			DIR *ChDir = opendir(p);
 			assert(ChDir != NULL);
-			if (strcpy(ptr -> d_name, '.') == 0) {
+			if (strcmp(ptr -> d_name, ".") == 0) {
 				now -> NxtClus = CurrentClus;
+				free(p);
 				continue;
 			}
-			else if (strcpy(ptr -> d_name, '..') == 0) {
-				now -> Nxtclus = CurrentClus - 1;
+			else if (strcmp(ptr -> d_name, "..") == 0) {
+				now -> NxtClus = CurrentClus - 1;
+				free(p);
 				continue;
 			}
-
 			now -> NxtClus = clus + 1;
 			clus = clus + 1;
 			solve(ChDir, p);
-			free(p);
 		}
 		else {
 			FILE *fp = fopen(p, "r");
@@ -95,7 +97,8 @@ void solve(DIR *dir, char *s) {
 				clus = clus + 1;
 				flag = 1;
 				uint8_t *tep = disk + GetClusLoc(clus);
-				sz = fread(tep, 4096, 1, fp);	
+				sz = fread(tep, 1, 4096, fp);	
+				printf("%s %d\n", p, sz);
 			}
 			fclose(fp);
 		}
