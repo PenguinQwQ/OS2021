@@ -20,10 +20,9 @@ static void vfs_init() {
 	char pos[4096];
 	printf("666\n");
 	device_t *sda = dev -> lookup("sda");
-	while(1);
-	if (sda == NULL) {printf("3232\n");return;}
-//	sda -> ops -> read(sda, 0x200000, pos, 1);
+	sda -> ops -> read(sda, 0x200000, pos, 1);
 	for (int i = 0; i < 4096; i++)printf("%c", pos[i]);
+	while(1);
 }
 /*
 struct current_node find_dir (struct current_node now, const char *path, int p, int len) {
