@@ -16,7 +16,6 @@ static device_t *dev_lookup(const char *name) {
       return devices[i];
 	}
   }
- printf("sasa\n");
   panic("lookup device failed.");
   return NULL;
 }

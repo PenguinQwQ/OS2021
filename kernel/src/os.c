@@ -48,10 +48,10 @@ static void os_init() {
   Lists_sum = 0;
   pmm->init();
   kmt->init();
+  dev -> init();
   vfs->init();
   kmt->spin_init(&trap_lock, "os_trap");
   
-  dev -> init();
   kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
   kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty2");
   /*
