@@ -19,7 +19,6 @@ static void vfs_init() {
 	}
 	char pos[4096];
 	printf("666\n");
-	while(1);
 	device_t *sda = dev -> lookup("sda");
 	while(1);
 	if (sda == NULL) {printf("3232\n");return;}
