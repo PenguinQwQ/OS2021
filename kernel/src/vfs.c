@@ -30,7 +30,7 @@ struct current_node find_dir (struct current_node now, const char *path, int p, 
 */
 
 static int vfs_chdir(const char *path) {
-	kmt -> spin_lock(&vfs_lock);
+//	kmt -> spin_lock(&vfs_lock);
 //	int id = cpu_current();
 /*	struct current_node now;
 	if (path[0]== '/') now.inode = 0, now.clus = 1;
