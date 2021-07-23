@@ -1,4 +1,5 @@
 #include <common.h>
+#include <devices.h>
 #define MAX_CPU 8
 
 spinlock_t vfs_lock;
@@ -16,6 +17,11 @@ static void vfs_init() {
 		NowNode[i].clus  = 1;
 		NowNode[i].inode = 0;	
 	}
+	char pos[4096];
+	device_t *sda = dev -> lookup("sda");
+	sda -> ops -> read(sda, 0x200000, pos, 4096);
+	for (int i = 0; i < 4096; i++)printf("%c", pos[i]);
+	while(1);
 }
 /*
 struct current_node find_dir (struct current_node now, const char *path, int p, int len) {
