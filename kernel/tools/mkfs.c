@@ -35,9 +35,15 @@ uint32_t TurnClus(uint32_t now) {
 	return (now - FirstLoc) / 512 / 8 + 1;
 }
 
+int flag_s = 0;
+
 uint32_t GetNext(uint32_t now, uint32_t sz) {
 	uint32_t nxt = now + sz;
 	if ((nxt  & 4095) == 0) {
+		if (clus == 1 && flag_s == 0) {
+			flag_s = 1;
+			return nxt;
+		}
 		fat[TurnClus(now)] = clus + 1;
 		clus += 1;
 		return GetClusLoc(clus);
