@@ -20,7 +20,7 @@ static void vfs_init() {
 	char pos[4096];
 	printf("666\n");
 	device_t *sda = dev -> lookup("sda");
-	sda -> ops -> read(sda, 0x200000, pos, 1);
+	sda -> ops -> read(sda, 0x200000, pos, 4096);
 	for (int i = 0; i < 4096; i++)printf("%c", pos[i]);
 	while(1);
 }
