@@ -21,6 +21,7 @@ static void vfs_init() {
 	printf("666\n");
 	while(1);
 	device_t *sda = dev -> lookup("sda");
+	while(1);
 	if (sda == NULL) {printf("3232\n");return;}
 //	sda -> ops -> read(sda, 0x200000, pos, 1);
 	for (int i = 0; i < 4096; i++)printf("%c", pos[i]);
