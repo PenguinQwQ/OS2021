@@ -116,7 +116,7 @@ void solve(DIR *dir, char *s) {
 
 int main(int argc, char *argv[]) {
   int fd, size = atoi(argv[1]) << 20;
-
+  printf("%d\n", DT_DIR);
   assert((fd = open(argv[2], O_RDWR)) > 0);
   assert((ftruncate(fd, size)) == 0);
   assert((disk = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)) != (void *)-1);
