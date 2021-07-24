@@ -10,7 +10,7 @@ struct file {
 
 struct fd_ {
 	int used;
-	int type;
 	int flag;
+	int bias;
 	struct file* file;
 };

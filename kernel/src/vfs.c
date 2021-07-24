@@ -97,9 +97,9 @@ static int vfs_open(const char *path, int flags) {
 		for (int i = 0; i < 1024; i++) 
 			if (fd[i].used == 0) {
 				fd[i].used = 1; 
-				fd[i].type = (nxt == 0) ? T_FILE : T_DIR; 
 				fd[i].flag = flags;	
 				fd[i].file = tep;
+				fd[i].bias = 0;
 				printf("%s\n", tep -> name);
 				result = i;
 				break;
