@@ -50,6 +50,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status) {
 				if (nxt -> type == DT_DIR) 
 					return solve_path(GetClusLoc(nxt -> NxtClus), path, status);	
 				else {
+					printf("%s assert!!\n", nxt -> name);
 					assert(0); ///////////////////
 				}					
 			}
