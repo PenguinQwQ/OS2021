@@ -37,7 +37,7 @@ static void tty_reader(void *arg) {
 		    tty->ops->write(tty, 0, ps, strlen(ps));
 			int nread = tty->ops->read(tty, 0, cmd, sizeof(cmd) - 1);
 		    cmd[nread - 1] = '\0';
-			printf("%d\n", vfs -> chdir(cmd));
+			printf("%d\n", vfs -> open(cmd, 0));
 		    tty->ops->write(tty, 0, resp, strlen(resp));
 	  }
 }
