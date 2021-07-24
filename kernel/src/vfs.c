@@ -100,6 +100,7 @@ static int vfs_open(const char *path, int flags) {
 				fd[i].type = (nxt == 0) ? T_FILE : T_DIR; 
 				fd[i].flag = flags;	
 				fd[i].file = tep;
+				printf("%s\n", tep -> name);
 				result = i;
 				break;
 			}
