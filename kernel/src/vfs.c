@@ -109,8 +109,21 @@ static int vfs_open(const char *path, int flags) {
 	return result;
 }
 
+static int vfs_close(int num) {
+	kmt -> spin_lock(&vfs_lock);
+	int result = -1;
+	if (num < 0 || num >= 1024) result = -1;
+	else {
+		if (fd[num].used == 0) result = -1;
+		else fd[num].used = 0, result = 0, pmm -> free(fd[num].file);
+	}
+	kmt -> spin_unlock(&vfs_lock);
+	return result;
+} 
+
 MODULE_DEF(vfs) = {
 	.init  = vfs_init,	
 	.chdir = vfs_chdir,
 	.open  = vfs_open,
+	.close = vfs_close,
 };
