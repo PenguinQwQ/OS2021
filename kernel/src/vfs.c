@@ -30,6 +30,7 @@ static void vfs_init() {
 	assert(fat != NULL);
 	fd[0].used = fd[1].used = fd[2].used = 1;
 	clus = fat[0x99999];
+	printf("%d\n", clus);
 }
 
 int inode = 100;
