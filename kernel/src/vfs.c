@@ -38,7 +38,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status) {
 	while (path[i] != 0 && path[i] != '/') 
 		name[i] = path[i], name[i + 1] = 0, i++;
 	path = path + i;
-	printf("%s\n", name);
+	printf("%s\n", path);
 	void *tep = pmm -> alloc(4096);	
 	while (1) {
 		if (now == 0) break;
