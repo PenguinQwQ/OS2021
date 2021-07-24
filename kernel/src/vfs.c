@@ -29,7 +29,7 @@ static void vfs_init() {
 		current_dir[i] = 0x200000, mode[i] = 1;
 	assert(fat != NULL);
 	fd[0].used = fd[1].used = fd[2].used = 1;
-	clus = fat[0x99999];
+	clus = fat[0];
 	printf("%d\n", clus);
 }
 
