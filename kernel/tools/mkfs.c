@@ -40,7 +40,7 @@ int flag_s = 0;
 uint32_t GetNext(uint32_t now, uint32_t sz) {
 	uint32_t nxt = now + sz;
 	if ((nxt  & 4095) == 0) {
-		if (clus == 1 && flag_s == 0) {
+		if (flag_s == 0) {
 			flag_s = 1;
 			return nxt;
 		}
@@ -55,22 +55,19 @@ void solve(DIR *dir, char *s) {
 	struct dirent *ptr;
 	struct file *now = (struct file *)(disk + GetClusLoc(clus) - MAX_LENGTH * 2);
 	int CurrentClus = clus;
+	flag_s = 0;
 	while ((ptr = readdir(dir)) != NULL) {
+
 		uint16_t len = (uint16_t)strlen(ptr -> d_name);
-		int bias = 0, flag = 0;
-		while (len) {
-			now = (struct file *)(disk + GetNext((uintptr_t)now - (uintptr_t)disk, MAX_LENGTH * 2));
-			if (flag == 0) now -> others[0] = 1, flag = 1;
-			now -> len = len;
-			now -> size = ptr -> d_reclen;
-			now -> type = ptr -> d_type;
-			now -> count = 1;
-			now -> inode = ptr -> d_ino;
-			int less = (len >= MAX_LENGTH ? MAX_LENGTH : len);
-			for (int i = 0; i < less; i++) now -> name[i] = ptr -> d_name[i + bias];
-			len -= less;
-			bias += MAX_LENGTH;
-		}
+		now = (struct file *)(disk + GetNext((uintptr_t)now - (uintptr_t)disk, MAX_LENGTH * 2));
+		now -> len = len;
+		now -> size = ptr -> d_reclen;
+		now -> type = ptr -> d_type;
+		now -> count = 1;
+		now -> inode = ptr -> d_ino;
+		assert(len < 32);
+		strcpy(now -> name, ptr -> d_name);
+
 //		if (strcmp(ptr -> d_name, ".git") == 0)continue;
 		char *p = malloc(1024);
 		strcpy(p, s);

@@ -67,7 +67,7 @@ static int vfs_chdir(const char *path) {
 	int status = (now == 0x200000) ? 1 : mode[id];
 	
 	assert(mode[id] == 1); ///////////////////////////////////////////
-	uint32_t nxt = solve_path(now, path + 1, &status);
+	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status);
 	int result = 0;
 	if (nxt == -1) result = -1;
 	current_dir[id] = nxt;
