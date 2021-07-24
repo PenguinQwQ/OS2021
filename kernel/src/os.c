@@ -83,7 +83,7 @@ int tot = 0;
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
-	assert(ev.event != EVENT_ERROR);
+//	assert(ev.event != EVENT_ERROR);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	if (current[id] != NULL) {
