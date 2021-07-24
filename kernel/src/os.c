@@ -53,7 +53,7 @@ static void os_init() {
   pmm->init();
   kmt->init();
   dev -> init();
-  vfs->init();
+//  vfs->init();
   kmt->spin_init(&trap_lock, "os_trap");
   
   kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
