@@ -269,6 +269,7 @@ void dev_tty_task(void *arg) {
   device_t *in =     dev->lookup("input");
   device_t *ttydev = dev->lookup("tty1");
   device_t *fb =     dev->lookup("fb");
+
   tty_mark_all(ttydev->ptr);
   tty_render(ttydev->ptr);
 
