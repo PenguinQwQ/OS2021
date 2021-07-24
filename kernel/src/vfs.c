@@ -3,7 +3,7 @@
 #include <vfs.h>
 #define MAX_CPU 8
 
-spinlock_t vfs_lock;
+extern spinlock_t trap_lock;
 device_t *sda;
 uint32_t current_dir[MAX_CPU];
 uint32_t mode[MAX_CPU];
@@ -18,18 +18,6 @@ uint32_t GetClusLoc(uint32_t clus) {
 
 uint32_t TurnClus(uint32_t now) {
 	return (now - 0x200000) / 512 / 8 + 1;	
-}
-
-static void vfs_init() {
-	kmt -> spin_init(&vfs_lock, "vfs_lock");
-	sda = dev -> lookup("sda");
-	fat = (uint32_t *)pmm -> alloc(0x100000);
-	sda -> ops -> read(sda, 0x100000, fat, 0x100000);
-	for (int i = 0; i < MAX_CPU; i++)
-		current_dir[i] = 0x200000, mode[i] = 1;
-	assert(fat != NULL);
-	fd[0].used = fd[1].used = fd[2].used = 1;
-	clus = fat[0];
 }
 
 int inode = 100;
@@ -63,6 +51,19 @@ struct file* create_file(uint32_t now, char *name, int type) {
 	pmm -> free(tep);
 	return file;
 }
+
+static void vfs_init()  {
+	sda = dev -> lookup("sda");
+	fat = (uint32_t *)pmm -> alloc(0x100000);
+	sda -> ops -> read(sda, 0x100000, fat, 0x100000);
+	for (int i = 0; i < MAX_CPU; i++)
+		current_dir[i] = 0x200000, mode[i] = 1;
+	assert(fat != NULL);
+	fd[0].used = fd[1].used = fd[2].used = 1;
+	clus = fat[0];
+}
+
+
 
 uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *file, int create) {
 	if (path[0] == 0) return now;
@@ -115,7 +116,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 }
 
 static int vfs_chdir(const char *path) {
-	kmt -> spin_lock(&vfs_lock);
+	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
 	int status = (now == 0x200000) ? 1 : mode[id];
@@ -127,12 +128,12 @@ static int vfs_chdir(const char *path) {
 	if (nxt == -1) result = -1;
 	else current_dir[id] = nxt;
 	printf("%s %x\n", path, nxt);
-	kmt -> spin_unlock(&vfs_lock);
+	kmt -> spin_unlock(&trap_lock);
 	return result;
 }
 
 static int vfs_open(const char *path, int flags) {
-	kmt -> spin_lock(&vfs_lock);
+	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
 	int status = (now == 0x200000) ? 1 : mode[id];
@@ -155,19 +156,19 @@ static int vfs_open(const char *path, int flags) {
 				break;
 			}
 	}
-	kmt -> spin_unlock(&vfs_lock);	
+	kmt -> spin_unlock(&trap_lock);	
 	return result;
 }
 
 static int vfs_close(int num) {
-	kmt -> spin_lock(&vfs_lock);
+	kmt -> spin_lock(&trap_lock);
 	int result = -1;
 	if (num < 0 || num >= 1024) result = -1;
 	else {
 		if (fd[num].used == 0) result = -1;
 		else fd[num].used = 0, result = 0, pmm -> free(fd[num].file);
 	}
-	kmt -> spin_unlock(&vfs_lock);
+	kmt -> spin_unlock(&trap_lock);
 	return result;
 } 
 
