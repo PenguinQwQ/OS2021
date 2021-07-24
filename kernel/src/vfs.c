@@ -30,7 +30,6 @@ static void vfs_init() {
 	assert(fat != NULL);
 	fd[0].used = fd[1].used = fd[2].used = 1;
 	clus = fat[0];
-	printf("%d\n", clus);
 }
 
 int inode = 100;
@@ -50,6 +49,7 @@ struct file* create_file(uint32_t now, char *name, int type) {
 				file -> size = 0; 	
 				file -> inode = ++inode;	
 				file -> NxtClus = ++clus;
+				file -> bias = now + 64 * i;
 				flag = 1;
 				sda -> ops -> write(sda, now + i * 64, file, sizeof(struct file));
 				break;
@@ -150,7 +150,7 @@ static int vfs_open(const char *path, int flags) {
 				fd[i].flag = flags;	
 				fd[i].file = tep;
 				fd[i].bias = 0;
-				printf("%s\n", tep -> name);
+				printf("%s %x\n", tep -> name, tep -> bias);
 				result = i;
 				break;
 			}
