@@ -29,7 +29,7 @@ void comsumer() {
 	while(1){kmt->sem_wait(&fill); putch(')');  kmt->sem_signal(&empty);}
 }
 int T = 0;
-/*
+
 static void tty_reader(void *arg) {
 	  device_t *tty = dev->lookup(arg);
 	  char cmd[128], resp[128], ps[16];
@@ -38,14 +38,14 @@ static void tty_reader(void *arg) {
 		    tty->ops->write(tty, 0, ps, strlen(ps));
 			int nread = tty->ops->read(tty, 0, cmd, sizeof(cmd) - 1);
 		    cmd[nread] = '\0';
-//			if (cmd[0] == '0')printf("%d\n", vfs -> open(cmd + 2, O_CREAT));
-//			else if (cmd[0] == '1')printf("%d\n", vfs -> chdir(cmd + 2));
-//			else if (cmd[0] == '2')printf("%d\n", vfs -> close(atoi(cmd + 2)));
+			if (cmd[0] == '0')printf("%d\n", vfs -> open(cmd + 2, O_CREAT));
+			else if (cmd[0] == '1')printf("%d\n", vfs -> chdir(cmd + 2));
+			else if (cmd[0] == '2')printf("%d\n", vfs -> close(atoi(cmd + 2)));
 		    sprintf(resp, "tty reader task: got %d character(s).\n", strlen(cmd));
 		    tty->ops->write(tty, 0, resp, strlen(resp));
 	  }
 }
-*/
+
 
 static void os_init() {
   T++;
@@ -54,9 +54,8 @@ static void os_init() {
   kmt->init();
   dev -> init();
   vfs->init();
-  kmt->spin_init(&trap_lock, "os_trap");
-  
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
+  kmt->spin_init(&trap_lock, "os_trap"); 
+  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty2");
   
 /*  kmt -> sem_init(&empty, "empty", 10);
@@ -83,7 +82,7 @@ int tot = 0;
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
-//	assert(ev.event != EVENT_ERROR);
+	assert(ev.event != EVENT_ERROR);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	if (current[id] != NULL) {
