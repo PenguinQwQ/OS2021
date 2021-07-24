@@ -126,7 +126,7 @@ static int vfs_chdir(const char *path) {
 	int result = 0;
 	if (nxt == -1) result = -1;
 	else current_dir[id] = nxt;
-//	printf("%s %x\n", path, nxt);
+	printf("%s %x\n", path, nxt);
 	kmt -> spin_unlock(&vfs_lock);
 	return result;
 }
@@ -150,7 +150,7 @@ static int vfs_open(const char *path, int flags) {
 				fd[i].flag = flags;	
 				fd[i].file = tep;
 				fd[i].bias = 0;
-			//	printf("%s %x\n", tep -> name, tep -> bias);
+				printf("%s %x\n", tep -> name, tep -> bias);
 				result = i;
 				break;
 			}
