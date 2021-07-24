@@ -47,8 +47,10 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 		for (int i = 0; i < 64; i++) {
 			if (strcmp(name, nxt -> name) == 0) {
 				assert(nxt -> flag == 0); ///////////////////////////
-				if (nxt -> type == DT_DIR) 
-					return solve_path(GetClusLoc(nxt -> NxtClus), path, status, file);	
+				if (nxt -> type == DT_DIR) {
+					memcpy(file, nxt, sizeof(struct file));
+					return solve_path(GetClusLoc(nxt -> NxtClus), path, status, file);
+				}
 				else {
 					if (path[0] != 0) return -1;
 					memcpy(file, nxt, sizeof(struct file));
@@ -97,6 +99,7 @@ static int vfs_open(const char *path, int flags) {
 				fd[i].used = 1; 
 				fd[i].type = (nxt == 0) ? T_FILE : T_DIR; 
 				fd[i].flag = flags;	
+				fd[i].file = tep;
 				result = i;
 				break;
 			}

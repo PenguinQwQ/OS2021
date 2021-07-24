@@ -12,6 +12,5 @@ struct fd_ {
 	int used;
 	int type;
 	int flag;
-	int loc;	
 	struct file* file;
 };
