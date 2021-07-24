@@ -104,9 +104,17 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 		}
 		now = GetClusLoc(fat[TurnClus(now)]);
 	}
-	if (path[0] == 0 && create) {
+	if (path[0] == 0 && create == 1) {
 		assert(lst != 0);
 		struct file *nxt = create_file(lst, name, 0); 
+		memcpy(file, nxt, sizeof(struct file));
+		pmm -> free(nxt), pmm -> free(tep), pmm -> free(name);
+		return 0;
+	}
+
+	if (path[0] == 0 && create == 2) {
+		assert(lst != 0);
+		struct file *nxt = create_file(lst, name, 1);
 		memcpy(file, nxt, sizeof(struct file));
 		pmm -> free(nxt), pmm -> free(tep), pmm -> free(name);
 		return 0;
@@ -172,9 +180,27 @@ static int vfs_close(int num) {
 	return result;
 } 
 
+static int vfs_mkdir(const char *pathname) {
+	kmt -> spin_lock(&trap_lock);
+	int id = cpu_current();
+	uint32_t now = (pathname[0] == '/') ? 0x200000 : current_dir[id];
+	int status = (now == 0x200000) ? 1 : mode[id];
+
+	assert(mode[id] == 1);
+	
+	struct file *tep = pmm -> alloc(sizeof(struct file));
+	uint32_t nxt = solve_path(now, pathname + (pathname[0] == '/'), &status, tep, 2);	
+	int result = -1;
+	if (nxt != 0) result = -1;
+	else result = 0;
+	kmt -> spin_unlock(&trap_lock);
+	return result;
+}
+
 MODULE_DEF(vfs) = {
 	.init  = vfs_init,	
 	.chdir = vfs_chdir,
 	.open  = vfs_open,
 	.close = vfs_close,
+	.mkdir = vfs_mkdir,
 };
