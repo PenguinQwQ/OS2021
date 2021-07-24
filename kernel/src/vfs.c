@@ -68,8 +68,11 @@ static int vfs_chdir(const char *path) {
 	
 	assert(mode[id] == 1); ///////////////////////////////////////////
 	uint32_t nxt = solve_path(now, path + 1, &status);
+	int result = 0;
+	if (nxt == -1) result = -1;
+	current_dir[id] = nxt;
 	kmt -> spin_unlock(&vfs_lock);
-	return nxt;
+	return result;
 }
 
 MODULE_DEF(vfs) = {
