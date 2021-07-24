@@ -32,13 +32,12 @@ static void vfs_init() {
 
 uint32_t solve_path(uint32_t now, const char *path, int *status) {
 	if (path[0] == 0) return now;
-
 	char *name = pmm -> alloc(256);
 	int i = 0;
+	while (path[0] == '/') path++;
 	while (path[i] != 0 && path[i] != '/') 
 		name[i] = path[i], name[i + 1] = 0, i++;
 	path = path + i;
-	printf("%s\n", path);
 	void *tep = pmm -> alloc(4096);	
 	while (1) {
 		if (now == 0) break;
