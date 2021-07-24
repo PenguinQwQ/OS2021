@@ -135,5 +135,7 @@ int main(int argc, char *argv[]) {
 
   munmap(disk, size);
   close(fd);
+  fat[0x99999] = clus;
+  return 0;
 }
 

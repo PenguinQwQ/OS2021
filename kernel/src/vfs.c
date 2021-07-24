@@ -8,6 +8,7 @@ device_t *sda;
 uint32_t current_dir[MAX_CPU];
 uint32_t mode[MAX_CPU];
 uint32_t *fat;
+uint32_t clus;
 struct fd_ fd[1024];
 
 uint32_t GetClusLoc(uint32_t clus) {
@@ -28,9 +29,41 @@ static void vfs_init() {
 		current_dir[i] = 0x200000, mode[i] = 1;
 	assert(fat != NULL);
 	fd[0].used = fd[1].used = fd[2].used = 1;
+	clus = fat[0x99999];
 }
 
-uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *file) {
+int inode = 100;
+
+struct file* create_file(uint32_t now, char *name, int type) {
+	struct file *file = pmm -> alloc(sizeof(struct file));
+	void *tep = pmm -> alloc(4096);
+	while(1) {
+		sda -> ops -> read(sda, now, tep, 4096);
+		struct file *nxt = tep;
+		int flag = 0;
+		for (int i = 0; i < 64; i++) {
+			if (nxt -> name[0] == 0) {
+				strcpy(file -> name, name);
+				if (type == 0) file -> type = 8;
+				else file -> type = DT_DIR;
+				file -> size = 0; 	
+				file -> inode = ++inode;	
+				file -> NxtClus = ++clus;
+				flag = 1;
+				sda -> ops -> write(sda, now + i * 64, file, sizeof(struct file));
+				break;
+			}
+			nxt = nxt + 1;
+		}
+		if (flag == 1)break;
+		if (GetClusLoc(fat[TurnClus(now)]) == 0) fat[TurnClus(now)] = ++clus;	
+		now = GetClusLoc(fat[TurnClus(now)]);
+	} 
+	pmm -> free(tep);
+	return file;
+}
+
+uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *file, int create) {
 	if (path[0] == 0) return now;
 	char *name = pmm -> alloc(256); ///////////////////////////////
 	int i = 0;
@@ -40,8 +73,11 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 	path = path + i;
 	assert(strcmp("proc", name) && strcmp("dev", name)); ///////////////////////
 	void *tep = pmm -> alloc(4096); ///////////////////////////	
+
+	uint32_t lst = 0;
 	while (1) {
 		if (now == 0) break;
+		lst = now;
 		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = tep;
 		for (int i = 0; i < 64; i++) {
@@ -49,11 +85,16 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 				assert(nxt -> flag == 0); ///////////////////////////
 				if (nxt -> type == DT_DIR) {
 					memcpy(file, nxt, sizeof(struct file));
-					return solve_path(GetClusLoc(nxt -> NxtClus), path, status, file);
+					pmm -> free(tep), pmm -> free(name);
+					return solve_path(GetClusLoc(nxt -> NxtClus), path, status, file, create);
 				}
 				else {
-					if (path[0] != 0) return -1;
+					if (path[0] != 0) {
+						pmm -> free(tep), pmm -> free(name);
+						return -1;
+					}
 					memcpy(file, nxt, sizeof(struct file));
+					pmm -> free(tep), pmm -> free(name);
 					return 0;
 				}					
 			}
@@ -61,6 +102,14 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 		}
 		now = GetClusLoc(fat[TurnClus(now)]);
 	}
+	if (path[0] == 0 && create) {
+		assert(lst != 0);
+		struct file *nxt = create_file(lst, name, 0); 
+		memcpy(file, nxt, sizeof(struct file));
+		pmm -> free(nxt), pmm -> free(tep), pmm -> free(name);
+		return 0;
+	}
+	pmm -> free(tep), pmm -> free(name);
 	return -1;
 }
 
@@ -72,7 +121,7 @@ static int vfs_chdir(const char *path) {
 	
 	assert(mode[id] == 1); ///////////////////////////////////////////
 	struct file tep;
-	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, &tep);
+	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, &tep, 0);
 	int result = 0;
 	if (nxt == -1) result = -1;
 	else current_dir[id] = nxt;
@@ -90,7 +139,7 @@ static int vfs_open(const char *path, int flags) {
 	assert(mode[id] == 1); ///////////////////////////////////////////
 
 	struct file* tep = pmm -> alloc(sizeof(struct file));
-	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, tep);
+	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, tep, (flags & O_CREAT) != 0);
 	int result = -1;
 	if (nxt == -1) result = -1;
 	else {
