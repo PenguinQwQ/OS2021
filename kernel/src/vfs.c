@@ -1,138 +1,78 @@
 #include <common.h>
 #include <devices.h>
+#include <fcntl.h>
+#include <dirent.h>
+#include <vfs.h>
 #define MAX_CPU 8
 
 spinlock_t vfs_lock;
-
-struct file{
-	char name[32];
-	uint32_t type;
-	uint32_t len;
-	uint32_t inode;
-	uint32_t NxtClus;
-	uint32_t count;
-	uint32_t size;
-	uint8_t others[8];
-}__attribute__((packed));
-
-struct current_node{
-	uint32_t inode;
-	uint32_t clus;
-	uint32_t type;
-	uint32_t count;
-	uint32_t size;
-	char name[32];
-};
-
-struct current_node NowNode[MAX_CPU];
 device_t *sda;
+uint32_t current_dir[MAX_CPU];
+uint32_t mode[MAX_CPU];
 uint32_t *fat;
-bool used[1000];
-struct current_node p_fd[1000];
 
 uint32_t GetClusLoc(uint32_t clus) {
-	assert(clus >= 1);
+	if (clus == 0) return 0;
 	return 0x200000 + (clus - 1) * 512 * 8;	
 }
+
+uint32_t TurnClus(uint32_t now) {
+	return (now - 0x200000) / 512 / 8 + 1;	
+}
+
 static void vfs_init() {
 	kmt -> spin_init(&vfs_lock, "vfs_lock");
-	for (int i = 0; i < MAX_CPU; i++) {
-		NowNode[i].clus  = 1;
-		NowNode[i].inode = 0;	
-	}
 	sda = dev -> lookup("sda");
 	fat = (uint32_t *)pmm -> alloc(0x100000);
 	sda -> ops -> read(sda, 0x100000, fat, 0x100000);
+	for (int i = 0; i < MAX_CPU; i++)
+		current_dir[i] = 0x200000, mode[i] = 1;
 	assert(fat != NULL);
-	used[0] = used[1] = used[2] = true;
-	for (int i = 3; i < 1000; i++) used[i] = false;
 }
 
-struct current_node find_dir (struct current_node now, const char *path, int p, int len) {
-	while (p < len && path[p] == '/') p++;
-	if (p == len) return now;
-	char name[64];
-	int tot = 0;
-	for (int i = p; i < len && path[i] != '/'; i++)
-		name[tot++] = path[i], name[tot] = 0;
-	
+uint32_t solve_path(uint32_t now, const char *path, int *status) {
+	if (path[0] == 0) return now;
+
+	char *name = pmm -> alloc(256);
+	int i = 0;
+	while (path[i] != 0 && path[i] != '/') 
+		name[i] = path[i], name[i + 1] = 0, i++;
+	path = path + i;
+
+	void *tep = pmm -> alloc(4096);	
 	while (1) {
-		int loc = now.clus, flag = 0;
-		if (loc == 0) break;
-		void *tep = pmm -> alloc(4096);
-		assert(tep != NULL);
-
-		sda -> ops -> read(sda, GetClusLoc(loc), tep, 4096);
-		struct file *fl = (struct file *)tep;
+		if (now == 0) break;
+		sda -> ops -> read(sda, now, tep, 4096);
+		struct file *nxt = tep;
 		for (int i = 0; i < 64; i++) {
-			if (fl -> name[0] == 0) {
-				flag = 1;
-				break;	
+			if (strcmp(name, nxt -> name) == 0) {
+				assert(nxt -> flag == 0); ///////////////////////////
+				if (nxt -> type == DT_DIR) 
+					return solve_path(GetClusLoc(nxt -> NxtClus), path, status);	
+				else {
+					assert(0); ///////////////////
+				}					
 			}
-			else if (strcmp(fl -> name, name) == 0) {
-				struct current_node nxt;
-				nxt.inode = fl -> inode;
-				nxt.clus = fl -> NxtClus;
-				nxt.type = fl -> type;
-				nxt.size = fl -> size;
-				nxt.count = fl -> count;
-				strcpy(nxt.name, fl -> name);
-				pmm -> free(tep);
-				return find_dir(nxt, path, p, len);
-			}
-			fl = fl + 1;
+			nxt = nxt + 1;
 		}
-		pmm -> free(tep);
-		if (flag == 0) now.clus = fat[now.clus];
-		else break;
+		now = GetClusLoc(fat[TurnClus(now)]);
 	}
-	now.clus = -1;
-	return now;	
+	return -1;
 }
-
 
 static int vfs_chdir(const char *path) {
 	kmt -> spin_lock(&vfs_lock);
 	int id = cpu_current();
-	struct current_node now;
-	if (path[0]== '/') now.inode = 0, now.clus = 1;
-	else now.inode = NowNode[id].inode, now.clus = NowNode[id].clus;
-	struct current_node tep = find_dir(now, path, 0, strlen(path));
-	int flag = 0;
-	if (tep.clus == -1) flag = -1;
-	else NowNode[id].clus = tep.clus, NowNode[id].inode = tep.inode;
+	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
+	int status = (now == 0x200000) ? 1 : mode[id];
+	
+	assert(mode[id] == 1); ///////////////////////////////////////////
+	uint32_t nxt = solve_path(now, path + 1, &status);
 	kmt -> spin_unlock(&vfs_lock);
-	return flag;
-}
-
-static void fd_copy(struct current_node* a, struct current_node* b) {
-	memcpy(a, b, sizeof(struct current_node));	
-}
-
-static int vfs_open(const char *pathname, int flags) {
-	kmt -> spin_lock(&vfs_lock);
-	int id = cpu_current();
-	struct current_node now;
-	if (pathname[0]== '/') now.inode = 0, now.clus = 1;
-	else now.inode = NowNode[id].inode, now.clus = NowNode[id].clus;
-	struct current_node tep = find_dir(now, pathname, 0, strlen(pathname));
-	int fd = -1;
-	if (tep.clus != -1) {
-		for (int i = 3; i < 1000; i++) 
-			if (!used[i]) {
-				fd = i; break;	
-			}
-		if (fd != -1) {
-			used[fd] = true;
-			fd_copy(&p_fd[fd], &tep);
-		}
-	}
-	kmt -> spin_unlock(&vfs_lock);	
-	return fd;
+	return nxt;
 }
 
 MODULE_DEF(vfs) = {
 	.init  = vfs_init,	
-	.chdir = vfs_chdir,	
-	.open  = vfs_open,
+	.chdir = vfs_chdir,
 };
