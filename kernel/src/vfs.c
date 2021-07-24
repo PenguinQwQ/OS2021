@@ -70,7 +70,7 @@ static int vfs_chdir(const char *path) {
 	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status);
 	int result = 0;
 	if (nxt == -1) result = -1;
-	current_dir[id] = nxt;
+	else current_dir[id] = nxt;
 	printf("%s %x\n", path, nxt);
 	kmt -> spin_unlock(&vfs_lock);
 	return result;
