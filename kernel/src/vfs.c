@@ -106,7 +106,6 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 				if (nxt -> type == DT_DIR) {
 					memcpy(file, nxt, sizeof(struct file));
 					pmm -> free(tep), pmm -> free(name);
-					printf("%d\n", file -> size);
 					return solve_path(GetClusLoc(nxt -> NxtClus), path, status, file, create);
 				}
 				else {
@@ -264,7 +263,7 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 
 	struct file* old = pmm -> alloc(sizeof(struct file));
 	uint32_t nxt = solve_path(now, oldpath + (oldpath[0] == '/'), &status, old, 0);
-			printf("%d %x %s\n", old -> size, old -> bias, old -> name);
+			printf("%x %d %x %s\n", nxt, old -> size, old -> bias, old -> name);
 	
 	if (nxt <= 0) result = -1;
 	else {
