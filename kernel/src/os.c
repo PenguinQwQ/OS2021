@@ -46,7 +46,7 @@ static void tty_reader(void *arg) {
 			else if (cmd[0] == '4')printf("%d\n", vfs -> fstat(atoi(cmd + 2), pmm -> alloc(32)));
 			else if (cmd[0] == '5') {
 				cmd[3] = 0;
-				printf("%d\n", vfs -> link(cmd + 2, cmd + 4));
+				printf("%d\n", vfs -> link(cmd + 4, cmd + 2));
 			}
 		    tty->ops->write(tty, 0, resp, strlen(resp));
 	  }
