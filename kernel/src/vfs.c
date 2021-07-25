@@ -212,6 +212,7 @@ static int vfs_open(const char *path, int flags) {
 	int result = -1;
 	if (nxt == -1) result = -1;
 	else {
+		assert(0);
 		if (tep -> type == DT_DIR && flags != O_RDONLY)assert(0);
 	//	if (nxt == 0) printf("CREATE!!\n");
 		if (nxt == 0x200000) {
