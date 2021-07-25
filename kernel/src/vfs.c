@@ -263,6 +263,7 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 
 	struct file* old = pmm -> alloc(sizeof(struct file));
 	uint32_t nxt = solve_path(now, oldpath + (oldpath[0] == '/'), &status, old, 0);
+			printf("%d %x\n", old -> size, old -> bias);
 	
 	if (nxt <= 0) result = -1;
 	else {
