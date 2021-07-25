@@ -139,6 +139,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 				if (nxt -> type == DT_DIR) {
 					memcpy(file, nxt, sizeof(struct file));
 					pmm -> free(tep), pmm -> free(name);
+					if (*status != O_RDONLY && path[0] == 0) return -1;
 					return solve_path(GetClusLoc(nxt -> NxtClus), path, status, file, create);
 				}
 				else {
@@ -200,6 +201,7 @@ static int vfs_open(const char *path, int flags) {
 	assert(mode[id] == 1); ///////////////////////////////////////////
 
 	struct file* tep = pmm -> alloc(sizeof(struct file));
+	status = flags;
 	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, tep, (flags & O_CREAT) != 0);
 	int result = -1;
 	if (nxt == -1) result = -1;
