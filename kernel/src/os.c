@@ -51,7 +51,7 @@ static void tty_reader(void *arg) {
 			else if (cmd[0] == '7') {
 				cmd[3] = 0;
 				struct ufs_dirent *now = pmm -> alloc(4096);
-				int sz = vfs -> read(atoi(cmd + 2), now, 4096);
+				int sz = vfs -> read(atoi(cmd + 2), now, 2);
 				for (int off = 0; off + sizeof(struct ufs_dirent) <= sz; off += sizeof(struct ufs_dirent)) {
 					printf("%d %s\n", now -> inode, now -> name);
 					now = now + 1;	
