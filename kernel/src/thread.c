@@ -10,10 +10,11 @@ static void kmt_init() {
 	for (int i = 0; i < MAX_CPU; i++)
 		current[i] = NULL;	
 }
+static int sum = 0;
+
 extern uint32_t ProcLoc;
 static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), void *arg) {
 	kmt -> spin_lock(&trap_lock);
-	printf("%s\n", name);
 	task -> stack = pmm -> alloc(STACK_SIZE);
 	assert(task -> stack != NULL);
 	task -> name  = name;
@@ -25,6 +26,15 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 	task -> times = 0;
 	task -> sleep_flag = false;
 	task -> inode = 0x200000;
+	if (ProcLoc) {
+		sum++;
+		char s[100];
+		sprintf(s, "%d", sum);
+		struct file* tep = create_file(ProcLoc, s, 1);
+		printf("%s %d\n", s, tep -> bias);
+		
+		
+	}
 	if (task_head == NULL) task_head = task;
 	else {
 		task_t *now = task_head;
