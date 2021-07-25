@@ -284,6 +284,29 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 	return result;
 }
 
+static int vfs_unlink(const char* path) {
+	kmt -> spin_lock(&trap_lock);
+	int id = cpu_current();
+	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
+	int status = (now == 0x200000) ? 1 : mode[id];
+	
+	assert(mode[id] == 1); ///////////////////////////////////////////
+
+	struct file* tep = pmm -> alloc(sizeof(struct file));
+	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, tep, 0);
+	int result = -1;
+	if (nxt != 1) result = -1;
+	else {
+		result = 0;
+		int bias = tep -> bias;
+		memset(tep, 0, sizeof(struct file));
+		sda -> ops -> write(sda, bias, tep, sizeof(struct file));	
+	}
+	pmm -> free(tep);
+	kmt -> spin_unlock(&trap_lock);	
+	return result;
+}
+
 MODULE_DEF(vfs) = {
 	.init   = vfs_init,	
 	.chdir  = vfs_chdir,
@@ -292,4 +315,5 @@ MODULE_DEF(vfs) = {
 	.mkdir  = vfs_mkdir,
 	.fstat  = vfs_fstat,
 	.link   = vfs_link,
+	.unlink = vfs_unlink,
 };
