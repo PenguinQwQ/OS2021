@@ -31,9 +31,10 @@ static device_t *dev_create(int size, const char* name, int id, devops_t *ops) {
 
 void dev_input_task();
 void dev_tty_task();
-
+static int cl = 0;
 static void dev_init() {
-assert(0);
+	cl++;
+	if (cl == 2)assert(0);
 #define INIT(id, device_type, dev_name, dev_id, dev_ops) \
   devices[id] = dev_create(sizeof(device_type), dev_name, dev_id, dev_ops); \
   devices[id]->ops->init(devices[id]);
