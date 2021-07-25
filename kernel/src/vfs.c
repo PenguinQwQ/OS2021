@@ -230,6 +230,7 @@ static int vfs_open(const char *path, int flags) {
 			}
 	}
     assert(result == -1);	
+	assert((flags & O_CREAT) == 0);
 	kmt -> spin_unlock(&trap_lock);	
 	return result;
 }
