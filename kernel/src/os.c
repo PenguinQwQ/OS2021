@@ -1,6 +1,5 @@
 #include <common.h>
 #include <devices.h>
-#include <user.h>
 
 #define MAX_CPU 128
 

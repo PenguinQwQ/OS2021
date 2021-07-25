@@ -4,6 +4,7 @@
 #include <klib.h>
 #include <klib-macros.h>
 #include <limits.h>
+#include <vfs.h>
 #define STACK_SIZE 4096 * 8
 #define SUITABLE  2
 #define RUNNING   1
@@ -13,6 +14,8 @@ extern struct task* task_head;
 extern struct task* current[128];
 extern spinlock_t trap_lock;
 extern uint32_t current_dir[8];
+extern uint32_t ProcLoc;
+struct file* create_file(uint32_t now, char *name, int type);
 
 struct spinlock{
 	const char *name;	

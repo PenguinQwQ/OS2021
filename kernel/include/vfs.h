@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include <common.h>
 #include <user.h>
 
 struct file {

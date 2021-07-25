@@ -1,6 +1,6 @@
 #include <devices.h>
 #include <dirent.h>
-#include <vfs.h>
+#include <common.h>
 #define MAX_CPU 8
 
 extern spinlock_t trap_lock;
@@ -74,6 +74,8 @@ struct file* create_file(uint32_t now, char *name, int type) {
 	return file;
 }
 
+uint32_t ProcLoc;
+
 static void vfs_init()  {
 	sda = dev -> lookup("sda");
 	fat = (uint32_t *)pmm -> alloc(0x100000);
@@ -85,6 +87,9 @@ static void vfs_init()  {
 	fd[0].used = fd[1].used = fd[2].used = 1;
 	clus = fat[0];
 	fat[0] = 0;
+	struct file* tep = create_file(0x200000, "proc", 1);
+    ProcLoc = tep -> NxtClus;
+	pmm -> free(tep);
 }
 
 
