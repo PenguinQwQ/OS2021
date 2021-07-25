@@ -207,7 +207,6 @@ static int T = 0;
 
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
-	sda -> ops -> read(sda, 0x100000, fat, 0x100000);
 	assert(fat[0] == clus);
 	T++;
 	assert(T == 1);
