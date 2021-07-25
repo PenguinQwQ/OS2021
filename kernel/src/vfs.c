@@ -1,7 +1,7 @@
 #include <devices.h>
-#include <stdio.h>
 #include <dirent.h>
 #include <common.h>
+#define EOF -1
 #define MAX_CPU 8
 
 extern spinlock_t trap_lock;
