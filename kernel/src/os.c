@@ -394,8 +394,8 @@ vfs->chdir("..");
   int fd = vfs->open("/c2.txt", O_CREAT | O_WRONLY);
   if (fd > 0) vfs->close(fd);
 }
-while(1);
 traverse("");
+while(1);
 }
 
 static void os_init() {
