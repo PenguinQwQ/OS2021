@@ -34,13 +34,31 @@ struct file* create_file(uint32_t now, char *name, int type) {
 				strcpy(file -> name, name);
 				if (type == 0) file -> type = 8;
 				else file -> type = DT_DIR;
-				file -> size = 0; 	
-				file -> inode = ++inode;	
+				file -> size    = 0; 	
+				file -> inode   = ++inode;	
 				file -> NxtClus = ++clus;
-				file -> bias = now + 64 * i;
-				file -> flag = 0xffffffff;
+				file -> bias    = now + 64 * i;
+				file -> flag    = 0xffffffff;
 				flag = 1;
 				sda -> ops -> write(sda, now + i * 64, file, sizeof(struct file));
+				if (type != 0) {
+					struct file* spj = pmm -> alloc(sizeof(struct file));
+					strcpy(spj -> name, ".");
+					spj -> NxtClus = clus;
+					spj -> size    = 0;
+					spj -> inode   = ++inode;
+					spj -> bias    = GetClusLoc(clus);
+					spj -> flag    =  0xffffffff;
+					sda -> ops -> write(sda, GetClusLoc(clus), spj, sizeof(struct file));
+
+					strcpy(spj -> name, "..");
+					spj -> NxtClus = TurnClus(now);
+					spj -> inode   = ++inode;
+					spj -> bias    = GetClusLoc(clus) + 64;
+					sda -> ops -> write(sda, GetClusLoc(clus) + 64, spj, sizeof(struct file));
+					
+					pmm -> free(spj);
+				}
 				break;
 			}
 			nxt = nxt + 1;
