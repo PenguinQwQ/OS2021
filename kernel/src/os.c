@@ -48,6 +48,7 @@ static void tty_reader(void *arg) {
 				cmd[3] = 0;
 				printf("%d\n", vfs -> link(cmd + 4, cmd + 2));
 			}
+			else if (cmd[0] == '6')printf("%d\n", vfs -> unlink(cmd + 2));
 		    tty->ops->write(tty, 0, resp, strlen(resp));
 	  }
 }
