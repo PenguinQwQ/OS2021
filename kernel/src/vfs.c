@@ -104,6 +104,9 @@ static void vfs_init()  {
 	assert(clus != 0);
 	fat[0] = 0;
 
+	struct file *tep = pmm -> alloc(sizeof(struct file));
+	sda -> ops -> read(sda, 0x200000, tep, sizeof(struct file));
+	assert(tep -> flag == 0xffffffff);
 /*	struct file* tep = create_file(0x200000, "proc", 1);
     ProcLoc = GetClusLoc(tep -> NxtClus);
 	tep = create_file(ProcLoc, "cpuiofo", 0);
@@ -132,16 +135,11 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 	path = path + i;
 	void *tep = pmm -> alloc(4096); ///////////////////////////	
 	assert(tep != NULL);
-//	assert(strcmp(name, "proc") && strcmp(name, "dev"));
+	assert(strcmp(name, "proc") && strcmp(name, "dev"));
 	uint32_t lst = 0;
 	while (1) {
 		if (now == 0) break;
 		lst = now;
-
-		struct file *ttep = pmm -> alloc(sizeof(struct file));
-		sda -> ops -> read(sda, 0x200000, ttep, sizeof(struct file));
-		assert(ttep -> flag == 0xffffffff);
-
 		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = (struct file *)tep;
 		assert(now == 0x200000);
