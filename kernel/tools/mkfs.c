@@ -17,7 +17,8 @@ struct file{
 	uint32_t NxtClus;
 	uint32_t count;
 	uint32_t size;
-	uint8_t others[8];
+	uint32_t bias;
+	uint32_t flag;
 }__attribute__((packed));
 
 
@@ -61,10 +62,11 @@ void solve(DIR *dir, char *s) {
 		uint16_t len = (uint16_t)strlen(ptr -> d_name);
 		now = (struct file *)(disk + GetNext((uintptr_t)now - (uintptr_t)disk, MAX_LENGTH * 2));
 		now -> len = len;
-		now -> size = ptr -> d_reclen;
 		now -> type = ptr -> d_type;
 		now -> count = 1;
+		now -> size = 0;
 		now -> inode = ptr -> d_ino;
+		now -> flag = 0xffffffff;
 		assert(len < 32);
 		strcpy(now -> name, ptr -> d_name);
 
@@ -102,6 +104,7 @@ void solve(DIR *dir, char *s) {
 				flag = 1;
 				uint8_t *tep = disk + GetClusLoc(clus);
 				sz = fread(tep, 1, 4096, fp);	
+				now -> size += sz;
 				printf("%s %s %d %d\n", p, now -> name, sz, now -> NxtClus);
 			}
 			fclose(fp);

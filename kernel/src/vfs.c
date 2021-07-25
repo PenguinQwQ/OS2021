@@ -38,6 +38,7 @@ struct file* create_file(uint32_t now, char *name, int type) {
 				file -> inode = ++inode;	
 				file -> NxtClus = ++clus;
 				file -> bias = now + 64 * i;
+				file -> flag = 0xffffffff;
 				flag = 1;
 				sda -> ops -> write(sda, now + i * 64, file, sizeof(struct file));
 				break;
@@ -197,10 +198,49 @@ static int vfs_mkdir(const char *pathname) {
 	return result;
 }
 
+static int count_file(uint32_t now, int flag) {
+	int count = 0;
+	now = GetClusLoc(now);
+	void *tep = pmm -> alloc(4096);
+	while(1) {
+		if (now == 0) break;
+		sda -> ops -> read(sda, now, tep, 4096);
+		struct file *nxt = tep;
+		for (int i = 0; i < 64; i++) {
+			if (nxt -> name[0] != 0) count = count + 1; 
+			nxt = nxt + 1;
+		}
+		now = GetClusLoc(fat[TurnClus(now)]);
+	} 
+	pmm -> free(tep);
+	return count;
+} 
+
+static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
+	kmt -> spin_lock(&trap_lock);
+	int result = 0;
+	if (fd[fd_num].used == 0) result = -1;
+	else {
+		result = 0;
+		buf -> id = fd[fd_num].file -> inode;
+		if (fd[fd_num].file -> type == DT_DIR) {
+			buf -> type = T_DIR;
+			buf -> size = sizeof(struct ufs_dirent) * count_file(fd[fd_num].file -> NxtClus, 0);	
+		}
+		else {
+			buf -> type = T_FILE;
+			buf -> size = fd[fd_num].file -> size;
+		}
+	}
+	kmt -> spin_unlock(&trap_lock);
+	return result;
+}
+
 MODULE_DEF(vfs) = {
 	.init  = vfs_init,	
 	.chdir = vfs_chdir,
 	.open  = vfs_open,
 	.close = vfs_close,
 	.mkdir = vfs_mkdir,
+	.fstat = vfs_fstat,
 };
