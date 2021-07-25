@@ -236,11 +236,38 @@ static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
 	return result;
 }
 
+static int vfs_link(const char *oldpath, const char *newpath) {
+   	kmt -> spin_lock(&trap_lock);
+	int id = cpu_current(), result = -1;
+
+	uint32_t now = (oldpath[0] == '/') ? 0x200000 : current_dir[id];
+	int status = (now == 0x200000) ? 1 : mode[id];
+
+	struct file* old = pmm -> alloc(sizeof(struct file));
+	uint32_t nxt = solve_path(now, oldpath + (oldpath[0] == '/'), &status, old, 0);
+	
+	if (nxt <= 0) result = -1;
+	else {
+		now = (newpath[0] == '/') ? 0x200000 : current_dir[id];
+		struct file* new = pmm -> alloc(sizeof(struct file));		
+		uint32_t nxt = solve_path(now, newpath + (newpath[0] == '/'), &status, new, 1);
+		if (nxt != 0) result = -1;
+		else {
+			result = 0;	
+			clus = clus - 1;
+			sda -> ops -> write(sda, new -> bias, old, sizeof(struct file));
+		}	
+	}
+	kmt -> spin_unlock(&trap_lock);
+	return result;
+}
+
 MODULE_DEF(vfs) = {
-	.init  = vfs_init,	
-	.chdir = vfs_chdir,
-	.open  = vfs_open,
-	.close = vfs_close,
-	.mkdir = vfs_mkdir,
-	.fstat = vfs_fstat,
+	.init   = vfs_init,	
+	.chdir  = vfs_chdir,
+	.open   = vfs_open,
+	.close  = vfs_close,
+	.mkdir  = vfs_mkdir,
+	.fstat  = vfs_fstat,
+	.link   = vfs_link,
 };
