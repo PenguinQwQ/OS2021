@@ -31,6 +31,7 @@ void comsumer() {
 int T = 0;
 
 static void tty_reader(void *arg) {
+	  printf("%d\n", vfs -> open("/mkfs.c", 0));
 	  device_t *tty = dev->lookup(arg);
 	  char cmd[128], resp[128], ps[16];
 	  sprintf(ps, "(%s) $ ", arg);
