@@ -239,6 +239,7 @@ static int vfs_close(int num) {
 } 
 
 static int vfs_mkdir(const char *pathname) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (pathname[0] == '/') ? 0x200000 : current_dir[id];
