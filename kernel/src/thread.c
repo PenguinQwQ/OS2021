@@ -10,9 +10,10 @@ static void kmt_init() {
 	for (int i = 0; i < MAX_CPU; i++)
 		current[i] = NULL;	
 }
-
+extern uint32_t ProcLoc;
 static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), void *arg) {
 	kmt -> spin_lock(&trap_lock);
+	printf("%x\n", ProcLoc);
 	task -> stack = pmm -> alloc(STACK_SIZE);
 	assert(task -> stack != NULL);
 	task -> name  = name;
