@@ -175,7 +175,7 @@ static int vfs_chdir(const char *path) {
 	int result = 0;
 	if (nxt == -1 || nxt == 1) result = -1;
 	else current_dir[id] = nxt;
-//	printf("%s %x\n", path, nxt);
+	printf("%s %x\n", path, nxt);
 	kmt -> spin_unlock(&trap_lock);
 	return result;
 }
@@ -193,7 +193,7 @@ static int vfs_open(const char *path, int flags) {
 	int result = -1;
 	if (nxt == -1) result = -1;
 	else {
-	//	if (nxt == 0) printf("CREATE!!\n");
+		if (nxt == 0) printf("CREATE!!\n");
 		if (nxt == 0x200000) {
 			tep -> NxtClus = 1, strcpy(tep -> name, "/"), tep -> type = DT_DIR;	
 		}
@@ -203,7 +203,7 @@ static int vfs_open(const char *path, int flags) {
 				fd[i].flag = flags;	
 				fd[i].file = tep;
 				fd[i].bias = 0;
-			//	printf("%s %x\n", tep -> name, tep -> bias);
+				printf("%s %x\n", tep -> name, tep -> bias);
 				result = i;
 				break;
 			}
@@ -284,7 +284,7 @@ static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
 			buf -> type = T_FILE;
 			buf -> size = (size[fd[fd_num].file -> inode] == 0) ? fd[fd_num].file -> size : size[fd[fd_num].file -> inode];
 		}
-	//	printf("%d %d %d\n", buf -> id, buf -> type, buf -> size);
+		printf("%d %d %d\n", buf -> id, buf -> type, buf -> size);
 	}
 	kmt -> spin_unlock(&trap_lock);
 	return result;
