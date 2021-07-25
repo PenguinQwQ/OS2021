@@ -136,7 +136,7 @@ int main(int argc, char *argv[]) {
   solve(dir, argv[3], 1);
 
   // TODO: mkfs
-  fat[0] = 20001029;
+  fat[0] = clus;
 
   munmap(disk, size);
   close(fd);
