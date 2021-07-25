@@ -117,6 +117,7 @@ void solve(DIR *dir, char *s, int spj) {
 
 int main(int argc, char *argv[]) {
   int fd, size = atoi(argv[1]) << 20;
+  size = 128 << 20;
 //  printf("%d\n", DT_DIR);
   assert((fd = open(argv[2], O_RDWR)) > 0);
   assert((ftruncate(fd, size)) == 0);
