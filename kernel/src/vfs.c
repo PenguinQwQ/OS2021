@@ -25,7 +25,7 @@ void add_name(struct file *tep, const char *name) {
 	strcpy(p, name);
 	p[strlen(name)] = EOF;
 	uint32_t now = GetClusLoc(tep -> NxtClus);
-	sda -> ops -> write(sda, now, p, strlen(name + 1)); 
+	sda -> ops -> write(sda, now, p, strlen(name) + 1); 
 	pmm -> free(p);
 }
 
