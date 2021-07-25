@@ -98,6 +98,8 @@ static void vfs_init()  {
 	assert(fat != NULL);
 	memset(fd, 0, sizeof(fd));
 	fd[0].used = fd[1].used = fd[2].used = 1;
+	for (int i = 3; i < 1024; i++)
+		fd[i].used = 0;
 	clus = fat[0];
 	fat[0] = 0;
 	struct file* tep = create_file(0x200000, "proc", 1);
