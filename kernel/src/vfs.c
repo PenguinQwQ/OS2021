@@ -106,6 +106,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 				if (nxt -> type == DT_DIR) {
 					memcpy(file, nxt, sizeof(struct file));
 					pmm -> free(tep), pmm -> free(name);
+					printf("%d\n", file -> size);
 					return solve_path(GetClusLoc(nxt -> NxtClus), path, status, file, create);
 				}
 				else {
@@ -115,7 +116,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 					}
 					memcpy(file, nxt, sizeof(struct file));
 					pmm -> free(tep), pmm -> free(name);
-					return 0;
+					return 1;
 				}					
 			}
 			nxt = nxt + 1;
@@ -151,7 +152,7 @@ static int vfs_chdir(const char *path) {
 	struct file tep;
 	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, &tep, 0);
 	int result = 0;
-	if (nxt == -1) result = -1;
+	if (nxt == -1 || nxt == 1) result = -1;
 	else current_dir[id] = nxt;
 	printf("%s %x\n", path, nxt);
 	kmt -> spin_unlock(&trap_lock);
@@ -263,9 +264,9 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 
 	struct file* old = pmm -> alloc(sizeof(struct file));
 	uint32_t nxt = solve_path(now, oldpath + (oldpath[0] == '/'), &status, old, 0);
-			printf("%x %d %x %s\n", nxt, old -> size, old -> bias, old -> name);
+			printf("%d %x %s\n", old -> size, old -> bias, old -> name);
 	
-	if (nxt <= 0) result = -1;
+	if (nxt != 1) result = -1;
 	else {
 		now = (newpath[0] == '/') ? 0x200000 : current_dir[id];
 		struct file* new = pmm -> alloc(sizeof(struct file));		
