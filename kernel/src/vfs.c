@@ -202,10 +202,7 @@ static int vfs_open(const char *path, int flags) {
 
 	struct file* tep = pmm -> alloc(sizeof(struct file));
 	status = flags;
-	char *name = pmm -> alloc(1024);
-	strcpy(name, path);
-	if (strlen(name) != 1 && name[strlen(name) - 1] == '/') name[strlen(name) - 1] = 0;
-	uint32_t nxt = solve_path(now, name + (path[0] == '/'), &status, tep, (flags & O_CREAT) != 0);
+	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, tep, (flags & O_CREAT) != 0);
 	int result = -1;
 	if (nxt == -1) result = -1;
 	else {
@@ -492,6 +489,7 @@ static int vfs_lseek(int fd_num, int offset, int whence) {
 }
 
 static int vfs_dup(int fd_num) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int newfd = -1;
 	for (int i = 0; i < 1024; i++) 
