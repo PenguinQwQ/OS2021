@@ -423,10 +423,22 @@ static int vfs_lseek(int fd_num, int offset, int whence) {
 		if (whence == SEEK_CUR) fd[fd_num].bias += offset;
 		else if (whence == SEEK_SET) fd[fd_num].bias = offset;	
 		else fd[fd_num].bias = (size[fd[fd_num].file -> inode] == 0) ? fd[fd_num].file -> size - offset : size[fd[fd_num].file -> inode] - offset;
-		result = 0;
+		result = fd[fd_num].bias;
 	}
 	kmt -> spin_unlock(&trap_lock);
 	return result;
+}
+
+static int vfs_dup(int fd_num) {
+	kmt -> spin_lock(&trap_lock);
+	int newfd = -1;
+	for (int i = 0; i < 1024; i++) 
+		if (fd[i].used == 0) {
+			newfd = i; break;	
+		}
+	if (newfd != -1) memcpy(&fd[newfd], &fd[fd_num], sizeof(struct fd_));
+	kmt -> spin_unlock(&trap_lock);
+	return newfd;
 }
 
 MODULE_DEF(vfs) = {
@@ -441,4 +453,5 @@ MODULE_DEF(vfs) = {
 	.read   = vfs_read,
 	.write  = vfs_write,
 	.lseek  = vfs_lseek,
+	.dup    = vfs_dup,
 };
