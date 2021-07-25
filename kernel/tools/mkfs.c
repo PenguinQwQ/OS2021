@@ -106,7 +106,7 @@ void solve(DIR *dir, char *s, int spj) {
 				uint8_t *tep = disk + GetClusLoc(clus);
 				sz = fread(tep, 1, 4096, fp);	
 				now -> size += sz;
-				printf("%s %s %d %d\n", p, now -> name, sz, now -> NxtClus);
+		//		printf("%s %s %d %d\n", p, now -> name, sz, now -> NxtClus);
 			}
 			fclose(fp);
 		}
@@ -117,7 +117,7 @@ void solve(DIR *dir, char *s, int spj) {
 
 int main(int argc, char *argv[]) {
   int fd, size = atoi(argv[1]) << 20;
-  printf("%d\n", DT_DIR);
+//  printf("%d\n", DT_DIR);
   assert((fd = open(argv[2], O_RDWR)) > 0);
   assert((ftruncate(fd, size)) == 0);
   assert((disk = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)) != (void *)-1);
