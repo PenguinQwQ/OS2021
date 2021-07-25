@@ -35,7 +35,6 @@ static int sd_read(device_t *dev, int offset, void *buf, int count) {
     pos   += n;
     offset = st + sd->blksz;
   }
-  printf("777\n");
   return pos;
 }
 

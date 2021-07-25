@@ -92,7 +92,6 @@ uint32_t ZeroLoc, NullLoc, RandLoc;
 static void vfs_init()  {
 	sda = dev -> lookup("sda");
 	fat = (uint32_t *)pmm -> alloc(0x100000);
-	sda -> ops -> read(sda, 0x100000, fat, 0x100000);
 	for (int i = 0; i < MAX_CPU; i++)
 		current_dir[i] = 0x200000, mode[i] = 1;
 	assert(fat != NULL);
@@ -100,6 +99,8 @@ static void vfs_init()  {
 	fd[0].used = fd[1].used = fd[2].used = 1;
 	for (int i = 3; i < 1024; i++)
 		fd[i].used = 0;
+
+	sda -> ops -> read(sda, 0x100000, fat, 4096);
 	clus = fat[0];
 	assert(clus != 0);
 	//fat[0] = 0;
@@ -108,9 +109,6 @@ static void vfs_init()  {
 	sda -> ops -> read(sda, 0x200000, tep, sizeof(struct file));
 	assert(tep -> flag == 0xffffffff);
 	
-	assert(fat[0] == clus);
-	sda -> ops -> read(sda, 0x100000, fat, 0x100000);
-	assert(fat[0] == clus);
 /*	struct file* tep = create_file(0x200000, "proc", 1);
     ProcLoc = GetClusLoc(tep -> NxtClus);
 	tep = create_file(ProcLoc, "cpuiofo", 0);
@@ -212,7 +210,7 @@ static int T = 0;
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
 	assert(fat[0] == clus);
-	sda -> ops -> read(sda, 0x100000, fat, 0x100000);
+	sda -> ops -> read(sda, 0x100000, fat, 4096);
 	assert(fat[0] == clus);
 	T++;
 	assert(T == 1);
