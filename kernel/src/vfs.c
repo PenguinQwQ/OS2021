@@ -5,7 +5,7 @@
 #define MAX_CPU 8
 
 extern spinlock_t trap_lock;
-device_t *sda;
+static device_t *sda;
 uint32_t current_dir[MAX_CPU];
 uint32_t mode[MAX_CPU];
 uint32_t *fat;
