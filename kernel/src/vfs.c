@@ -414,6 +414,21 @@ static int vfs_write(int fd_num, void *buf, int count) {
 	kmt -> spin_unlock(&trap_lock);
 	return result;
 }
+
+static int vfs_lseek(int fd_num, int offset, int whence) {
+	kmt -> spin_lock(&trap_lock);
+	int result = -1;
+	if (fd_num < 0 || fd_num >= 1024 || fd[fd_num].file == NULL) result = -1;
+	else {
+		if (whence == SEEK_CUR) fd[fd_num].bias += offset;
+		else if (whence == SEEK_SET) fd[fd_num].bias = offset;	
+		else fd[fd_num].bias = (size[fd[fd_num].file -> inode] == 0) ? fd[fd_num].file -> size - offset : size[fd[fd_num].file -> inode] - offset;
+		result = 0;
+	}
+	kmt -> spin_unlock(&trap_lock);
+	return result;
+}
+
 MODULE_DEF(vfs) = {
 	.init   = vfs_init,	
 	.chdir  = vfs_chdir,
@@ -425,4 +440,5 @@ MODULE_DEF(vfs) = {
 	.unlink = vfs_unlink,
 	.read   = vfs_read,
 	.write  = vfs_write,
+	.lseek  = vfs_lseek,
 };
