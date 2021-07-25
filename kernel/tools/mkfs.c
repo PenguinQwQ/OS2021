@@ -60,6 +60,7 @@ void solve(DIR *dir, char *s, int spj) {
 	while ((ptr = readdir(dir)) != NULL) {
 
 		uint16_t len = (uint16_t)strlen(ptr -> d_name);
+		assert(0);
 		now = (struct file *)(disk + GetNext((uintptr_t)now - (uintptr_t)disk, MAX_LENGTH * 2));
 		now -> len = len;
 		now -> type = ptr -> d_type;
