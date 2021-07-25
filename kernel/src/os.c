@@ -449,6 +449,7 @@ static Context* os_trap(Event ev, Context *context) {
 		origin[id].ctx = context;
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
+		current[id] -> inode = 0x200000;
 	}
 	if (lst[id] != NULL) lst[id] -> sleep_flag = false;
 	lst[id] = current[id];
