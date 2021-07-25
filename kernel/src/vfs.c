@@ -155,6 +155,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 					return 1;
 				}					
 			}
+			assert(0);
 			nxt = nxt + 1;
 		}
 		now = GetClusLoc(fat[TurnClus(now)]);
