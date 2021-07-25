@@ -231,6 +231,7 @@ static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
 			buf -> type = T_FILE;
 			buf -> size = fd[fd_num].file -> size;
 		}
+		printf("%d %d %d\n", buf -> id, buf -> type, buf -> size);
 	}
 	kmt -> spin_unlock(&trap_lock);
 	return result;
