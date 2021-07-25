@@ -54,9 +54,9 @@ static void tty_reader(void *arg) {
 				int sz = vfs -> read(atoi(cmd + 2), now, 4096);
 				for (int off = 0; off + sizeof(struct ufs_dirent) <= sz; off += sizeof(struct ufs_dirent)) {
 					printf("%d %s\n", now -> inode, now -> name);
-					now = now + 1;	
 					char * oth = (char *)now;
 					printf("%s\n", oth);
+					now = now + 1;	
 				}
 				pmm -> free(now);
 			}
