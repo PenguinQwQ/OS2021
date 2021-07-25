@@ -107,6 +107,10 @@ static void vfs_init()  {
 	struct file *tep = pmm -> alloc(sizeof(struct file));
 	sda -> ops -> read(sda, 0x200000, tep, sizeof(struct file));
 	assert(tep -> flag == 0xffffffff);
+	
+	assert(fat[0] == clus);
+	sda -> ops -> read(sda, 0x100000, fat, 0x100000);
+	assert(fat[0] == clus);
 /*	struct file* tep = create_file(0x200000, "proc", 1);
     ProcLoc = GetClusLoc(tep -> NxtClus);
 	tep = create_file(ProcLoc, "cpuiofo", 0);
