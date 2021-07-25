@@ -145,6 +145,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 					return solve_path(GetClusLoc(nxt -> NxtClus), path, status, file, create);
 				}
 				else {
+					assert(0);
 					if (path[0] != 0) {
 						pmm -> free(tep), pmm -> free(name);
 						return -1;
