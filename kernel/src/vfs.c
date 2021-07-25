@@ -87,6 +87,7 @@ struct file* create_file(uint32_t now, char *name, int type) {
 }
 
 uint32_t ProcLoc;
+uint32_t ZeroLoc, NullLoc, RandLoc;
 
 static void vfs_init()  {
 	sda = dev -> lookup("sda");
@@ -101,6 +102,17 @@ static void vfs_init()  {
 	fat[0] = 0;
 	struct file* tep = create_file(0x200000, "proc", 1);
     ProcLoc = GetClusLoc(tep -> NxtClus);
+	tep = create_file(ProcLoc, "cpuiofo", 0);
+	tep = create_file(ProcLoc, "memiofo", 0);
+
+	tep = create_file(0x200000, "dev", 1);
+	uint32_t nxt = GetClusLoc(tep -> NxtClus);
+	tep = create_file(nxt, "zero", 0);
+	ZeroLoc = tep -> bias;
+	tep = create_file(nxt, "null", 0);
+	NullLoc = tep -> bias;
+	tep = create_file(nxt, "random", 0);
+	RandLoc = tep -> bias;
 	pmm -> free(tep);
 }
 
