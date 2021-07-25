@@ -176,6 +176,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 }
 
 static int vfs_chdir(const char *path) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
@@ -193,7 +194,6 @@ static int vfs_chdir(const char *path) {
 }
 
 static int vfs_open(const char *path, int flags) {
-	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
