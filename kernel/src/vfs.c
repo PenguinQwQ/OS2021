@@ -192,9 +192,11 @@ static int vfs_chdir(const char *path) {
 	kmt -> spin_unlock(&trap_lock);
 	return result;
 }
-
+static int T = 0;
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
+	if (T == 1) assert(0);
+	T++;
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
 	int status = (now == 0x200000) ? 1 : mode[id];
