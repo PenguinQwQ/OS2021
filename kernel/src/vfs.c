@@ -273,11 +273,13 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 		else {
 			result = 0;	
 			clus = clus - 1;
+			printf("%x %d %x\n", new -> bias, old -> size, old -> bias);
 			old -> bias = new -> bias;
-			printf("%d\n", new -> bias);
 			sda -> ops -> write(sda, new -> bias, old, sizeof(struct file));
 		}	
+		pmm -> free(new);
 	}
+	pmm -> free(old);
 	kmt -> spin_unlock(&trap_lock);
 	return result;
 }
