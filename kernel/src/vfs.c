@@ -389,6 +389,7 @@ static int vfs_write(int fd_num, void *buf, int count) {
 			int p     = 0;
 
 			while (1) {
+				printf("%x\n", now);
 				if (bias >= 4096) bias -= 4096, loc += 4096;
 				else  {
 					loc += bias;
