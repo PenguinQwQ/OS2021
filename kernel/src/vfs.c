@@ -84,6 +84,7 @@ static void vfs_init()  {
 	memset(fd, 0, sizeof(fd));
 	fd[0].used = fd[1].used = fd[2].used = 1;
 	clus = fat[0];
+	fat[0] = 0;
 }
 
 
@@ -399,9 +400,9 @@ static int vfs_write(int fd_num, void *buf, int count) {
 						loc++;
 					}
 				}
+				if (count == 0) break;
 				if (GetClusLoc(fat[TurnClus(now)]) == 0) fat[TurnClus(now)] = ++clus;	
 				now = GetClusLoc(fat[TurnClus(now)]);
-				if (count == 0) break;
 			}
 			fd[fd_num].file -> bias = loc;
 			if (loc > sz) size[fd[fd_num].file -> inode] = loc;

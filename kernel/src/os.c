@@ -57,6 +57,14 @@ static void tty_reader(void *arg) {
 					printf("%d %s\n", now -> inode, now -> name);
 					now = now + 1;	
 				}
+				pmm -> free(now);
+			}
+			else if (cmd[0] == '8') {
+				cmd[3] = 0;	
+				char *now = pmm -> alloc(4096 * 2);
+				now[0] = 's', now[1] = 't'; now[4096] = 'p';
+				vfs -> write(atoi(cmd + 2), now, 4096 * 2);
+				pmm -> free(now);
 			}
 		    tty->ops->write(tty, 0, resp, strlen(resp));
 	  }
