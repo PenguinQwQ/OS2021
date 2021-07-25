@@ -86,6 +86,7 @@ static Context* os_trap(Event ev, Context *context) {
 	assert(ev.event != EVENT_ERROR);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
+	current[id] -> inode = current_dir[id];
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
 		assert(current[id] -> on == true);
