@@ -283,6 +283,7 @@ static int count_file(uint32_t now, int flag, struct ufs_dirent* obj, int st, in
 } 
 
 static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int result = 0;
 	if (fd[fd_num].used == 0) result = -1;
