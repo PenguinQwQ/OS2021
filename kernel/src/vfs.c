@@ -360,7 +360,23 @@ static int vfs_read(int fd_num, void *buf, int count) {
 	int result = 0;
 	if (fd[fd_num].used == 0 || fd[fd_num].file == NULL) result = -1;
 	else {
-		if (fd[fd_num].file -> type != DT_DIR) {
+		if (fd[fd_num].file -> bias == ZeroLoc) {
+		    for (int i = 0; i < count; i++) obj[i] = 0;
+			result = count;
+			printf("read zero\n");
+		}
+		else if (fd[fd_num].file -> bias == NullLoc) {
+			for (int i = 0; i < count; i++) obj[i] = EOF;
+			result = count;
+			printf("read null\n");
+		}
+		else if (fd[fd_num].file -> bias == RandLoc) {
+			for (int i = 0; i < count; i++) obj[i] = rand() % 256;
+			result = count;
+			printf("read rand\n");
+			
+		}
+		else if (fd[fd_num].file -> type != DT_DIR) {
 			result = 0;
 			int sz    = fd[fd_num].file -> size;
 			int now   = GetClusLoc(fd[fd_num].file -> NxtClus);
@@ -408,7 +424,19 @@ static int vfs_write(int fd_num, void *buf, int count) {
 	if (fd[fd_num].used == 0 || fd[fd_num].file == NULL) result = -1;
 	else if ((fd[fd_num].flag & O_WRONLY) == 0) result = -1;
 	else {
-		if (fd[fd_num].file -> type != DT_DIR) {
+		if (fd[fd_num].file -> bias == ZeroLoc) {
+			printf("write zero\n");
+		    result = -1;	
+		}
+		else if (fd[fd_num].file -> bias == NullLoc) {
+			printf("write null\n");
+			result = count;
+		}
+		else if (fd[fd_num].file -> bias == RandLoc) {
+			printf("write null\n");
+			result = -1;
+		}
+		else if (fd[fd_num].file -> type != DT_DIR) {
 			result = 0;
 			int sz    = fd[fd_num].file -> size;
 			int now   = GetClusLoc(fd[fd_num].file -> NxtClus);
