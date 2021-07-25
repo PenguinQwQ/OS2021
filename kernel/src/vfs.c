@@ -196,7 +196,6 @@ static int T = 0;
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
 	T++;
-	if (T == 4)assert(0);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
 	assert(current_dir[id] == 0x200000);
@@ -226,6 +225,7 @@ static int vfs_open(const char *path, int flags) {
 				break;
 			}
 	}
+	if (T == 3) assert(result == -1);
 	kmt -> spin_unlock(&trap_lock);	
 	return result;
 }
