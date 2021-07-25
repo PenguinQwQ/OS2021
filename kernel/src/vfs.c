@@ -1,4 +1,5 @@
 #include <devices.h>
+#include <stdio.h>
 #include <dirent.h>
 #include <common.h>
 #define MAX_CPU 8
@@ -15,6 +16,17 @@ struct fd_ fd[1024];
 uint32_t GetClusLoc(uint32_t clus) {
 	if (clus == 0) return 0;
 	return 0x200000 + (clus - 1) * 512 * 8;	
+}
+
+void add_name(struct file *tep, const char *name) {
+	tep -> size = strlen(name) + 1;
+	sda -> ops -> write(sda, tep -> bias, tep, sizeof(struct file));
+	char *p = pmm -> alloc(128);
+	strcpy(p, name);
+	p[strlen(name)] = EOF;
+	uint32_t now = GetClusLoc(tep -> NxtClus);
+	sda -> ops -> write(sda, now, p, strlen(name + 1)); 
+	pmm -> free(p);
 }
 
 uint32_t TurnClus(uint32_t now) {

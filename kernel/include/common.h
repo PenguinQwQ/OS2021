@@ -17,7 +17,7 @@ extern uint32_t current_dir[8];
 extern uint32_t ProcLoc;
 struct file* create_file(uint32_t now, char *name, int type);
 uint32_t GetClusLoc(uint32_t now);
-
+void add_name(struct file* file, const char *name);
 struct spinlock{
 	const char *name;	
 	int  lock;
