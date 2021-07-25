@@ -80,6 +80,7 @@ static void vfs_init()  {
 	for (int i = 0; i < MAX_CPU; i++)
 		current_dir[i] = 0x200000, mode[i] = 1;
 	assert(fat != NULL);
+	memset(fd, 0, sizeof(fd));
 	fd[0].used = fd[1].used = fd[2].used = 1;
 	clus = fat[0];
 }
@@ -218,8 +219,8 @@ static int vfs_mkdir(const char *pathname) {
 	return result;
 }
 
-static int count_file(uint32_t now, int flag) {
-	int count = 0;
+static int count_file(uint32_t now, int flag, struct ufs_dirent* obj, int st, int nd) {
+	int count = 0, tot = 0;
 	now = GetClusLoc(now);
 	void *tep = pmm -> alloc(4096);
 	while(1) {
@@ -227,12 +228,22 @@ static int count_file(uint32_t now, int flag) {
 		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = tep;
 		for (int i = 0; i < 64; i++) {
-			if (nxt -> name[0] != 0) count = count + 1; 
+			if (nxt -> name[0] != 0) {
+				if (count >= st && count <= nd && flag) {
+					struct ufs_dirent p;
+					strcpy(p.name, nxt -> name), p.inode = nxt -> inode;
+					memcpy(obj, &p, sizeof(struct ufs_dirent));
+					obj = obj + 1;	
+					tot++;
+				} 
+				count = count + 1; 
+			}
 			nxt = nxt + 1;
 		}
 		now = GetClusLoc(fat[TurnClus(now)]);
 	} 
 	pmm -> free(tep);
+	if (flag) return tot;
 	return count;
 } 
 
@@ -245,7 +256,7 @@ static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
 		buf -> id = fd[fd_num].file -> inode;
 		if (fd[fd_num].file -> type == DT_DIR) {
 			buf -> type = T_DIR;
-			buf -> size = sizeof(struct ufs_dirent) * count_file(fd[fd_num].file -> NxtClus, 0);	
+			buf -> size = sizeof(struct ufs_dirent) * count_file(fd[fd_num].file -> NxtClus, 0, NULL, 0, 0);	
 		}
 		else {
 			buf -> type = T_FILE;
@@ -310,6 +321,52 @@ static int vfs_unlink(const char* path) {
 	return result;
 }
 
+static int vfs_read(int fd_num, void *buf, int count) {
+	kmt -> spin_lock(&trap_lock);
+	char *obj = (char *)buf;
+	int result = 0;
+	if (fd[fd_num].used == 0 || fd[fd_num].file == NULL) result = -1;
+	else {
+		if (fd[fd_num].file -> type != DT_DIR) {
+			result = 0;
+			int sz    = fd[fd_num].file -> size;
+			int now   = GetClusLoc(fd[fd_num].file -> NxtClus);
+			int bias  = fd[fd_num].bias;
+			int loc   = 0; 
+			int p     = 0;
+			char *tep = pmm -> alloc(4096);
+
+			while (1) {
+				if (bias >= 4096) bias -= 4096, loc += 4096;
+				else  {
+					loc += bias;
+					sda -> ops -> read(sda, now, tep, 4096);
+					for (int i = bias; i < 4096; i++) {
+						if (loc == sz || count == 0) break;
+						obj[p++] = tep[i]; 			
+						count--;
+						loc++;
+					}
+				}
+				now = GetClusLoc(fat[TurnClus(now)]);
+				if (now == 0 || count == 0 || loc == sz) break;
+			}
+			fd[fd_num].file -> bias = loc;
+			result = p;
+		}
+		else {
+			result = 0;		
+			assert(count % sizeof(struct ufs_dirent) == 0);
+			count = count / sizeof(struct ufs_dirent);
+			int sz = count_file(fd[fd_num].file -> NxtClus, 1, buf, fd[fd_num].bias / sizeof(struct ufs_dirent), fd[fd_num].bias / sizeof(struct ufs_dirent) + count - 1);
+			fd[fd_num].bias += sizeof(struct ufs_dirent) * sz;
+			result = sizeof(struct ufs_dirent) * sz; 
+		}
+	}
+	kmt -> spin_unlock(&trap_lock);
+	return result;
+}
+
 MODULE_DEF(vfs) = {
 	.init   = vfs_init,	
 	.chdir  = vfs_chdir,
@@ -319,4 +376,5 @@ MODULE_DEF(vfs) = {
 	.fstat  = vfs_fstat,
 	.link   = vfs_link,
 	.unlink = vfs_unlink,
+	.read   = vfs_read,
 };
