@@ -81,7 +81,7 @@ static void os_init() {
   vfs->init();
   kmt->spin_init(&trap_lock, "os_trap"); 
   kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
-//  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty2");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty2");
   
 /*  kmt -> sem_init(&empty, "empty", 10);
   kmt -> sem_init(&fill,  "fill" , 0);
