@@ -103,7 +103,7 @@ static void vfs_init()  {
 		fd[i].used = 0;
 	clus = fat[0];
 	assert(clus != 0);
-//	fat[0] = 0;
+	fat[0] = 0;
 
 	struct file *tep = pmm -> alloc(sizeof(struct file));
 	sda -> ops -> read(sda, 0x200000, tep, sizeof(struct file));
