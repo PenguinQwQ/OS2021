@@ -134,8 +134,8 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 	int opt = 0;
 	while (1) {
 		opt++;
-		assert(opt == 1);
 		if (now == 0) break;
+		assert(opt == 1);
 		lst = now;
 		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = tep;
