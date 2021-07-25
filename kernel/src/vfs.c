@@ -139,7 +139,6 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 				if (nxt -> type == DT_DIR) {
 					memcpy(file, nxt, sizeof(struct file));
 					pmm -> free(tep), pmm -> free(name);
-					if (*status != O_RDONLY && path[0] == 0) return -1;
 					return solve_path(GetClusLoc(nxt -> NxtClus), path, status, file, create);
 				}
 				else {
@@ -195,7 +194,6 @@ static int vfs_chdir(const char *path) {
 static int T = 0;
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
-	if (T == 1) assert(0);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
 	int status = (now == 0x200000) ? 1 : mode[id];
@@ -208,6 +206,7 @@ static int vfs_open(const char *path, int flags) {
 	int result = -1;
 	if (nxt == -1) result = -1;
 	else {
+		if (tep -> type == DT_DIR && flags != O_RDONLY)assert(0);
 	//	if (nxt == 0) printf("CREATE!!\n");
 		if (nxt == 0x200000) {
 			tep -> NxtClus = 1, strcpy(tep -> name, "/"), tep -> type = DT_DIR;	
