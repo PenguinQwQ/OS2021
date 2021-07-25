@@ -52,7 +52,7 @@ uint32_t GetNext(uint32_t now, uint32_t sz) {
 	else return nxt;
 }
 
-void solve(DIR *dir, char *s) {
+void solve(DIR *dir, char *s, int spj) {
 	struct dirent *ptr;
 	struct file *now = (struct file *)(disk + GetClusLoc(clus) - MAX_LENGTH * 2);
 	int CurrentClus = clus;
@@ -85,13 +85,13 @@ void solve(DIR *dir, char *s) {
 				continue;
 			}
 			else if (strcmp(ptr -> d_name, "..") == 0) {
-				now -> NxtClus = CurrentClus - 1;
+				now -> NxtClus = spj;
 				free(p);
 				continue;
 			}
 			now -> NxtClus = clus + 1;
 			clus = clus + 1;
-			solve(ChDir, p);
+			solve(ChDir, p, CurrentClus);
 		}
 		else {
 			FILE *fp = fopen(p, "r");
@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
   assert(dir != NULL);
 
   clus = 1;
-  solve(dir, argv[3]);
+  solve(dir, argv[3], 1);
 
   // TODO: mkfs
   fat[0] = clus;
