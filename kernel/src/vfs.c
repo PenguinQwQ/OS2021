@@ -175,6 +175,9 @@ static int vfs_open(const char *path, int flags) {
 	if (nxt == -1) result = -1;
 	else {
 		if (nxt == 0) printf("CREATE!!\n");
+		if (nxt == 0x200000) {
+			tep -> NxtClus = 1, strcpy(tep -> name, "/");	
+		}
 		for (int i = 0; i < 1024; i++) 
 			if (fd[i].used == 0) {
 				fd[i].used = 1; 
