@@ -16,6 +16,7 @@ extern spinlock_t trap_lock;
 extern uint32_t current_dir[8];
 extern uint32_t ProcLoc;
 struct file* create_file(uint32_t now, char *name, int type);
+uint32_t GetClusLoc(uint32_t now);
 
 struct spinlock{
 	const char *name;	

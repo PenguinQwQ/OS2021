@@ -31,9 +31,8 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 		char s[100];
 		sprintf(s, "%d", sum);
 		struct file* tep = create_file(ProcLoc, s, 1);
-		printf("%s %d\n", s, tep -> bias);
-		
-		
+		uint32_t nxt = GetClusLoc(tep -> NxtClus);
+		tep = create_file(nxt, "name", 0);
 	}
 	if (task_head == NULL) task_head = task;
 	else {
