@@ -39,7 +39,7 @@ static void tty_reader(void *arg) {
 		    tty->ops->write(tty, 0, ps, strlen(ps));
 			int nread = tty->ops->read(tty, 0, cmd, sizeof(cmd) - 1);
 		    cmd[nread - 1] = '\0';
-			if (cmd[0] == '0')printf("%d\n", vfs -> open(cmd + 2, O_CREAT));
+			if (cmd[0] == '0')printf("%d\n", vfs -> open(cmd + 2, O_WRONLY | O_CREAT));
 			else if (cmd[0] == '1')printf("%d\n", vfs -> chdir(cmd + 2));
 			else if (cmd[0] == '2')printf("%d\n", vfs -> close(atoi(cmd + 2)));
 			else if (cmd[0] == '3')printf("%d\n", vfs -> mkdir(cmd + 2));
