@@ -102,7 +102,7 @@ static void vfs_init()  {
 		fd[i].used = 0;
 	clus = fat[0];
 	fat[0] = 0;
-	struct file* tep = create_file(0x200000, "proc", 1);
+/*	struct file* tep = create_file(0x200000, "proc", 1);
     ProcLoc = GetClusLoc(tep -> NxtClus);
 	tep = create_file(ProcLoc, "cpuiofo", 0);
 	tep = create_file(ProcLoc, "memiofo", 0);
@@ -115,7 +115,7 @@ static void vfs_init()  {
 	NullLoc = tep -> bias;
 	tep = create_file(nxt, "random", 0);
 	RandLoc = tep -> bias;
-	pmm -> free(tep);
+	pmm -> free(tep);*/
 }
 
 
@@ -136,7 +136,6 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 		lst = now;
 		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = tep;
-		assert(path[0] == '/');
 //		assert(nxt -> flag == 0xffffffff);
 		for (int i = 0; i < 64; i++) {
 			if (strcmp(name, nxt -> name) == 0) {
