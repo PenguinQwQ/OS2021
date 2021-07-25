@@ -12,6 +12,7 @@
 extern struct task* task_head;
 extern struct task* current[128];
 extern spinlock_t trap_lock;
+extern uint32_t current_dir[8];
 
 struct spinlock{
 	const char *name;	
@@ -26,6 +27,7 @@ struct task{
 	bool on;
 	bool sleep_flag;
 	int times;
+	uint32_t inode;
 	struct task* next;
 };
 
