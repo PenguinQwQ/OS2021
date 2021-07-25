@@ -273,6 +273,8 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 		else {
 			result = 0;	
 			clus = clus - 1;
+			old -> bias = new -> bias;
+			printf("%d\n", new -> bias);
 			sda -> ops -> write(sda, new -> bias, old, sizeof(struct file));
 		}	
 	}
