@@ -227,6 +227,7 @@ static int vfs_open(const char *path, int flags) {
 }
 
 static int vfs_close(int num) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int result = -1;
 	if (num < 0 || num >= 1024) result = -1;
