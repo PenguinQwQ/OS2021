@@ -91,7 +91,6 @@ uint32_t ZeroLoc, NullLoc, RandLoc;
 
 static void vfs_init()  {
 	sda = dev -> lookup("sda");
-	sda -> ops -> init(sda);
 	fat = (uint32_t *)pmm -> alloc(0x100000);
 	sda -> ops -> read(sda, 0x100000, fat, 0x100000);
 	for (int i = 0; i < MAX_CPU; i++)
