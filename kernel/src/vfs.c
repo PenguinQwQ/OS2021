@@ -405,7 +405,7 @@ static int vfs_write(int fd_num, void *buf, int count) {
 				if (GetClusLoc(fat[TurnClus(now)]) == 0) fat[TurnClus(now)] = ++clus;	
 				now = GetClusLoc(fat[TurnClus(now)]);
 			}
-			fd[fd_num].file -> bias = loc;
+			fd[fd_num].bias = loc;
 			if (loc > sz) size[fd[fd_num].file -> inode] = loc;
 			result = p;
 		}
