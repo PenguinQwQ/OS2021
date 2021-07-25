@@ -475,6 +475,7 @@ static int vfs_write(int fd_num, void *buf, int count) {
 }
 
 static int vfs_lseek(int fd_num, int offset, int whence) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int result = -1;
 	if (fd_num < 0 || fd_num >= 1024 || fd[fd_num].file == NULL) result = -1;
