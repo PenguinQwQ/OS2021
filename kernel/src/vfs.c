@@ -186,7 +186,7 @@ static int vfs_chdir(const char *path) {
 	int result = 0;
 	if (nxt == -1 || nxt == 1) result = -1;
 	else current_dir[id] = nxt;
-	printf("%s %x\n", path, nxt);
+//	printf("%s %x\n", path, nxt);
 	kmt -> spin_unlock(&trap_lock);
 	return result;
 }
@@ -204,7 +204,7 @@ static int vfs_open(const char *path, int flags) {
 	int result = -1;
 	if (nxt == -1) result = -1;
 	else {
-		if (nxt == 0) printf("CREATE!!\n");
+	//	if (nxt == 0) printf("CREATE!!\n");
 		if (nxt == 0x200000) {
 			tep -> NxtClus = 1, strcpy(tep -> name, "/"), tep -> type = DT_DIR;	
 		}
@@ -214,7 +214,7 @@ static int vfs_open(const char *path, int flags) {
 				fd[i].flag = flags;	
 				fd[i].file = tep;
 				fd[i].bias = 0;
-				printf("%s %x\n", tep -> name, tep -> bias);
+			//	printf("%s %x\n", tep -> name, tep -> bias);
 				result = i;
 				break;
 			}
@@ -295,7 +295,7 @@ static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
 			buf -> type = T_FILE;
 			buf -> size = (size[fd[fd_num].file -> inode] == 0) ? fd[fd_num].file -> size : size[fd[fd_num].file -> inode];
 		}
-		printf("%d %d %d\n", buf -> id, buf -> type, buf -> size);
+	//	printf("%d %d %d\n", buf -> id, buf -> type, buf -> size);
 	}
 	kmt -> spin_unlock(&trap_lock);
 	return result;
@@ -358,23 +358,23 @@ static int vfs_read(int fd_num, void *buf, int count) {
 	kmt -> spin_lock(&trap_lock);
 	char *obj = (char *)buf;
 	int result = 0;
-	printf ("%x %x\n", RandLoc, fd[fd_num].file -> bias);
+//	printf ("%x %x\n", RandLoc, fd[fd_num].file -> bias);
 	if (fd[fd_num].used == 0 || fd[fd_num].file == NULL) result = -1;
 	else {
 		if (fd[fd_num].file -> bias == ZeroLoc) {
 		    for (int i = 0; i < count; i++) obj[i] = 0;
 			result = count;
-			printf("read zero\n");
+		//	printf("read zero\n");
 		}
 		else if (fd[fd_num].file -> bias == NullLoc) {
 			for (int i = 0; i < count; i++) obj[i] = EOF;
 			result = count;
-			printf("read null\n");
+		//	printf("read null\n");
 		}
 		else if (fd[fd_num].file -> bias == RandLoc) {
 			for (int i = 0; i < count; i++) obj[i] = rand() % 256;
 			result = count;
-			printf("read rand\n");
+		//	printf("read rand\n");
 			
 		}
 		else if (fd[fd_num].file -> type != DT_DIR) {
@@ -426,15 +426,15 @@ static int vfs_write(int fd_num, void *buf, int count) {
 	else if ((fd[fd_num].flag & O_WRONLY) == 0) result = -1;
 	else {
 		if (fd[fd_num].file -> bias == ZeroLoc) {
-			printf("write zero\n");
+		//	printf("write zero\n");
 		    result = -1;	
 		}
 		else if (fd[fd_num].file -> bias == NullLoc) {
-			printf("write null\n");
+		//	printf("write null\n");
 			result = count;
 		}
 		else if (fd[fd_num].file -> bias == RandLoc) {
-			printf("write null\n");
+	//		printf("write null\n");
 			result = -1;
 		}
 		else if (fd[fd_num].file -> type != DT_DIR) {
