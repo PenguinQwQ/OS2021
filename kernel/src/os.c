@@ -49,6 +49,16 @@ static void tty_reader(void *arg) {
 				printf("%d\n", vfs -> link(cmd + 4, cmd + 2));
 			}
 			else if (cmd[0] == '6')printf("%d\n", vfs -> unlink(cmd + 2));
+			else if (cmd[0] == '7') {
+				cmd[3] = 0;
+				struct ufs_dirent *now = pmm -> alloc(4096);
+				int sz = vfs -> read(atoi(cmd + 2), now, 4096);
+				for (int off = 0; off + sizeof(struct ufs_dirent) <= sz; off += sizeof(struct ufs_dirent)) {
+					printf("%d %s\n", now -> inode, now -> name);
+					now = now + 1;	
+				}
+				
+			}
 		    tty->ops->write(tty, 0, resp, strlen(resp));
 	  }
 }
