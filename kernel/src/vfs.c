@@ -358,6 +358,7 @@ static int vfs_read(int fd_num, void *buf, int count) {
 	kmt -> spin_lock(&trap_lock);
 	char *obj = (char *)buf;
 	int result = 0;
+	printf ("%x %x\n", RandLoc, fd[fd_num].file -> bias);
 	if (fd[fd_num].used == 0 || fd[fd_num].file == NULL) result = -1;
 	else {
 		if (fd[fd_num].file -> bias == ZeroLoc) {
