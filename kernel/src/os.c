@@ -29,9 +29,8 @@ void comsumer() {
 	while(1){kmt->sem_wait(&fill); putch(')');  kmt->sem_signal(&empty);}
 }
 int T = 0;
-
+/*
 static void tty_reader(void *arg) {
-	  printf("%d\n", vfs -> open("/mkfs.c", 0));
 	  device_t *tty = dev->lookup(arg);
 	  char cmd[128], resp[128], ps[16];
 	  sprintf(ps, "(%s) $ ", arg);
@@ -69,7 +68,7 @@ static void tty_reader(void *arg) {
 		    tty->ops->write(tty, 0, resp, strlen(resp));
 	  }
 }
-
+*/
 /*
 static void traverse(const char *root) {
   int sz = 4096;
@@ -409,7 +408,7 @@ static void os_init() {
   dev -> init();
   vfs->init();
   kmt->spin_init(&trap_lock, "os_trap"); 
-  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
  // kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
  // kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty2");
   
