@@ -88,7 +88,7 @@ static void vfs_init()  {
 	clus = fat[0];
 	fat[0] = 0;
 	struct file* tep = create_file(0x200000, "proc", 1);
-    ProcLoc = tep -> NxtClus;
+    ProcLoc = GetClusLoc(tep -> NxtClus);
 	pmm -> free(tep);
 }
 
