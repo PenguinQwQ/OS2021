@@ -304,6 +304,7 @@ static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
 }
 
 static int vfs_link(const char *oldpath, const char *newpath) {
+	assert(0);
    	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current(), result = -1;
 
@@ -334,6 +335,7 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 }
 
 static int vfs_unlink(const char* path) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
@@ -357,6 +359,7 @@ static int vfs_unlink(const char* path) {
 }
 
 static int vfs_read(int fd_num, void *buf, int count) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	char *obj = (char *)buf;
 	int result = 0;
