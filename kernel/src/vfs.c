@@ -9,6 +9,7 @@ uint32_t current_dir[MAX_CPU];
 uint32_t mode[MAX_CPU];
 uint32_t *fat;
 uint32_t clus;
+uint32_t size[10000000 + 5] = {0};
 struct fd_ fd[1024];
 
 uint32_t GetClusLoc(uint32_t clus) {
@@ -263,7 +264,7 @@ static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
 		}
 		else {
 			buf -> type = T_FILE;
-			buf -> size = fd[fd_num].file -> size;
+			buf -> size = (size[fd[fd_num].file -> inode] == 0) ? fd[fd_num].file -> size : size[fd[fd_num].file -> inode];
 		}
 		printf("%d %d %d\n", buf -> id, buf -> type, buf -> size);
 	}
@@ -354,6 +355,7 @@ static int vfs_read(int fd_num, void *buf, int count) {
 				now = GetClusLoc(fat[TurnClus(now)]);
 				if (now == 0 || count == 0 || loc == sz) break;
 			}
+			pmm -> free(tep);
 			fd[fd_num].file -> bias = loc;
 			result = p;
 		}
@@ -370,6 +372,46 @@ static int vfs_read(int fd_num, void *buf, int count) {
 	return result;
 }
 
+static int vfs_write(int fd_num, void *buf, int count) {
+	kmt -> spin_lock(&trap_lock);
+	char *obj = (char *)buf;
+	int result = 0;
+	if (fd[fd_num].used == 0 || fd[fd_num].file == NULL) result = -1;
+	else if ((fd[fd_num].flag & O_WRONLY) == 0) result = -1;
+	else {
+		if (fd[fd_num].file -> type != DT_DIR) {
+			result = 0;
+			int sz    = fd[fd_num].file -> size;
+			int now   = GetClusLoc(fd[fd_num].file -> NxtClus);
+			int bias  = fd[fd_num].bias;
+			int loc   = 0; 
+			int p     = 0;
+
+			while (1) {
+				if (bias >= 4096) bias -= 4096, loc += 4096;
+				else  {
+					loc += bias;
+					for (int i = bias; i < 4096; i++) {
+						if (count == 0) break;
+						sda -> ops -> write(sda, now + i, obj + p, 1);
+						p++;
+						count--;
+						loc++;
+					}
+				}
+				if (GetClusLoc(fat[TurnClus(now)]) == 0) fat[TurnClus(now)] = ++clus;	
+				now = GetClusLoc(fat[TurnClus(now)]);
+				if (count == 0) break;
+			}
+			fd[fd_num].file -> bias = loc;
+			if (loc > sz) size[fd[fd_num].file -> inode] = loc;
+			result = p;
+		}
+		else result = -1;
+	}
+	kmt -> spin_unlock(&trap_lock);
+	return result;
+}
 MODULE_DEF(vfs) = {
 	.init   = vfs_init,	
 	.chdir  = vfs_chdir,
@@ -380,4 +422,5 @@ MODULE_DEF(vfs) = {
 	.link   = vfs_link,
 	.unlink = vfs_unlink,
 	.read   = vfs_read,
+	.write  = vfs_write,
 };

@@ -57,7 +57,6 @@ static void tty_reader(void *arg) {
 					printf("%d %s\n", now -> inode, now -> name);
 					now = now + 1;	
 				}
-				
 			}
 		    tty->ops->write(tty, 0, resp, strlen(resp));
 	  }
