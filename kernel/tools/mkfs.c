@@ -67,6 +67,7 @@ void solve(DIR *dir, char *s) {
 		now -> size = 0;
 		now -> inode = ptr -> d_ino;
 		now -> flag = 0xffffffff;
+		now -> bias = (uintptr_t)now - (uintptr_t)disk; 
 		assert(len < 32);
 		strcpy(now -> name, ptr -> d_name);
 

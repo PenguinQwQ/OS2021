@@ -264,7 +264,6 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 
 	struct file* old = pmm -> alloc(sizeof(struct file));
 	uint32_t nxt = solve_path(now, oldpath + (oldpath[0] == '/'), &status, old, 0);
-			printf("%d %x %s\n", old -> size, old -> bias, old -> name);
 	
 	if (nxt != 1) result = -1;
 	else {
@@ -275,7 +274,6 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 		else {
 			result = 0;	
 			clus = clus - 1;
-			printf("%x %d %x\n", new -> bias, old -> size, old -> bias);
 			old -> bias = new -> bias;
 			strcpy(old -> name, new -> name);
 			sda -> ops -> write(sda, new -> bias, old, sizeof(struct file));
