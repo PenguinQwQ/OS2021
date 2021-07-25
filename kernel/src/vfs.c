@@ -201,6 +201,7 @@ static int T = 0;
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
 	T++;
+	assert(T == 1);
 	if (T == 4)assert(0);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
