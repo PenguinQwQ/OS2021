@@ -69,7 +69,7 @@ static void tty_reader(void *arg) {
 	  }
 }
 */
-/*
+
 static void traverse(const char *root) {
   int sz = 4096;
   #define MAX_PATH_LEN 4096
@@ -90,6 +90,7 @@ static void traverse(const char *root) {
                                  // Linux 以 “.” 开头的文件是隐藏文件了吧
           char *fname = pmm->alloc(MAX_PATH_LEN); // assert success
           sprintf(fname, "%s/%s", root, d->name);
+		  printf("%s\n", fname);
           traverse(fname);
           pmm->free(fname);
         }
@@ -398,7 +399,7 @@ vfs->chdir("..");
 traverse("");
 while(1);
 }
-*/
+
 static void os_init() {
   T++;
   Lists_sum = 0;
@@ -407,7 +408,7 @@ static void os_init() {
   dev -> init();
   vfs->init();
   kmt->spin_init(&trap_lock, "os_trap"); 
- // kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", test, "tty1");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", test, "tty1");
  // kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
  // kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty2");
   
