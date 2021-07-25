@@ -131,12 +131,15 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 	void *tep = pmm -> alloc(4096); ///////////////////////////	
 //	assert(strcmp(name, "proc") && strcmp(name, "dev"));
 	uint32_t lst = 0;
+	int opt = 0;
 	while (1) {
+		opt++;
+		assert(opt == 1);
 		if (now == 0) break;
 		lst = now;
 		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = tep;
-		assert(nxt -> flag == 0xffffffff);
+//		assert(nxt -> flag == 0xffffffff);
 		for (int i = 0; i < 64; i++) {
 			if (strcmp(name, nxt -> name) == 0) {
 				if (nxt -> type == DT_DIR) {
