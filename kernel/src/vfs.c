@@ -106,6 +106,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 				if (nxt -> type == DT_DIR) {
 					memcpy(file, nxt, sizeof(struct file));
 					pmm -> free(tep), pmm -> free(name);
+					printf("%d\n", file -> size);
 					return solve_path(GetClusLoc(nxt -> NxtClus), path, status, file, create);
 				}
 				else {
