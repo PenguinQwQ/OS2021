@@ -44,6 +44,7 @@ static void tty_reader(void *arg) {
 			else if (cmd[0] == '2')printf("%d\n", vfs -> close(atoi(cmd + 2)));
 			else if (cmd[0] == '3')printf("%d\n", vfs -> mkdir(cmd + 2));
 			else if (cmd[0] == '4')printf("%d\n", vfs -> fstat(atoi(cmd + 2), pmm -> alloc(32)));
+			else if (cmd[0] == '5') printf("%d\n", vfs -> link(cmd + 2, cmd + 10));
 		    tty->ops->write(tty, 0, resp, strlen(resp));
 	  }
 }
