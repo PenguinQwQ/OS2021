@@ -118,6 +118,7 @@ vfs->chdir("d9afza5vpuemop");
   int fd = vfs->open("/etw1ld63cgzmq/d9afza5vpuemop/a2.txt", O_CREAT | O_RDWR);
   if (fd > 0) vfs->close(fd);
 }
+while(1);
 vfs->chdir("..");
 vfs->mkdir("/etw1ld63cgzmq/jcf8z7r7pn0r2");
 vfs->chdir("jcf8z7r7pn0r2");
