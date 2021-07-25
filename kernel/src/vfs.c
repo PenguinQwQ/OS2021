@@ -421,6 +421,7 @@ static int vfs_read(int fd_num, void *buf, int count) {
 }
 
 static int vfs_write(int fd_num, void *buf, int count) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	char *obj = (char *)buf;
 	int result = 0;
