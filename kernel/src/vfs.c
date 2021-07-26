@@ -11,8 +11,14 @@ static device_t *sda;
 uint32_t mode[MAX_CPU];
 static uint32_t *fat;
 static uint32_t clus;
-uint32_t size[10000000 + 5] = {0};
 struct fd_ fd[1024];
+
+struct SzList {
+	uint32_t inode;
+    int size;
+	struct SzList *nxt;
+};
+struct SzList *SzHead;
 
 uint32_t GetClusLoc(uint32_t clus) {
 	if (clus == 0) return 0;
@@ -333,8 +339,16 @@ static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
 		}
 		else {
 			buf -> type = T_FILE;
-			assert(fd[fd_num].file -> inode <= 10000000);   ///////////////////////
-			buf -> size = (size[fd[fd_num].file -> inode] == 0) ? fd[fd_num].file -> size : size[fd[fd_num].file -> inode];
+			struct SzList* NowSz = SzHead;
+			int sz = fd[fd_num].file -> size;
+			while (NowSz != NULL) {
+				if (NowSz -> inode == fd[fd_num].file -> inode) {
+					sz = NowSz -> size;
+					break;
+				}
+				NowSz = NowSz -> nxt;	
+			}
+			buf -> size = sz;
 		}
 		#ifdef CheckTask
 		printf("stat id:%d type:%d size:%d\n", buf -> id, buf -> type, buf -> size);
@@ -528,7 +542,35 @@ static int vfs_write(int fd_num, void *buf, int count) {
 				now = GetClusLoc(fat[TurnClus(now)]);
 			}
 			fd[fd_num].bias = loc;
-			if (loc > sz) size[fd[fd_num].file -> inode] = loc; ////////////////////////
+			if (loc > sz) {
+				struct SzList *NowSz = SzHead, *lst;
+				int finish;
+				if (NowSz == NULL) {
+					SzHead = pmm -> alloc(sizeof(struct SzList));
+					assert(SzHead != NULL);
+					SzHead -> inode = fd[fd_num].file -> inode;	
+					SzHead -> size = loc;
+					finish = 1;
+				}
+				else {
+					while (NowSz != NULL) {
+						lst = NowSz;
+						if (NowSz -> inode == fd[fd_num].file -> inode) {
+							NowSz -> size = loc;
+							finish = 1;
+							break;
+						}
+						NowSz = NowSz -> nxt;
+					}
+					if (finish == 0) {
+						NowSz = pmm -> alloc(sizeof(struct SzList));
+						assert(NowSz != NULL);
+						NowSz -> inode = fd[fd_num].file -> inode;	
+						NowSz -> size = loc;
+						lst -> nxt = NowSz; 	
+					}	
+				}
+			}
 			result = p;
 		}
 		else assert(0);
@@ -545,7 +587,18 @@ static int vfs_lseek(int fd_num, int offset, int whence) {
 		//  offset > size ?
 		if (whence == SEEK_CUR) fd[fd_num].bias += offset;
 		else if (whence == SEEK_SET) fd[fd_num].bias = offset;	
-		else fd[fd_num].bias = (size[fd[fd_num].file -> inode] == 0) ? fd[fd_num].file -> size - offset : size[fd[fd_num].file -> inode] - offset; //
+		else {
+			int sz = fd[fd_num].file -> size;
+			struct SzList* NowSz = SzHead;
+			while (NowSz != NULL) {
+				if (NowSz -> inode == fd[fd_num].file -> inode) {
+					sz = NowSz -> size;
+					break;
+				}
+				NowSz = NowSz -> nxt;	
+			}
+			fd[fd_num].bias = sz - offset;
+		}
 		result = fd[fd_num].bias;
 	}
 	kmt -> spin_unlock(&trap_lock);
