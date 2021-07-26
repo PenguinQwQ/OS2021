@@ -97,6 +97,8 @@ static void vfs_init()  {
 	fd[0].used = fd[1].used = fd[2].used = 1;
 	for (int i = 3; i < 1024; i++)
 		fd[i].used = 0;
+	for (int i = 0; i < MAX_CPU; i++)
+		mode[i] = 1;
 
 	sda -> ops -> read(sda, FAT_START, fat, 4096);
 	clus = fat[0];
