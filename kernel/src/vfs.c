@@ -1,6 +1,7 @@
 #include <devices.h>
 #include <dirent.h>
 #include <common.h>
+#define CheckTask
 #define EOF -1
 #define MAX_CPU 128
 
@@ -251,10 +252,10 @@ static int vfs_open(const char *path, int flags) {
 				result = i;
 				break;
 			}
-			#ifdef CheckTask
-			if (nxt != 0)printf("open result:%d name:%s location:%x\n", result, tep -> name, tep -> bias);
-			else printf("open result:%d name:%s (new) location:%x\n", result, tep -> name, tep -> bias);
-			#endif
+		#ifdef CheckTask
+		if (nxt != 0)printf("open result:%d name:%s location:%x\n", result, tep -> name, tep -> bias);
+		else printf("open result:%d name:%s (new) location:%x\n", result, tep -> name, tep -> bias);
+		#endif
 	}
 	kmt -> spin_unlock(&trap_lock);	
 	return result;
