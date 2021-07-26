@@ -6,7 +6,6 @@
 #define MAX_CPU 128
 extern spinlock_t trap_lock;
 extern struct task *current[128];
-int b[10000000];
 static device_t *sda;
 uint32_t mode[MAX_CPU];
 static uint32_t *fat;
@@ -21,7 +20,6 @@ struct SzList {
 struct SzList *SzHead;
 
 uint32_t GetClusLoc(uint32_t clus) {
-	b[0] = 0;
 	if (clus == 0) return 0;
 	return FILE_START + (clus - 1) * 512 * 8;	
 }
