@@ -88,7 +88,6 @@ static void traverse(const char *root) {
         struct ufs_dirent *d = (struct ufs_dirent *)(buf + offset);
         if (d->name[0] != '.') { // 小彩蛋：你这下知道为什么
                                  // Linux 以 “.” 开头的文件是隐藏文件了吧
-		while(1);
           char *fname = pmm->alloc(MAX_PATH_LEN); // assert success
           sprintf(fname, "%s/%s", root, d->name);
 		  printf("%s\n", fname);
