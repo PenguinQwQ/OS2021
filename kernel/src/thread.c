@@ -25,7 +25,7 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 	task -> on = false;
 	task -> times = 0;
 	task -> sleep_flag = false;
-	task -> inode = 0x200000;
+	task -> inode = 0x110000;
 	if (ProcLoc) {
 		sum++;
 		char s[100];
