@@ -100,7 +100,7 @@ static void vfs_init()  {
 	for (int i = 3; i < 1024; i++)
 		fd[i].used = 0;
 
-	sda -> ops -> read(sda, 0x100000, fat, 0x100000);
+	sda -> ops -> read(sda, 0x100000, fat, 4096);
 	clus = fat[0];
 	assert(clus != 0);
 	//fat[0] = 0;
@@ -212,7 +212,7 @@ static int vfs_open(const char *path, int flags) {
 	assert(fat[0] == clus);
 	uint32_t *t = pmm -> alloc(0x100000);
 	assert(t != NULL);
-	sda -> ops -> read(sda, 0x100000, t, 0x100000);
+	sda -> ops -> read(sda, 0x100000, t, 4096);
 	assert(t[0] == clus);
 	T++;
 	assert(T == 1);
