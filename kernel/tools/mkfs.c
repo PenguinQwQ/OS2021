@@ -126,8 +126,8 @@ int main(int argc, char *argv[]) {
 
   p += 0x100000;
   fat = (uint32_t *)p;
-  p += 0x100000;
-  FirstLoc = 0x200000;
+  p += 0x10000;
+  FirstLoc = 0x110000;
 
   DIR *dir = opendir(argv[3]);
   assert(dir != NULL);

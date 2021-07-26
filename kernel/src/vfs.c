@@ -15,7 +15,7 @@ struct fd_ fd[1024];
 
 uint32_t GetClusLoc(uint32_t clus) {
 	if (clus == 0) return 0;
-	return 0x200000 + (clus - 1) * 512 * 8;	
+	return 0x110000 + (clus - 1) * 512 * 8;	
 }
 
 void add_name(struct file *tep, const char *name) {
@@ -30,7 +30,7 @@ void add_name(struct file *tep, const char *name) {
 }
 
 uint32_t TurnClus(uint32_t now) {
-	return (now - 0x200000) / 512 / 8 + 1;	
+	return (now - 0x110000) / 512 / 8 + 1;	
 }
 
 static int inode = 100;
@@ -93,7 +93,7 @@ static void vfs_init()  {
 	sda = dev -> lookup("sda");
 	fat = (uint32_t *)pmm -> alloc(0x100000);
 	for (int i = 0; i < MAX_CPU; i++)
-		current_dir[i] = 0x200000, mode[i] = 1;
+		current_dir[i] = 0x110000, mode[i] = 1;
 	assert(fat != NULL);
 	memset(fd, 0, sizeof(fd));
 	fd[0].used = fd[1].used = fd[2].used = 1;
@@ -105,12 +105,12 @@ static void vfs_init()  {
 	assert(clus != 0);
 	fat[0] = 0;
 
-	struct file* tep = create_file(0x200000, "proc", 1);
+	struct file* tep = create_file(0x110000, "proc", 1);
     ProcLoc = GetClusLoc(tep -> NxtClus);
 	tep = create_file(ProcLoc, "cpuiofo", 0);
 	tep = create_file(ProcLoc, "memiofo", 0);
 
-	tep = create_file(0x200000, "dev", 1);
+	tep = create_file(0x110000, "dev", 1);
 	uint32_t nxt = GetClusLoc(tep -> NxtClus);
 	tep = create_file(nxt, "zero", 0);
 	ZeroLoc = tep -> bias;
@@ -183,8 +183,8 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 static int vfs_chdir(const char *path) {
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
-	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
-	int status = (now == 0x200000) ? 1 : mode[id];
+	uint32_t now = (path[0] == '/') ? 0x110000 : current_dir[id];
+	int status = (now == 0x110000) ? 1 : mode[id];
 	
 	assert(mode[id] == 1); ///////////////////////////////////////////
 	struct file tep;
@@ -200,8 +200,8 @@ static int vfs_chdir(const char *path) {
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
-	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
-	int status = (now == 0x200000) ? 1 : mode[id];
+	uint32_t now = (path[0] == '/') ? 0x110000 : current_dir[id];
+	int status = (now == 0x110000) ? 1 : mode[id];
 	
 	assert(mode[id] == 1); ///////////////////////////////////////////
 
@@ -212,7 +212,7 @@ static int vfs_open(const char *path, int flags) {
 	if (nxt == -1) result = -1;
 	else {
 	//	if (nxt == 0) printf("CREATE!!\n");
-		if (nxt == 0x200000) {
+		if (nxt == 0x110000) {
 			tep -> NxtClus = 1, strcpy(tep -> name, "/"), tep -> type = DT_DIR;	
 		}
 		for (int i = 0; i < 1024; i++) 
@@ -245,8 +245,8 @@ static int vfs_close(int num) {
 static int vfs_mkdir(const char *pathname) {
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
-	uint32_t now = (pathname[0] == '/') ? 0x200000 : current_dir[id];
-	int status = (now == 0x200000) ? 1 : mode[id];
+	uint32_t now = (pathname[0] == '/') ? 0x110000 : current_dir[id];
+	int status = (now == 0x110000) ? 1 : mode[id];
 
 	assert(mode[id] == 1);
 	
@@ -312,15 +312,15 @@ static int vfs_link(const char *oldpath, const char *newpath) {
    	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current(), result = -1;
 
-	uint32_t now = (oldpath[0] == '/') ? 0x200000 : current_dir[id];
-	int status = (now == 0x200000) ? 1 : mode[id];
+	uint32_t now = (oldpath[0] == '/') ? 0x110000 : current_dir[id];
+	int status = (now == 0x110000) ? 1 : mode[id];
 
 	struct file* old = pmm -> alloc(sizeof(struct file));
 	uint32_t nxt = solve_path(now, oldpath + (oldpath[0] == '/'), &status, old, 0);
 	
 	if (nxt != 1) result = -1;
 	else {
-		now = (newpath[0] == '/') ? 0x200000 : current_dir[id];
+		now = (newpath[0] == '/') ? 0x110000 : current_dir[id];
 		struct file* new = pmm -> alloc(sizeof(struct file));		
 		uint32_t nxt = solve_path(now, newpath + (newpath[0] == '/'), &status, new, 1);
 		if (nxt != 0) result = -1;
@@ -341,8 +341,8 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 static int vfs_unlink(const char* path) {
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
-	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
-	int status = (now == 0x200000) ? 1 : mode[id];
+	uint32_t now = (path[0] == '/') ? 0x110000 : current_dir[id];
+	int status = (now == 0x110000) ? 1 : mode[id];
 	
 	assert(mode[id] == 1); ///////////////////////////////////////////
 
