@@ -2,11 +2,11 @@
 #include <dirent.h>
 #include <common.h>
 #define EOF -1
-#define MAX_CPU 8
+#define MAX_CPU 128
 
 extern spinlock_t trap_lock;
+extern struct task *current[128];
 static device_t *sda;
-uint32_t current_dir[MAX_CPU];
 uint32_t mode[MAX_CPU];
 static uint32_t *fat;
 static uint32_t clus;
@@ -92,8 +92,6 @@ uint32_t ZeroLoc, NullLoc, RandLoc;
 static void vfs_init()  {
 	sda = dev -> lookup("sda");
 	fat = (uint32_t *)pmm -> alloc(0x10000);
-	for (int i = 0; i < MAX_CPU; i++)
-		current_dir[i] = FILE_START, mode[i] = 1;
 	assert(fat != NULL);
 	memset(fd, 0, sizeof(fd));
 	fd[0].used = fd[1].used = fd[2].used = 1;
@@ -133,7 +131,6 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 	path = path + i;
 	void *tep = pmm -> alloc(4096); ///////////////////////////	
 	assert(tep != NULL);
-// 	assert(strcmp(name, "proc") && strcmp(name, "dev"));
 	uint32_t lst = 0;
 	while (1) {
 		if (now == 0) break;
@@ -183,7 +180,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 static int vfs_chdir(const char *path) {
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
-	uint32_t now = (path[0] == '/') ? FILE_START : current_dir[id];
+	uint32_t now = (path[0] == '/') ? FILE_START : current[id] -> inode;
 	int status = (now == FILE_START) ? 1 : mode[id];
 	
 	assert(mode[id] == 1); ///////////////////////////////////////////
@@ -191,7 +188,7 @@ static int vfs_chdir(const char *path) {
 	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, &tep, 0);
 	int result = 0;
 	if (nxt == -1 || nxt == 1) result = -1;
-	else current_dir[id] = nxt;
+	else current[id] -> inode = nxt;
 //	printf("%s %x\n", path, nxt);
 	kmt -> spin_unlock(&trap_lock);
 	return result;
@@ -200,7 +197,7 @@ static int vfs_chdir(const char *path) {
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
-	uint32_t now = (path[0] == '/') ? FILE_START : current_dir[id];
+	uint32_t now = (path[0] == '/') ? FILE_START : current[id] -> inode;
 	int status = (now == FILE_START) ? 1 : mode[id];
 	
 	assert(mode[id] == 1); ///////////////////////////////////////////
@@ -245,7 +242,7 @@ static int vfs_close(int num) {
 static int vfs_mkdir(const char *pathname) {
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
-	uint32_t now = (pathname[0] == '/') ? FILE_START : current_dir[id];
+	uint32_t now = (pathname[0] == '/') ? FILE_START : current[id] -> inode;
 	int status = (now == FILE_START) ? 1 : mode[id];
 
 	assert(mode[id] == 1);
@@ -312,7 +309,7 @@ static int vfs_link(const char *oldpath, const char *newpath) {
    	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current(), result = -1;
 
-	uint32_t now = (oldpath[0] == '/') ? FILE_START : current_dir[id];
+	uint32_t now = (oldpath[0] == '/') ? FILE_START : current[id] -> inode;
 	int status = (now == FILE_START) ? 1 : mode[id];
 
 	struct file* old = pmm -> alloc(sizeof(struct file));
@@ -320,7 +317,7 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 	
 	if (nxt != 1) result = -1;
 	else {
-		now = (newpath[0] == '/') ? FILE_START : current_dir[id];
+		now = (newpath[0] == '/') ? FILE_START : current[id] -> inode;
 		struct file* new = pmm -> alloc(sizeof(struct file));		
 		uint32_t nxt = solve_path(now, newpath + (newpath[0] == '/'), &status, new, 1);
 		if (nxt != 0) result = -1;
@@ -341,7 +338,7 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 static int vfs_unlink(const char* path) {
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
-	uint32_t now = (path[0] == '/') ? FILE_START : current_dir[id];
+	uint32_t now = (path[0] == '/') ? FILE_START : current[id] -> inode;
 	int status = (now == FILE_START) ? 1 : mode[id];
 	
 	assert(mode[id] == 1); ///////////////////////////////////////////
