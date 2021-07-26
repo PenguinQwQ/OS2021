@@ -226,7 +226,7 @@ static int vfs_open(const char *path, int flags) {
 				break;
 			}
 	}
-	assert(result != -1);
+	printf("%d\n", result);
 	kmt -> spin_unlock(&trap_lock);	
 	return result;
 }
