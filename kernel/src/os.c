@@ -107,7 +107,7 @@ release:
 }
 
 void test() {
-	vfs->mkdir("/etw1ld63cgzmq");
+vfs->mkdir("/etw1ld63cgzmq");
 vfs->chdir("etw1ld63cgzmq");
 vfs->mkdir("/etw1ld63cgzmq/d9afza5vpuemop");
 vfs->chdir("d9afza5vpuemop");
