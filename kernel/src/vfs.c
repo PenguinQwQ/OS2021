@@ -19,9 +19,11 @@ uint32_t GetClusLoc(uint32_t clus) {
 }
 
 void add_name(struct file *tep, const char *name) {
+	assert(tep -> flag == 0xffffffff);
 	tep -> size = strlen(name) + 1;
 	sda -> ops -> write(sda, tep -> bias, tep, sizeof(struct file));
 	char *p = pmm -> alloc(128);
+	assert(p != NULL);
 	strcpy(p, name);
 	p[strlen(name)] = EOF;
 	uint32_t now = GetClusLoc(tep -> NxtClus);
@@ -38,6 +40,8 @@ static int inode = 100;
 struct file* create_file(uint32_t now, char *name, int type) {
 	struct file *file = pmm -> alloc(sizeof(struct file));
 	void *tep = pmm -> alloc(4096);
+	assert(tep != NULL && file != NULL);
+
 	while(1) {
 		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = tep;
@@ -54,8 +58,10 @@ struct file* create_file(uint32_t now, char *name, int type) {
 				file -> flag    = 0xffffffff;
 				flag = 1;
 				sda -> ops -> write(sda, now + i * 64, file, sizeof(struct file));
+                // make dir for . and ..
 				if (type != 0) {
 					struct file* spj = pmm -> alloc(sizeof(struct file));
+					assert(spj != NULL);
 					strcpy(spj -> name, ".");
 					spj -> type    = DT_DIR;
 					spj -> NxtClus = clus;
@@ -79,7 +85,7 @@ struct file* create_file(uint32_t now, char *name, int type) {
 			nxt = nxt + 1;
 		}
 		if (flag == 1)break;
-		if (GetClusLoc(fat[TurnClus(now)]) == 0) fat[TurnClus(now)] = ++clus;	
+		if (fat[TurnClus(now)] == 0) fat[TurnClus(now)] = ++clus;	
 		now = GetClusLoc(fat[TurnClus(now)]);
 	} 
 	pmm -> free(tep);
@@ -90,9 +96,18 @@ uint32_t ProcLoc;
 uint32_t ZeroLoc, NullLoc, RandLoc;
 
 static void vfs_init()  {
+	// init for sda
 	sda = dev -> lookup("sda");
+	// init for fat
 	fat = (uint32_t *)pmm -> alloc(0x10000);
 	assert(fat != NULL);
+	sda -> ops -> read(sda, FAT_START, fat, 0x10000);
+	clus = fat[0];
+	assert(clus != 0);
+	fat[0] = 0;
+
+
+	// init for fd
 	memset(fd, 0, sizeof(fd));
 	fd[0].used = fd[1].used = fd[2].used = 1;
 	for (int i = 3; i < 1024; i++)
@@ -100,17 +115,15 @@ static void vfs_init()  {
 	for (int i = 0; i < MAX_CPU; i++)
 		mode[i] = 1;
 
-	sda -> ops -> read(sda, FAT_START, fat, 4096);
-	clus = fat[0];
-	assert(clus != 0);
-	fat[0] = 0;
-
+	// init for dev and proc
 	struct file* tep = create_file(FILE_START, "proc", 1);
+	assert(tep != NULL && tep -> flag == 0xffffffff);
     ProcLoc = GetClusLoc(tep -> NxtClus);
-	tep = create_file(ProcLoc, "cpuiofo", 0);
-	tep = create_file(ProcLoc, "memiofo", 0);
+	tep = create_file(ProcLoc, "cpuinfo", 0);
+	tep = create_file(ProcLoc, "meminfo", 0);
 
 	tep = create_file(FILE_START, "dev", 1);
+	assert(tep != NULL && tep -> flag == 0xffffffff);
 	uint32_t nxt = GetClusLoc(tep -> NxtClus);
 	tep = create_file(nxt, "zero", 0);
 	ZeroLoc = tep -> bias;
