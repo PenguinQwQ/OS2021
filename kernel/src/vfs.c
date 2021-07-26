@@ -8,8 +8,8 @@ extern spinlock_t trap_lock;
 static device_t *sda;
 uint32_t current_dir[MAX_CPU];
 uint32_t mode[MAX_CPU];
-uint32_t *fat;
-uint32_t clus;
+static uint32_t *fat;
+static uint32_t clus;
 uint32_t size[10000000 + 5] = {0};
 struct fd_ fd[1024];
 
@@ -33,7 +33,7 @@ uint32_t TurnClus(uint32_t now) {
 	return (now - 0x200000) / 512 / 8 + 1;	
 }
 
-int inode = 100;
+static int inode = 100;
 
 struct file* create_file(uint32_t now, char *name, int type) {
 	struct file *file = pmm -> alloc(sizeof(struct file));
@@ -89,10 +89,7 @@ struct file* create_file(uint32_t now, char *name, int type) {
 uint32_t ProcLoc;
 uint32_t ZeroLoc, NullLoc, RandLoc;
 
-static int ti = 0;
 static void vfs_init()  {
-	ti++;
-	assert(ti == 1);
 	sda = dev -> lookup("sda");
 	fat = (uint32_t *)pmm -> alloc(0x100000);
 	for (int i = 0; i < MAX_CPU; i++)
@@ -213,8 +210,10 @@ static int T = 0;
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
 	assert(fat[0] == clus);
-	sda -> ops -> read(sda, 0x100000, fat, 0x100000);
-	assert(fat[0] == clus);
+	uint32_t *t = pmm -> alloc(0x100000);
+	assert(t != NULL);
+	sda -> ops -> read(sda, 0x100000, t, 0x100000);
+	assert(t[0] == clus);
 	T++;
 	assert(T == 1);
 	if (T == 4)assert(0);
