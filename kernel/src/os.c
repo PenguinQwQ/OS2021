@@ -4,7 +4,6 @@
 #define MAX_CPU 128
 
 spinlock_t trap_lock;
-extern uint32_t current_dir[8];
 
 void func(void *args) {
 	int ti = 0;
@@ -441,7 +440,6 @@ static Context* os_trap(Event ev, Context *context) {
 	int id = cpu_current();
 	if (current[id] != NULL) {
 		current[id] -> ctx = context;
-		current[id] -> inode = current_dir[id];
 		assert(current[id] -> on == true);
 	}
 	else {
@@ -449,7 +447,7 @@ static Context* os_trap(Event ev, Context *context) {
 		origin[id].ctx = context;
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
-		current[id] -> inode = 0x200000;
+		current[id] -> inode = FILE_START;
 	}
 	if (lst[id] != NULL) lst[id] -> sleep_flag = false;
 	lst[id] = current[id];
@@ -482,7 +480,6 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] = &origin[cpu_current()];
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
-		current_dir[id] = current[id] -> inode;
 		kmt -> spin_unlock(&trap_lock);
 		return current[id] -> ctx;
 	}
@@ -494,7 +491,6 @@ static Context* os_trap(Event ev, Context *context) {
 	current[id] -> sleep_flag = false;
 	current[id] -> on = true;
 	assert(current[id] -> status == RUNNING);
-	current_dir[id] = current[id] -> inode;
 	kmt -> spin_unlock(&trap_lock);
 	return current[id] -> ctx;	
 }
