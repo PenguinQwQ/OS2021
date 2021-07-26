@@ -89,7 +89,10 @@ struct file* create_file(uint32_t now, char *name, int type) {
 uint32_t ProcLoc;
 uint32_t ZeroLoc, NullLoc, RandLoc;
 
+static int ti = 0;
 static void vfs_init()  {
+	ti++;
+	assert(ti == 1);
 	sda = dev -> lookup("sda");
 	fat = (uint32_t *)pmm -> alloc(0x100000);
 	for (int i = 0; i < MAX_CPU; i++)
