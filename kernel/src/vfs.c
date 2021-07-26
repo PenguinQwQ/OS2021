@@ -103,13 +103,9 @@ static void vfs_init()  {
 	sda -> ops -> read(sda, 0x100000, fat, 4096);
 	clus = fat[0];
 	assert(clus != 0);
-	//fat[0] = 0;
+	fat[0] = 0;
 
-	struct file *tep = pmm -> alloc(sizeof(struct file));
-	sda -> ops -> read(sda, 0x200000, tep, sizeof(struct file));
-	assert(tep -> flag == 0xffffffff);
-	
-/*	struct file* tep = create_file(0x200000, "proc", 1);
+	struct file* tep = create_file(0x200000, "proc", 1);
     ProcLoc = GetClusLoc(tep -> NxtClus);
 	tep = create_file(ProcLoc, "cpuiofo", 0);
 	tep = create_file(ProcLoc, "memiofo", 0);
@@ -122,7 +118,7 @@ static void vfs_init()  {
 	NullLoc = tep -> bias;
 	tep = create_file(nxt, "random", 0);
 	RandLoc = tep -> bias;
-	pmm -> free(tep);*/
+	pmm -> free(tep);
 }
 
 
@@ -137,25 +133,21 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 	path = path + i;
 	void *tep = pmm -> alloc(4096); ///////////////////////////	
 	assert(tep != NULL);
-	assert(strcmp(name, "proc") && strcmp(name, "dev"));
+// 	assert(strcmp(name, "proc") && strcmp(name, "dev"));
 	uint32_t lst = 0;
 	while (1) {
 		if (now == 0) break;
 		lst = now;
 		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = (struct file *)tep;
-		assert(now == 0x200000);
-		assert(nxt -> flag == 0xffffffff);
 		for (int i = 0; i < 64; i++) {
 			if (strcmp(name, nxt -> name) == 0) {
 				if (nxt -> type == DT_DIR) {
-					assert(0);
 					memcpy(file, nxt, sizeof(struct file));
 					pmm -> free(tep), pmm -> free(name);
 					return solve_path(GetClusLoc(nxt -> NxtClus), path, status, file, create);
 				}
 				else {
-					assert(0);
 					if (path[0] != 0) {
 						pmm -> free(tep), pmm -> free(name);
 						return -1;
@@ -189,7 +181,6 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 }
 
 static int vfs_chdir(const char *path) {
-	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
@@ -205,18 +196,9 @@ static int vfs_chdir(const char *path) {
 	kmt -> spin_unlock(&trap_lock);
 	return result;
 }
-static int T = 0;
 
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
-	assert(fat[0] == clus);
-	uint32_t *t = pmm -> alloc(0x100000);
-	assert(t != NULL);
-	sda -> ops -> read(sda, 0x100000, t, 4096);
-	assert(t[0] == clus);
-	T++;
-	assert(T == 1);
-	if (T == 4)assert(0);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
 	assert(current_dir[id] == 0x200000);
@@ -230,8 +212,6 @@ static int vfs_open(const char *path, int flags) {
 	int result = -1;
 	if (nxt == -1) result = -1;
 	else {
-		assert(0);
-		if (tep -> type == DT_DIR && flags != O_RDONLY)assert(0);
 	//	if (nxt == 0) printf("CREATE!!\n");
 		if (nxt == 0x200000) {
 			tep -> NxtClus = 1, strcpy(tep -> name, "/"), tep -> type = DT_DIR;	
@@ -247,14 +227,11 @@ static int vfs_open(const char *path, int flags) {
 				break;
 			}
 	}
-    assert(result == -1);	
-	assert((flags & O_CREAT) == 0);
 	kmt -> spin_unlock(&trap_lock);	
 	return result;
 }
 
 static int vfs_close(int num) {
-	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int result = -1;
 	if (num < 0 || num >= 1024) result = -1;
@@ -267,7 +244,6 @@ static int vfs_close(int num) {
 } 
 
 static int vfs_mkdir(const char *pathname) {
-	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (pathname[0] == '/') ? 0x200000 : current_dir[id];
@@ -313,7 +289,6 @@ static int count_file(uint32_t now, int flag, struct ufs_dirent* obj, int st, in
 } 
 
 static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
-	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int result = 0;
 	if (fd[fd_num].used == 0) result = -1;
@@ -335,7 +310,6 @@ static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
 }
 
 static int vfs_link(const char *oldpath, const char *newpath) {
-	assert(0);
    	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current(), result = -1;
 
@@ -366,7 +340,6 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 }
 
 static int vfs_unlink(const char* path) {
-	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? 0x200000 : current_dir[id];
@@ -390,7 +363,6 @@ static int vfs_unlink(const char* path) {
 }
 
 static int vfs_read(int fd_num, void *buf, int count) {
-	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	char *obj = (char *)buf;
 	int result = 0;
@@ -455,7 +427,6 @@ static int vfs_read(int fd_num, void *buf, int count) {
 }
 
 static int vfs_write(int fd_num, void *buf, int count) {
-	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	char *obj = (char *)buf;
 	int result = 0;
@@ -510,7 +481,6 @@ static int vfs_write(int fd_num, void *buf, int count) {
 }
 
 static int vfs_lseek(int fd_num, int offset, int whence) {
-	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int result = -1;
 	if (fd_num < 0 || fd_num >= 1024 || fd[fd_num].file == NULL) result = -1;
@@ -525,7 +495,6 @@ static int vfs_lseek(int fd_num, int offset, int whence) {
 }
 
 static int vfs_dup(int fd_num) {
-	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int newfd = -1;
 	for (int i = 0; i < 1024; i++) 
