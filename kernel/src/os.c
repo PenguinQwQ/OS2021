@@ -90,9 +90,6 @@ static void traverse(const char *root) {
                                  // Linux 以 “.” 开头的文件是隐藏文件了吧
           char *fname = pmm->alloc(MAX_PATH_LEN); // assert success
           sprintf(fname, "%s/%s", root, d->name);
-		  if (strcmp(d -> name, "proc") == 0) {
-			while(1);	  
-		 }
 		  printf("%s\n", fname);
           traverse(fname);
           pmm->free(fname);
