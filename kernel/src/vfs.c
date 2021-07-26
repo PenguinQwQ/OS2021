@@ -228,7 +228,7 @@ static int vfs_open(const char *path, int flags) {
 	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, tep, (flags & O_CREAT) != 0);
 
 	int result = -1;
-	if (nxt == -1) {
+	if (nxt == -1 || (nxt != 0 && nxt != 1 && flags != O_RDONLY)) {
 		result = -1;
 		pmm -> free(tep);
 		#ifdef CheckTask
@@ -236,7 +236,6 @@ static int vfs_open(const char *path, int flags) {
 		#endif
 	}
 	else {
-		assert(nxt == 0 || nxt == 1);
 		#ifdef CheckTask	
 		if (nxt == 0) printf("CREATE!!\n");
 		#endif
