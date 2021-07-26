@@ -232,9 +232,6 @@ static int vfs_open(const char *path, int flags) {
 	if (nxt == -1 || (nxt != 0 && nxt != 1 && flags != O_RDONLY)) {
 		result = -1;
 		pmm -> free(tep);
-		#ifdef CheckTask
-		printf("open result:%d\n", result);
-		#endif
 	}
 	else {
 		#ifdef CheckTask	
@@ -254,7 +251,7 @@ static int vfs_open(const char *path, int flags) {
 			}
 		#ifdef CheckTask
 		if (nxt != 0)printf("open result:%d name:%s location:%x\n", result, tep -> name, tep -> bias);
-		else printf("open result:%d name:%s (new) location:%x\n", result, tep -> name, tep -> bias);
+		else printf("open result:%d name:%s  location:%x CREATE!!\n", result, tep -> name, tep -> bias);
 		#endif
 	}
 	kmt -> spin_unlock(&trap_lock);	
@@ -270,7 +267,7 @@ static int vfs_close(int num) {
 		else fd[num].used = 0, result = 0, pmm -> free(fd[num].file);
 	}
 	#ifdef CheckTask
-	printf("close result:%d fd:%d", result, num);
+	printf("close result:%d fd:%d\n", result, num);
 	#endif
 	kmt -> spin_unlock(&trap_lock);
 	return result;
