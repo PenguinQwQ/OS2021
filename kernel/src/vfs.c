@@ -4,7 +4,7 @@
 // #define CheckTask
 #define EOF -1
 #define MAX_CPU 128
-
+int b[100000000];
 extern spinlock_t trap_lock;
 extern struct task *current[128];
 static device_t *sda;
@@ -21,6 +21,7 @@ struct SzList {
 struct SzList *SzHead;
 
 uint32_t GetClusLoc(uint32_t clus) {
+	b[0] = 0;
 	if (clus == 0) return 0;
 	return FILE_START + (clus - 1) * 512 * 8;	
 }
