@@ -44,6 +44,7 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 		while (now -> next != NULL) now = now -> next;
 		now -> next = task;
 	}
+	assert(task_head -> next == NULL);
 	kmt -> spin_unlock(&trap_lock);
 	return 0;
 }
