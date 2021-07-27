@@ -100,6 +100,7 @@ static void tty_reader(void *arg) {
 	   while (1) {
 		    tty->ops->write(tty, 0, ps, strlen(ps));
 			int nread = tty->ops->read(tty, 0, cmd, sizeof(cmd) - 1);
+			printf("%s\n", ps);
 		    cmd[nread - 1] = '\0';
 			for (int i = 0; i < nread; i++)
 				if (cmd[i] == ' ') cmd[i] = 0;
