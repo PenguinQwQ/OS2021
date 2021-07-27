@@ -50,6 +50,7 @@ static void ls(char *arg, char *root, char *cmd, char *ps) {
 }
 
 static void cd(char *arg, char *root, char *cmd, char *ps) {
+	printf("%s\n", ps);
 	int status = vfs -> chdir(cmd + 3);
 	if (status == -1) return;
 	if (cmd[3] == '/') sprintf(ps, "(%s) %s$ ", arg, cmd + 3);
@@ -72,10 +73,9 @@ static void cd(char *arg, char *root, char *cmd, char *ps) {
 	else {
 		if (root[1] != 0) strcat(root, "/");
 		strcat(root, cmd + 3);
-	printf("%s\n", ps);
 		sprintf(ps, "(%s) %s$ ", arg, root);				
-	printf("%s\n", ps);
 	}	
+	printf("%s\n", ps);
 }
 
 static void cat(char* arg, char *root, char *cmd, char *ps) {
