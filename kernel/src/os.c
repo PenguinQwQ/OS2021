@@ -91,6 +91,7 @@ static void tty_reader(void *arg) {
 
 			if (strcmp(cmd, "ls") == 0) ls(arg, root, cmd, ps);
 			else if (strcmp(cmd, "cd") == 0) cd(arg, root, cmd, ps);
+			printf("\n");
 	  }
 }
 
