@@ -524,7 +524,7 @@ static Context* os_trap(Event ev, Context *context) {
 	tot = 0;
 	while (now != NULL)	{
 		if (now ->sleep_flag == true) {
-			assert(now != current[id]);
+			if (now -> on == true)assert(0);
 			assert(now -> on == false);
 		}
 		if (now -> status == SUITABLE && now -> on == false) {
