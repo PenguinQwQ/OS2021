@@ -228,8 +228,11 @@ static int vfs_chdir(const char *path) {
 	return result;
 }
 
+static int T = 0;
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
+	T++;
+	assert(T <= 3);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? FILE_START : current[id] -> inode;
 	int status = 1;
