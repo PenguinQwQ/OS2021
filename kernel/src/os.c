@@ -48,7 +48,7 @@ static void ls(char *arg, char *root, char *cmd, char *ps) {
 
 static void cd(char *arg, char *root, char *cmd, char *ps) {
 	vfs -> chdir(cmd + 3);
-	if (cmd[3] == '/') sprintf(ps, "(%s) $: %s", arg, cmd + 3);
+	if (cmd[3] == '/') sprintf(ps, "(%s) %s$ ", arg, cmd + 3);
 	else if (cmd[3] == '.' && cmd[4] == '.') {
 		if (root[0] == '/' && root[1] == 0) {
 			printf("root dir can not cd last dir!\n");	
@@ -61,14 +61,14 @@ static void cd(char *arg, char *root, char *cmd, char *ps) {
 					else root[i] = 0;
 					break;	
 				}
-			sprintf(ps, "(%s) $: %s", arg, root);
+			sprintf(ps, "(%s) %s$ ", arg, root);
 		}
 	}
 	else if (cmd[3] == '.');
 	else {
 		if (root[1] == 0) strcat(root, "/");
 		strcat(root, cmd + 3);
-		sprintf(ps, "(%s) $: %s", arg, root);				
+		sprintf(ps, "(%s) %s$ ", arg, root);				
 	}	
 }
 
@@ -77,7 +77,7 @@ static void tty_reader(void *arg) {
 	char cmd[128], ps[16];
 	  char root[1024];
 	  strcpy(root, "/");
-	  sprintf(ps, "(%s) $: %s", arg, root);
+	  sprintf(ps, "(%s) %s$ ", arg, root);
 	   while (1) {
 		    tty->ops->write(tty, 0, ps, strlen(ps));
 			int nread = tty->ops->read(tty, 0, cmd, sizeof(cmd) - 1);
