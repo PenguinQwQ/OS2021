@@ -505,6 +505,7 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] -> on = true;
 		current[id] -> inode = FILE_START;
 	}
+	assert(current[id] != NULL);
 	if (lst[id] != NULL) lst[id] -> sleep_flag = false;
 	lst[id] = current[id];
 	lst[id] -> sleep_flag = true;
@@ -517,6 +518,7 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
 	current[id] -> on = false;
+	assert(current[id] == lst[id]);
 	
 	task_t *now = task_head;
 	tot = 0;
