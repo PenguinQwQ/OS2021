@@ -35,6 +35,8 @@ static void ls(char *arg, char *root, char *cmd, char *ps) {
    struct ufs_stat s;
    vfs->fstat(fd, &s);
    char buf[4096];
+   printf("%d", fd);
+   while(1);
    int nread = vfs->read(fd, buf, 4096);
 	for (int offset = 0;
 			 offset +  sizeof(struct ufs_dirent) <= nread;
