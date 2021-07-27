@@ -423,7 +423,7 @@ static int vfs_read(int fd_num, void *buf, int count) {
 	kmt -> spin_lock(&trap_lock);
 	char *obj = (char *)buf;
 	int result = 0;
-	if (fd[fd_num].used == 0 || fd[fd_num].file == NULL) result = -1;
+	if (fd_num < 0 || fd_num >= 1024 || fd[fd_num].used == 0 || fd[fd_num].file == NULL) result = -1;
 	else {
 		if (fd[fd_num].file -> bias == ZeroLoc) {
 		    for (int i = 0; i < count; i++) obj[i] = 0;
@@ -494,7 +494,7 @@ static int vfs_write(int fd_num, void *buf, int count) {
 	kmt -> spin_lock(&trap_lock);
 	char *obj = (char *)buf;
 	int result = 0;
-	if (fd[fd_num].used == 0 || fd[fd_num].file == NULL) result = -1;
+	if (fd_num < 0 || fd_num >= 1024 || fd[fd_num].used == 0 || fd[fd_num].file == NULL) result = -1;
 	else if ((fd[fd_num].flag & O_WRONLY) == 0) result = -1;
 	else {
 		if (fd[fd_num].file -> bias == ZeroLoc) {
