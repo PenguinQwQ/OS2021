@@ -229,7 +229,7 @@ static int vfs_chdir(const char *path) {
 
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
-	char *fat_check = pmm -> alloc(0x10000);
+	uint32_t *fat_check = pmm -> alloc(0x10000);
 	sda -> ops -> read(sda, FAT_START, fat_check, 0x10000);
 	assert(fat_check[0] == 0);
 	assert(fat_check[0] == clus);
