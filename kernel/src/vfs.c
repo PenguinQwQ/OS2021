@@ -231,6 +231,7 @@ static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
 	char *fat_check = pmm -> alloc(0x10000);
 	sda -> ops -> read(sda, FAT_START, fat_check, 0x10000);
+	assert(fat_check[0] == 0);
 	assert(fat_check[0] == clus);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? FILE_START : current[id] -> inode;
