@@ -97,7 +97,7 @@ static void stat(char *arg, char *root, char *cmd, char *ps) {
 	struct ufs_stat s;
 	int status = vfs -> fstat(fd, &s);	
 	if (status == -1) goto finish_stat;
-	printf("id:%d size:%d", s.id, s.size);
+	printf("id:%d size:%d\n", s.id, s.size);
 	finish_stat:
 	vfs -> close(fd);
 }
