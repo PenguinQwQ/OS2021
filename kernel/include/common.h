@@ -5,7 +5,6 @@
 #include <klib-macros.h>
 #include <limits.h>
 #include <vfs.h>
-#include <user.h>
 #define STACK_SIZE 4096 * 8
 #define SUITABLE  2
 #define RUNNING   1
