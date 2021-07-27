@@ -9,8 +9,8 @@
 #define SUITABLE  2
 #define RUNNING   1
 #define BLOCKED   0
-#define FILE_START 0x1010000
-#define FAT_START  0x1000000
+#define FILE_START 0x110000
+#define FAT_START  0x100000
 
 extern struct task* task_head;
 extern struct task* current[128];
