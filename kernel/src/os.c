@@ -28,46 +28,68 @@ void comsumer() {
 	while(1){kmt->sem_wait(&fill); putch(')');  kmt->sem_signal(&empty);}
 }
 int T = 0;
-/*
+
+static void ls(char *arg, char *root, char *cmd, char *ps) {
+
+   int fd = vfs->open(root, O_RDONLY);
+   struct ufs_stat s;
+   vfs->fstat(fd, &s);
+   char buf[4096];
+   int nread = vfs->read(fd, buf, 4096);
+	for (int offset = 0;
+			 offset +  sizeof(struct ufs_dirent) <= nread;
+			 offset += sizeof(struct ufs_dirent)) {
+			 struct ufs_dirent *d = (struct ufs_dirent *)(buf + offset);
+			 if (d->name[0] != '.')  
+				printf("%s\n", d -> name);
+	}
+	vfs -> close(fd);
+}
+
+static void cd(char *arg, char *root, char *cmd, char *ps) {
+	vfs -> chdir(cmd + 3);
+	if (cmd[3] == '/') sprintf(ps, "(%s) $: %s", arg, cmd + 3);
+	else if (cmd[3] == '.' && cmd[4] == '.') {
+		if (root[0] == '/' && root[1] == 0) {
+			printf("root dir can not cd last dir!\n");	
+		}
+		else {
+			int len = strlen(root);
+			for (int i = len - 1; i >= 0; i--) 
+				if (root[i] == '/') {
+					if (i == 0) root[1] = 0;
+					else root[i] = 0;
+					break;	
+				}
+			sprintf(ps, "(%s) $: %s", arg, root);
+		}
+	}
+	else if (cmd[3] == '.');
+	else {
+		if (root[1] == 0) strcat(root, "/");
+		strcat(root, cmd + 3);
+		sprintf(ps, "(%s) $: %s", arg, root);				
+	}	
+}
+
 static void tty_reader(void *arg) {
 	  device_t *tty = dev->lookup(arg);
-	  char cmd[128], resp[128], ps[16];
-	  sprintf(ps, "(%s) $ ", arg);
+	char cmd[128], ps[16];
+	  char root[1024];
+	  strcpy(root, "/");
+	  sprintf(ps, "(%s) $: %s", arg, root);
 	   while (1) {
 		    tty->ops->write(tty, 0, ps, strlen(ps));
 			int nread = tty->ops->read(tty, 0, cmd, sizeof(cmd) - 1);
 		    cmd[nread - 1] = '\0';
-			if (cmd[0] == '0')printf("%d\n", vfs -> open(cmd + 2, O_WRONLY | O_CREAT));
-			else if (cmd[0] == '1')printf("%d\n", vfs -> chdir(cmd + 2));
-			else if (cmd[0] == '2')printf("%d\n", vfs -> close(atoi(cmd + 2)));
-			else if (cmd[0] == '3')printf("%d\n", vfs -> mkdir(cmd + 2));
-			else if (cmd[0] == '4')printf("%d\n", vfs -> fstat(atoi(cmd + 2), pmm -> alloc(32)));
-			else if (cmd[0] == '5') {
-				cmd[3] = 0;
-				printf("%d\n", vfs -> link(cmd + 4, cmd + 2));
-			}
-			else if (cmd[0] == '6')printf("%d\n", vfs -> unlink(cmd + 2));
-			else if (cmd[0] == '7') {
-				cmd[3] = 0;
-				struct ufs_dirent *now = pmm -> alloc(4096);
-				int sz = vfs -> read(atoi(cmd + 2), now, 2);
-				for (int off = 0; off + sizeof(struct ufs_dirent) <= sz; off += sizeof(struct ufs_dirent)) {
-					printf("%d %s\n", now -> inode, now -> name);
-					now = now + 1;	
-				}
-				pmm -> free(now);
-			}
-			else if (cmd[0] == '8') {
-				cmd[3] = 0;	
-				char *now = pmm -> alloc(4096 * 2);
-				now[0] = 's', now[1] = 't'; now[4096] = 'p';
-				vfs -> write(atoi(cmd + 2), now, 4096 * 2);
-				pmm -> free(now);
-			}
-		    tty->ops->write(tty, 0, resp, strlen(resp));
+			for (int i = 0; i < nread; i++)
+				if (cmd[i] == ' ') cmd[i] = 0;
+
+			if (strcmp(cmd, "ls") == 0) ls(arg, root, cmd, ps);
+			else if (strcmp(cmd, "cd") == 0) cd(arg, root, cmd, ps);
 	  }
 }
-*/
+
 /*
 static void traverse(const char *root) {
   int sz = 4096;
@@ -408,7 +430,7 @@ static void os_init() {
 //  vfs->init();
   kmt->spin_init(&trap_lock, "os_trap"); 
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", test, "tty1");
- // kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
+  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
 // kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty2");
   
 /*  kmt -> sem_init(&empty, "empty", 10);
