@@ -8,8 +8,8 @@ extern spinlock_t trap_lock;
 extern struct task *current[MAX_CPU];
 device_t *sda;
 uint32_t mode[MAX_CPU];
-static uint32_t *fat;
-static uint32_t clus;
+uint32_t *fat;
+uint32_t clus;
 struct fd_ fd[1024];
 
 struct SzList {
