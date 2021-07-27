@@ -86,6 +86,7 @@ static void cat(char* arg, char *root, char *cmd, char *ps) {
 	int nread = vfs -> read(fd, tep, s.size > 4096 ? s.size : 4096);
 	for (int i = 0; i < nread; i++)
 		printf("%c", tep[i]);
+	printf("\n");
 	finish_cat:
 	vfs -> close(fd);
 } 
