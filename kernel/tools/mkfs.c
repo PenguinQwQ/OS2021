@@ -124,10 +124,10 @@ int main(int argc, char *argv[]) {
 
   uint8_t *p = disk;
 
-  p += 0x100000;
+  p += 0x1000000;
   fat = (uint32_t *)p;
   p += 0x10000;
-  FirstLoc = 0x110000;
+  FirstLoc = 0x1010000;
 
   DIR *dir = opendir(argv[3]);
   assert(dir != NULL);
