@@ -50,7 +50,6 @@ static void ls(char *arg, char *root, char *cmd, char *ps) {
 }
 
 static void cd(char *arg, char *root, char *cmd, char *ps) {
-	printf("%s\n", ps);
 	int status = vfs -> chdir(cmd + 3);
 	if (status == -1) return;
 	if (cmd[3] == '/') sprintf(ps, "(%s) %s$ ", arg, cmd + 3);
@@ -75,7 +74,6 @@ static void cd(char *arg, char *root, char *cmd, char *ps) {
 		strcat(root, cmd + 3);
 		sprintf(ps, "(%s) %s$ ", arg, root);				
 	}	
-	printf("%s\n", ps);
 }
 
 static void cat(char* arg, char *root, char *cmd, char *ps) {
@@ -101,6 +99,7 @@ static void tty_reader(void *arg) {
 	  sprintf(ps, "(%s) %s$ ", arg, root);
 	   while (1) {
 		    tty->ops->write(tty, 0, ps, strlen(ps));
+			printf("%s\n", ps);
 			int nread = tty->ops->read(tty, 0, cmd, sizeof(cmd) - 1);
 		    cmd[nread - 1] = '\0';
 			for (int i = 0; i < nread; i++)
