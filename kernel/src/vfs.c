@@ -222,7 +222,7 @@ static int vfs_chdir(const char *path) {
 	kmt -> spin_unlock(&trap_lock);
 	return result;
 }
-
+static int T = 0;
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
@@ -259,6 +259,8 @@ static int vfs_open(const char *path, int flags) {
 		else printf("open result:%d name:%s  location:%x CREATE!!\n", result, tep -> name, tep -> bias);
 		#endif
 	}
+	T++;
+	assert(T == 1 && result != -1);
 	kmt -> spin_unlock(&trap_lock);	
 	return result;
 }
