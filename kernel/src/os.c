@@ -491,7 +491,6 @@ int tot = 0;
 
 static Context* os_trap(Event ev, Context *context) {
 	assert(ienabled() == false);
-	assert(cpu_count() == 1);
 	assert(ev.event != EVENT_ERROR);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
