@@ -224,6 +224,7 @@ static int vfs_chdir(const char *path) {
 }
 static int T = 0;
 static int vfs_open(const char *path, int flags) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? FILE_START : current[id] -> inode;
@@ -260,7 +261,6 @@ static int vfs_open(const char *path, int flags) {
 		#endif
 	}
 	T++;
-	if (T == 1)assert(result != -1);
 	kmt -> spin_unlock(&trap_lock);	
 	return result;
 }
