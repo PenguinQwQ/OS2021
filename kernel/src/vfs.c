@@ -240,7 +240,6 @@ static int vfs_open(const char *path, int flags) {
 	assert(tep != NULL);
 	status = flags;
 	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, tep, (flags & O_CREAT) != 0);
-	assert(nxt == -1);
 	int result = -1;
 	if (nxt == -1 || (nxt != 0 && nxt != 1 && flags != O_RDONLY)) {
 		result = -1;
