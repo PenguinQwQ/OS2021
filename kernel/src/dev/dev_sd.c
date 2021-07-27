@@ -9,7 +9,7 @@ static int sd_init(device_t *dev) {
     sd->blkcnt = io_read(AM_DISK_CONFIG).blkcnt;
     sd->blksz  = io_read(AM_DISK_CONFIG).blksz;
     sd->buf    = pmm->alloc(sd->blksz);
-	printf("%s\n", sd -> blksz);
+	printf("%d\n", sd -> blksz);
   }
   return 0;
 }
