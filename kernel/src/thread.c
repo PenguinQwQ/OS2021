@@ -17,6 +17,7 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 	kmt -> spin_lock(&trap_lock);
 	tt++;
 	assert(tt == 1);
+	assert(task_head == NULL);
 	task -> stack = pmm -> alloc(STACK_SIZE);
 	assert(task -> stack != NULL);
 	task -> name  = name;
