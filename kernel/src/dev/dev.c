@@ -1,7 +1,11 @@
 #include <devices.h>
 
 #define DEVICES(_) \
-  _(0, sd_t,    "sda",      1, &sd_ops)
+  _(0, input_t, "input",    1, &input_ops) \
+  _(1, fb_t,    "fb",       1, &fb_ops) \
+  _(2, tty_t,   "tty1",     1, &tty_ops) \
+  _(3, tty_t,   "tty2",     2, &tty_ops) \
+  _(4, sd_t,    "sda",      1, &sd_ops) \
 
 #define DEV_CNT(...) + 1
 device_t *devices[0 DEVICES(DEV_CNT)];
@@ -27,6 +31,7 @@ static device_t *dev_create(int size, const char* name, int id, devops_t *ops) {
 
 void dev_input_task();
 void dev_tty_task();
+
 static void dev_init() {
 #define INIT(id, device_type, dev_name, dev_id, dev_ops) \
   devices[id] = dev_create(sizeof(device_type), dev_name, dev_id, dev_ops); \
@@ -34,8 +39,8 @@ static void dev_init() {
 
   DEVICES(INIT);
 
-//  kmt->create(pmm->alloc(sizeof(task_t)), "input-task", dev_input_task, NULL);
-//  kmt->create(pmm->alloc(sizeof(task_t)), "tty-task",   dev_tty_task,   NULL);
+  kmt->create(pmm->alloc(sizeof(task_t)), "input-task", dev_input_task, NULL);
+  kmt->create(pmm->alloc(sizeof(task_t)), "tty-task",   dev_tty_task,   NULL);
 }
 
 MODULE_DEF(dev) = {
