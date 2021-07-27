@@ -234,9 +234,6 @@ static int vfs_chdir(const char *path) {
 
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
-	int len = strlen(path);
-	for (int i = 0; i < len; i++)
-		if (path[i] == '/')assert(0);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? FILE_START : current[id] -> inode;
 	int status = 1;
