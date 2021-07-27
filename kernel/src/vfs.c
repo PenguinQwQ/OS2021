@@ -88,6 +88,7 @@ struct file* create_file(uint32_t now, char *name, int type) {
 				}
 				break;
 			}
+			assert(nxt -> flag == 0xffffffff);
 			nxt = nxt + 1;
 		}
 		if (flag == 1)break;
