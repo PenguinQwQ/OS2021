@@ -229,11 +229,12 @@ static int vfs_chdir(const char *path) {
 
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
-//	uint32_t *fat_check = pmm -> alloc(0x10000);
-//	sda -> ops -> read(sda, FAT_START, fat_check, 0x10000);
-//	assert(fat_check[0] == clus);
+	uint32_t *fat_check = pmm -> alloc(0x10000);
+	sda -> ops -> read(sda, FAT_START, fat_check, 0x10000);
+	assert(fat_check[0] == clus);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? FILE_START : current[id] -> inode;
+    printf("%x\n", now);
 	int status = 1;
 	struct file* tep = pmm -> alloc(sizeof(struct file));
 	assert(tep != NULL);
