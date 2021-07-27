@@ -515,7 +515,6 @@ static Context* os_trap(Event ev, Context *context) {
 
 	for (int i = 0; i < Lists_sum; i++) 
 		if (ev.event == Lists[i].event || Lists[i].event == EVENT_NULL){
-			assert(0);
 			Lists[i].func(ev, context);
 	}
 	if (current[id] -> status != BLOCKED) current[id] -> status = SUITABLE;
@@ -523,6 +522,7 @@ static Context* os_trap(Event ev, Context *context) {
 	assert(current[id] == lst[id]);
 	
 	task_t *now = task_head;
+	assert(now != NULL);
 	assert(now != NULL && now -> next == NULL);
 	tot = 0;
 	while (now != NULL)	{
