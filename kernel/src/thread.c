@@ -47,6 +47,7 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 }
 
 static void kmt_teardown(task_t *task) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	if (task_head == task) task_head = NULL;
 	else {
