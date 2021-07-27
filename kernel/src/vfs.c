@@ -6,7 +6,7 @@
 #define MAX_CPU 128
 extern spinlock_t trap_lock;
 extern struct task *current[MAX_CPU];
-static device_t *sda;
+device_t *sda;
 uint32_t mode[MAX_CPU];
 static uint32_t *fat;
 static uint32_t clus;
@@ -49,8 +49,7 @@ struct file* create_file(uint32_t now, char *name, int type) {
 	assert(tep != NULL && file != NULL);
 
 	while(1) {
-		device_t *sdd = dev -> lookup("sda");
-		sdd -> ops -> read(sdd, now, tep, 4096);
+		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = tep;
 		int flag = 0;
 		for (int i = 0; i < 64; i++) {
