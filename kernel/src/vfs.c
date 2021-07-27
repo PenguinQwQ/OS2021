@@ -124,11 +124,11 @@ static void vfs_init()  {
 	// init for dev and proc
 	struct file* tep = create_file(FILE_START, "proc", 1);
 	assert(tep != NULL && tep -> flag == 0xffffffff);
-   /*
+   
     ProcLoc = GetClusLoc(tep -> NxtClus);
 	tep = create_file(ProcLoc, "cpuinfo", 0);
-	tep = create_file(ProcLoc, "meminfo", 0);
-	*/
+//	tep = create_file(ProcLoc, "meminfo", 0);
+	
 /*
 	tep = create_file(FILE_START, "dev", 1);
 	assert(tep != NULL && tep -> flag == 0xffffffff);
