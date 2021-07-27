@@ -72,9 +72,10 @@ static void cd(char *arg, char *root, char *cmd, char *ps) {
 	else {
 		if (root[1] != 0) strcat(root, "/");
 		strcat(root, cmd + 3);
-		sprintf(ps, "(%s) %s$ ", arg, root);				
-	}	
 	printf("%s\n", ps);
+		sprintf(ps, "(%s) %s$ ", arg, root);				
+	printf("%s\n", ps);
+	}	
 }
 
 static void cat(char* arg, char *root, char *cmd, char *ps) {
