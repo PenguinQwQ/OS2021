@@ -91,6 +91,17 @@ static void cat(char* arg, char *root, char *cmd, char *ps) {
 	vfs -> close(fd);
 } 
 
+static void stat(char *arg, char *root, char *cmd, char *ps) {
+	int fd = vfs -> open(cmd, O_RDONLY);
+	if (fd == -1) return;
+	struct ufs_stat s;
+	int status = vfs -> fstat(fd, &s);	
+	if (status == -1) goto finish_stat;
+	printf("id:%d size:%d", s.id, s.size);
+	finish_stat:
+	vfs -> close(fd);
+}
+
 static void tty_reader(void *arg) {
 	 device_t *tty = dev->lookup(arg);
 	char cmd[128], ps[128];
@@ -107,6 +118,7 @@ static void tty_reader(void *arg) {
 			if (strcmp(cmd, "ls") == 0) ls(arg, root, cmd, ps);
 			else if (strcmp(cmd, "cd") == 0) cd(arg, root, cmd, ps);
 			else if (strcmp(cmd, "cat") == 0) cat(arg, root, cmd + 4, ps);
+			else if (strcmp(cmd, "stat") == 0) stat(arg, root, cmd + 5, ps);
 			printf("\n");
 	  }
 }
