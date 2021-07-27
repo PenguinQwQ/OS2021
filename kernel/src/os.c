@@ -66,7 +66,7 @@ static void cd(char *arg, char *root, char *cmd, char *ps) {
 	}
 	else if (cmd[3] == '.');
 	else {
-		if (root[1] == 0) strcat(root, "/");
+		if (root[1] != 0) strcat(root, "/");
 		strcat(root, cmd + 3);
 		sprintf(ps, "(%s) %s$ ", arg, root);				
 	}	
