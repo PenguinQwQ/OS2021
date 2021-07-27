@@ -120,7 +120,7 @@ static void vfs_init()  {
 		fd[i].used = 0;
 	for (int i = 0; i < MAX_CPU; i++)
 		mode[i] = 1;
-/*
+
 	// init for dev and proc
 	struct file* tep = create_file(FILE_START, "proc", 1);
 	assert(tep != NULL && tep -> flag == 0xffffffff);
@@ -137,7 +137,7 @@ static void vfs_init()  {
 	NullLoc = tep -> bias;
 	tep = create_file(nxt, "random", 0);
 	RandLoc = tep -> bias;
-	pmm -> free(tep);*/
+	pmm -> free(tep);
 }
 
 
@@ -222,7 +222,7 @@ static int vfs_chdir(const char *path) {
 	kmt -> spin_unlock(&trap_lock);
 	return result;
 }
-static int T = 0;
+
 static int vfs_open(const char *path, int flags) {
 	assert(0);
 	kmt -> spin_lock(&trap_lock);
@@ -260,7 +260,6 @@ static int vfs_open(const char *path, int flags) {
 		else printf("open result:%d name:%s  location:%x CREATE!!\n", result, tep -> name, tep -> bias);
 		#endif
 	}
-	T++;
 	kmt -> spin_unlock(&trap_lock);	
 	return result;
 }
