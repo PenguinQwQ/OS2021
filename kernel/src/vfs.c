@@ -188,7 +188,6 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 			nxt = nxt + 1;
 		}
 		now = GetClusLoc(fat[TurnClus(now)]);
-		assert(now == 0);
 	}
 
 	if (path[0] == 0 && create == 1) {
@@ -238,7 +237,7 @@ static int vfs_open(const char *path, int flags) {
 	assert(tep != NULL);
 	status = flags;
 	uint32_t nxt = solve_path(now, path + (path[0] == '/'), &status, tep, (flags & O_CREAT) != 0);
-
+	assert(nxt == -1);
 	int result = -1;
 	if (nxt == -1 || (nxt != 0 && nxt != 1 && flags != O_RDONLY)) {
 		result = -1;
@@ -266,6 +265,7 @@ static int vfs_open(const char *path, int flags) {
 		#endif
 	}
 	kmt -> spin_unlock(&trap_lock);	
+	assert(result == -1);
 	return result;
 }
 
