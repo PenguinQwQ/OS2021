@@ -5,7 +5,7 @@
 #define EOF -1
 #define MAX_CPU 128
 extern spinlock_t trap_lock;
-extern struct task *current[128];
+extern struct task *current[MAX_CPU];
 static device_t *sda;
 uint32_t mode[MAX_CPU];
 static uint32_t *fat;
