@@ -27,13 +27,13 @@ uint32_t GetClusLoc(uint32_t clus) {
 void add_name(struct file *tep, const char *name) {
 	assert(tep -> flag == 0xffffffff);
 	tep -> size = strlen(name) + 1;
-//	sda -> ops -> write(sda, tep -> bias, tep, sizeof(struct file));
+	sda -> ops -> write(sda, tep -> bias, tep, sizeof(struct file));
 	char *p = pmm -> alloc(128);
 	assert(p != NULL);
 	strcpy(p, name);
 	p[strlen(name)] = EOF;
-//	uint32_t now = GetClusLoc(tep -> NxtClus);
-//	sda -> ops -> write(sda, now, p, strlen(name) + 1); 
+	uint32_t now = GetClusLoc(tep -> NxtClus);
+	sda -> ops -> write(sda, now, p, strlen(name) + 1); 
 	pmm -> free(p);
 }
 
