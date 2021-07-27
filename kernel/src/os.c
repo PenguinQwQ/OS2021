@@ -76,6 +76,20 @@ static void cd(char *arg, char *root, char *cmd, char *ps) {
 	}	
 }
 
+static void cat(char* arg, char *root, char *cmd, char *ps) {
+	int fd = vfs -> open(cmd, O_RDONLY);
+	if (fd == -1) return;
+	struct ufs_stat s;
+	int status = vfs -> fstat(fd, &s);
+	if (status == -1) goto finish_cat;
+	char *tep = pmm -> alloc(s.size * 2);
+	int nread = vfs -> read(fd, tep, s.size > 4096 ? s.size : 4096);
+	for (int i = 0; i < nread; i++)
+		printf("%c", tep[i]);
+	finish_cat:
+	vfs -> close(fd);
+} 
+
 static void tty_reader(void *arg) {
 	 device_t *tty = dev->lookup(arg);
 	char cmd[128], ps[16];
@@ -91,6 +105,7 @@ static void tty_reader(void *arg) {
 
 			if (strcmp(cmd, "ls") == 0) ls(arg, root, cmd, ps);
 			else if (strcmp(cmd, "cd") == 0) cd(arg, root, cmd, ps);
+			else if (strcmp(cmd, "cat") == 0) cat(arg, root, cmd + 4, ps);
 			printf("\n");
 	  }
 }
