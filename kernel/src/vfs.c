@@ -49,6 +49,7 @@ struct file* create_file(uint32_t now, char *name, int type) {
 	assert(tep != NULL && file != NULL);
 
 	while(1) {
+		assert(now >= 0x110000);
 		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = tep;
 		int flag = 0;
