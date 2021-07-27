@@ -30,11 +30,11 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 		sum++;
 		char s[100];
 		sprintf(s, "%d", sum);
-		struct file* tep = create_file(ProcLoc, s, 1);
-		uint32_t nxt = GetClusLoc(tep -> NxtClus);
-		tep = create_file(nxt, "name", 0);
+//		struct file* tep = create_file(ProcLoc, s, 1);
+//		uint32_t nxt = GetClusLoc(tep -> NxtClus);
+//		tep = create_file(nxt, "name", 0);
 //		add_name(tep, task -> name);
-		pmm -> free(tep);
+//		pmm -> free(tep);
 	}
 	if (task_head == NULL) task_head = task;
 	else {
