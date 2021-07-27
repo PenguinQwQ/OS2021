@@ -127,7 +127,7 @@ static void vfs_init()  {
    
     ProcLoc = GetClusLoc(tep -> NxtClus);
 	tep = create_file(ProcLoc, "cpuinfo", 0);
-//	tep = create_file(ProcLoc, "meminfo", 0);
+	tep = create_file(ProcLoc, "meminfo", 0);
 	
 /*
 	tep = create_file(FILE_START, "dev", 1);
