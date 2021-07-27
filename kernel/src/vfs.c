@@ -166,6 +166,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = (struct file *)tep;
 		assert(nxt != NULL);
+		assert(nxt -> flag = 0xffffffff);
 
 		for (int i = 0; i < 64; i++) {
 			if (strcmp(name, nxt -> name) == 0) {
