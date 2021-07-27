@@ -11,9 +11,11 @@ static void kmt_init() {
 		current[i] = NULL;	
 }
 static int sum = 0;
-
+static int tt  = 0;
 extern uint32_t ProcLoc;
 static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), void *arg) {
+	tt++;
+	assert(tt == 1);
 	kmt -> spin_lock(&trap_lock);
 	task -> stack = pmm -> alloc(STACK_SIZE);
 	assert(task -> stack != NULL);
