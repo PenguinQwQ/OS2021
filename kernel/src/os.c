@@ -38,7 +38,8 @@ static void ls(char *arg, char *root, char *cmd, char *ps) {
    char buf[4096];
    int nread = vfs->read(fd, buf, 4096);
    if (status < 0) goto finish_ls;
-	for (int offset = 0;
+   while(1);
+   for (int offset = 0;
 			 offset +  sizeof(struct ufs_dirent) <= nread;
 			 offset += sizeof(struct ufs_dirent)) {
 			 struct ufs_dirent *d = (struct ufs_dirent *)(buf + offset);
