@@ -170,7 +170,6 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 
 		for (int i = 0; i < 64; i++) {
 			if (strcmp(name, nxt -> name) == 0) {
-				assert(0);
 				if (nxt -> type == DT_DIR) {
 					memcpy(file, nxt, sizeof(struct file));
 					pmm -> free(tep), pmm -> free(name);
@@ -189,10 +188,10 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 			nxt = nxt + 1;
 		}
 		now = GetClusLoc(fat[TurnClus(now)]);
+		assert(now == 0);
 	}
 
 	if (path[0] == 0 && create == 1) {
-		assert(0);
 		assert(lst != 0);
 		struct file *nxt = create_file(lst, name, 0); 
 		memcpy(file, nxt, sizeof(struct file));
@@ -200,7 +199,6 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 		return 0;
 	}
 	if (path[0] == 0 && create == 2) {
-		assert(0);
 		assert(lst != 0);
 		struct file *nxt = create_file(lst, name, 1);
 		memcpy(file, nxt, sizeof(struct file));
