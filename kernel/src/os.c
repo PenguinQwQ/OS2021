@@ -93,19 +93,17 @@ static void cat(char* arg, char *root, char *cmd, char *ps) {
 
 static void tty_reader(void *arg) {
 	 device_t *tty = dev->lookup(arg);
-	char cmd[128], ps[16];
+	char cmd[128], ps[128];
 	  char root[1024];
 	  strcpy(root, "/");
 	  sprintf(ps, "(%s) %s$ ", arg, root);
 	   while (1) {
 		    tty->ops->write(tty, 0, ps, strlen(ps));
 			int nread = tty->ops->read(tty, 0, cmd, sizeof(cmd) - 1);
-			printf("%s\n", ps);
 		    cmd[nread - 1] = '\0';
 			for (int i = 0; i < nread; i++)
 				if (cmd[i] == ' ') cmd[i] = 0;
 
-			printf("%s\n", ps);
 			if (strcmp(cmd, "ls") == 0) ls(arg, root, cmd, ps);
 			else if (strcmp(cmd, "cd") == 0) cd(arg, root, cmd, ps);
 			else if (strcmp(cmd, "cat") == 0) cat(arg, root, cmd + 4, ps);
