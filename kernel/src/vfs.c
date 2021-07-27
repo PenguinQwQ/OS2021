@@ -160,7 +160,7 @@ uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *fi
 		name[i] = path[i], name[i + 1] = 0, i++;
 	path = path + i;
 
-	void *tep = pmm -> alloc(4096);
+	void *tep = pmm -> alloc(0x100000);
 	assert(tep != NULL);
 	uint32_t lst = 0;
 	while (1) {
