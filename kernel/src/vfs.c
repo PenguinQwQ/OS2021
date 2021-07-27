@@ -121,7 +121,7 @@ static void vfs_init()  {
 		fd[i].used = 0;
 	for (int i = 0; i < MAX_CPU; i++)
 		mode[i] = 1;
-
+/*
 	// init for dev and proc
 	struct file* tep = create_file(FILE_START, "proc", 1);
 	assert(tep != NULL && tep -> flag == 0xffffffff);
@@ -141,6 +141,7 @@ static void vfs_init()  {
 	tep = create_file(nxt, "random", 0);
 	RandLoc = tep -> bias;
 	pmm -> free(tep);
+*/
 }
 
 
@@ -228,6 +229,9 @@ static int vfs_chdir(const char *path) {
 
 static int vfs_open(const char *path, int flags) {
 	kmt -> spin_lock(&trap_lock);
+	char *fat_check = pmm -> alloc(0x10000);
+	sda -> ops -> read(sda, FAT_START, fat_check, 0x10000);
+	assert(fat_check[0] == clus);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? FILE_START : current[id] -> inode;
 	int status = 1;
