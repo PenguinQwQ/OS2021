@@ -127,7 +127,7 @@ static void vfs_init()  {
     ProcLoc = GetClusLoc(tep -> NxtClus);
 	tep = create_file(ProcLoc, "cpuinfo", 0);
 	tep = create_file(ProcLoc, "meminfo", 0);
-
+/*
 	tep = create_file(FILE_START, "dev", 1);
 	assert(tep != NULL && tep -> flag == 0xffffffff);
 	uint32_t nxt = GetClusLoc(tep -> NxtClus);
@@ -137,7 +137,7 @@ static void vfs_init()  {
 	NullLoc = tep -> bias;
 	tep = create_file(nxt, "random", 0);
 	RandLoc = tep -> bias;
-	pmm -> free(tep);
+	pmm -> free(tep);*/
 }
 
 
