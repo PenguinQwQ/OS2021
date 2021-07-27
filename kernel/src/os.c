@@ -29,7 +29,7 @@ void comsumer() {
 }
 int T = 0;
 //////////////////// TEST1//////////////////////////
-/*
+
 static void ls(char *arg, char *root, char *cmd, char *ps) {
 
    int fd = vfs->open(root, O_RDONLY);
@@ -123,7 +123,7 @@ static void tty_reader(void *arg) {
 			printf("\n");
 	  }
 }
-*/
+
 //////////////////////////// TEST2/////////////////////////////////////
 /*
 
@@ -468,7 +468,7 @@ static void os_init() {
   kmt->spin_init(&trap_lock, "os_trap"); 
 
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", test, "tty1");
-// kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
+ kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
   
 /*  kmt -> sem_init(&empty, "empty", 10);
   kmt -> sem_init(&fill,  "fill" , 0);
