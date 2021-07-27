@@ -152,7 +152,6 @@ static void vfs_init()  {
 uint32_t solve_path(uint32_t now, const char *path, int *status, struct file *file, int create) {
 	while (path[0] == '/') path++;
 	if (path[0] == 0) return now;
-	assert(path[0] == '.');
 
 	char *name = pmm -> alloc(256); 
 	assert(name != NULL);
