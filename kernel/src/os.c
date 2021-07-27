@@ -32,12 +32,12 @@ int T = 0;
 static void ls(char *arg, char *root, char *cmd, char *ps) {
 
    int fd = vfs->open(root, O_RDONLY);
+   if (fd < 0) return;
    struct ufs_stat s;
-   vfs->fstat(fd, &s);
+   int status = vfs->fstat(fd, &s);
    char buf[4096];
-   printf("%d", fd);
-   while(1);
    int nread = vfs->read(fd, buf, 4096);
+   if (status < 0) goto finish_ls;
 	for (int offset = 0;
 			 offset +  sizeof(struct ufs_dirent) <= nread;
 			 offset += sizeof(struct ufs_dirent)) {
@@ -45,11 +45,13 @@ static void ls(char *arg, char *root, char *cmd, char *ps) {
 			 if (d->name[0] != '.')  
 				printf("%s\n", d -> name);
 	}
+	finish_ls:
 	vfs -> close(fd);
 }
 
 static void cd(char *arg, char *root, char *cmd, char *ps) {
-	vfs -> chdir(cmd + 3);
+	int status = vfs -> chdir(cmd + 3);
+	if (status == -1) return;
 	if (cmd[3] == '/') sprintf(ps, "(%s) %s$ ", arg, cmd + 3);
 	else if (cmd[3] == '.' && cmd[4] == '.') {
 		if (root[0] == '/' && root[1] == 0) {
