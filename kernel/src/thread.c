@@ -28,7 +28,6 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 	task -> inode = FILE_START;
 	if (ProcLoc) {
 		sum++;
-		assert(sum == 1);
 		char s[100];
 		sprintf(s, "%d", sum);
 		struct file* tep = create_file(ProcLoc, s, 1);
