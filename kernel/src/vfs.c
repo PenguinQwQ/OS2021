@@ -91,7 +91,7 @@ struct file* create_file(uint32_t now, char *name, int type) {
 			nxt = nxt + 1;
 		}
 		if (flag == 1)break;
-		assert(0);
+		if (strcmp(name, "1") == 0)assert(0);
 		if (fat[TurnClus(now)] == 0) fat[TurnClus(now)] = ++clus;	
 		now = GetClusLoc(fat[TurnClus(now)]);
 	} 
