@@ -123,7 +123,7 @@ static void tty_reader(void *arg) {
 	  }
 }
 */
-
+/*
 static void traverse(const char *root) {
   int sz = 4096;
   #define MAX_PATH_LEN 4096
@@ -454,7 +454,7 @@ traverse("");
 while(1);
 }
 
-
+*/
 static void os_init() {
   T++;
   Lists_sum = 0;
@@ -464,7 +464,7 @@ static void os_init() {
   vfs->init();
   kmt->spin_init(&trap_lock, "os_trap"); 
 
-  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", test, "tty1");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", test, "tty1");
 // kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty2");
   
 /*  kmt -> sem_init(&empty, "empty", 10);
