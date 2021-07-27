@@ -503,6 +503,7 @@ static Context* os_trap(Event ev, Context *context) {
 		origin[id].ctx = context;
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
+		current[id] -> sleep_flag = false;
 		current[id] -> inode = FILE_START;
 	}
 	assert(current[id] != NULL);
@@ -538,6 +539,7 @@ static Context* os_trap(Event ev, Context *context) {
 	}
 
 	if (tot == 0) {
+		assert(0);
 		current[id] = &origin[cpu_current()];
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
