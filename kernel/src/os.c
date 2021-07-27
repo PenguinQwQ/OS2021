@@ -541,6 +541,7 @@ static Context* os_trap(Event ev, Context *context) {
 		current[id] = &origin[cpu_current()];
 		current[id] -> status = RUNNING;
 		current[id] -> on = true;
+		current[id] -> sleep_flag = false;
 		kmt -> spin_unlock(&trap_lock);
 		return current[id] -> ctx;
 	}
