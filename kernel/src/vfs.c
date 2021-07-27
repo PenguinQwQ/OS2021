@@ -49,7 +49,6 @@ struct file* create_file(uint32_t now, char *name, int type) {
 	assert(tep != NULL && file != NULL);
 
 	while(1) {
-		assert(now >= 0x110000);
 		sda -> ops -> read(sda, now, tep, 4096);
 		struct file *nxt = tep;
 		int flag = 0;
@@ -93,7 +92,6 @@ struct file* create_file(uint32_t now, char *name, int type) {
 			nxt = nxt + 1;
 		}
 		if (flag == 1)break;
-		if (strcmp(name, "1") == 0)assert(0);
 		if (fat[TurnClus(now)] == 0) fat[TurnClus(now)] = ++clus;	
 		now = GetClusLoc(fat[TurnClus(now)]);
 	} 
