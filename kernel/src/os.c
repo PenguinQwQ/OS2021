@@ -73,7 +73,7 @@ static void cd(char *arg, char *root, char *cmd, char *ps) {
 }
 
 static void tty_reader(void *arg) {
-	  device_t *tty = dev->lookup(arg);
+	 device_t *tty = dev->lookup(arg);
 	char cmd[128], ps[16];
 	  char root[1024];
 	  strcpy(root, "/");
@@ -426,8 +426,8 @@ static void os_init() {
   Lists_sum = 0;
   pmm->init();
   kmt->init();
-//  dev -> init();
-//  vfs->init();
+  dev -> init();
+  vfs->init();
   kmt->spin_init(&trap_lock, "os_trap"); 
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", test, "tty1");
   kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
