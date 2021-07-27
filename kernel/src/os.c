@@ -28,7 +28,7 @@ void comsumer() {
 	while(1){kmt->sem_wait(&fill); putch(')');  kmt->sem_signal(&empty);}
 }
 int T = 0;
-
+/*
 static void ls(char *arg, char *root, char *cmd, char *ps) {
 
    int fd = vfs->open(root, O_RDONLY);
@@ -122,7 +122,7 @@ static void tty_reader(void *arg) {
 			printf("\n");
 	  }
 }
-
+*/
 /*
 static void traverse(const char *root) {
   int sz = 4096;
@@ -464,7 +464,7 @@ static void os_init() {
   vfs->init();
   kmt->spin_init(&trap_lock, "os_trap"); 
 //  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", test, "tty1");
-  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
+//  kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
 // kmt->create(pmm -> alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty2");
   
 /*  kmt -> sem_init(&empty, "empty", 10);
