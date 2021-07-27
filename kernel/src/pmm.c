@@ -182,6 +182,7 @@ static void *kalloc(size_t size) {
   if (!bj) {
 	  space = slow_alloc(size);
   }
+  assert(space != NULL);
   memset(space, 0, size);
   if (i) iset(true);
   return space;
