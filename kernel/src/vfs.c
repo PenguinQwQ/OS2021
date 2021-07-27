@@ -45,6 +45,7 @@ static int inode = 100;
 
 struct file* create_file(uint32_t now, char *name, int type) {
 	struct file *file = pmm -> alloc(sizeof(struct file));
+	if (strcmp(name, "1") == 0) return file;
 	void *tep = pmm -> alloc(4096);
 	assert(tep != NULL && file != NULL);
 
