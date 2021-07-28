@@ -125,6 +125,7 @@ static void vfs_init()  {
 		mode[i] = 1;
 
 	// init for dev and proc
+	/*
 	int id = vfs -> open("/proc", O_RDONLY);
 	if (id == -1) {
 	struct file* tep = create_file(FILE_START, "proc", 1);
@@ -154,7 +155,7 @@ static void vfs_init()  {
 	pmm -> free(tep);
 	}
 	else vfs -> close(id);
-
+	*/
 	ZeroLoc = ZeroLoc ? ZeroLoc : 0xffffffff;
 	RandLoc = RandLoc ? RandLoc : 0xffffffff;
 	NullLoc = NullLoc ? NullLoc : 0xffffffff;
