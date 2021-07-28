@@ -369,6 +369,7 @@ static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
 }
 
 static int vfs_link(const char *oldpath, const char *newpath) {
+	assert(0);
    	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current(), result = -1;
 
