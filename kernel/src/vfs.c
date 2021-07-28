@@ -260,6 +260,7 @@ static int vfs_open(const char *path, int flags) {
 				fd[i].used = 1; 
 				fd[i].flag = flags;
 				fd[i].file = tep;
+				fd[i].real_bias = NULL;
 				fd[i].bias = 0;
 				result = i;
 				break;
@@ -279,7 +280,7 @@ static int vfs_close(int num) {
 	if (num < 0 || num >= 1024) result = -1;
 	else {
 		if (fd[num].used == 0 || fd[num].file == NULL) result = -1;
-		else fd[num].used = 0, result = 0, pmm -> free(fd[num].file);
+		else fd[num].used = 0, result = 0, pmm -> free(fd[num].file), fd[num].real_bias = NULL;
 	}
 	#ifdef CheckTask
 	printf("close result:%d fd:%d\n", result, num);
@@ -463,6 +464,17 @@ static int vfs_read(int fd_num, void *buf, int count) {
 			int bias  = fd[fd_num].bias;
 			int loc   = 0; 
 			int p     = 0;
+
+			if (fd[fd_num].real_bias != NULL) bias = *fd[fd_num].real_bias;
+			struct SzList* NowSz = SzHead;
+			while (NowSz != NULL) {
+				if (NowSz -> inode == fd[fd_num].file -> inode) {
+					sz = NowSz -> size;
+					break;
+				}
+				NowSz = NowSz -> nxt;	
+			}
+
 			char *tep = pmm -> alloc(4096);
 			assert(tep != NULL);
 
@@ -484,13 +496,16 @@ static int vfs_read(int fd_num, void *buf, int count) {
 				if (now == 0 || count == 0 || loc == sz) break;
 			}
 			pmm -> free(tep);
-			fd[fd_num].file -> bias = loc;
+			fd[fd_num].bias = loc;
+			if (fd[fd_num].real_bias != NULL) *fd[fd_num].real_bias = loc;
 			result = p;
 		}
 		else {
 			result = 0;		
 			assert(count % sizeof(struct ufs_dirent) == 0);
 			count = count / sizeof(struct ufs_dirent);
+			if (fd[fd_num].real_bias != NULL)
+					fd[fd_num].bias = *fd[fd_num].real_bias;
 			int sz = count_file(GetClusLoc(fd[fd_num].file -> NxtClus), 1, buf, fd[fd_num].bias / sizeof(struct ufs_dirent), fd[fd_num].bias / sizeof(struct ufs_dirent) + count - 1);
 			fd[fd_num].bias += sizeof(struct ufs_dirent) * sz;
 			result = sizeof(struct ufs_dirent) * sz; 
@@ -504,8 +519,14 @@ static int vfs_write(int fd_num, void *buf, int count) {
 	kmt -> spin_lock(&trap_lock);
 	char *obj = (char *)buf;
 	int result = 0;
-	if (fd_num < 0 || fd_num >= 1024 || fd[fd_num].used == 0 || fd[fd_num].file == NULL) result = -1;
-	else if ((fd[fd_num].flag & O_WRONLY) == 0) result = -1;
+	if (fd_num < 0 || fd_num >= 1024 || fd[fd_num].used == 0 || fd[fd_num].file == NULL) {
+		result = -1;
+		assert(0);
+	}
+	else if (fd[fd_num].flag ==  O_WRONLY || fd[fd_num].flag == O_CREAT) {
+		result = -1;
+		assert(0);
+	}
 	else {
 		if (fd[fd_num].file -> bias == ZeroLoc) {
 			#ifdef CheckTask
@@ -532,6 +553,17 @@ static int vfs_write(int fd_num, void *buf, int count) {
 			int bias  = fd[fd_num].bias;
 			int loc   = 0; 
 			int p     = 0;
+			if (fd[fd_num].real_bias != NULL) {
+				bias = *fd[fd_num].real_bias;
+			}
+			struct SzList* NowSz = SzHead;
+			while (NowSz != NULL) {
+				if (NowSz -> inode == fd[fd_num].file -> inode) {
+					sz = NowSz -> size;
+					break;
+				}
+				NowSz = NowSz -> nxt;	
+			}
 
 			while (1) {
 				if (bias >= 4096) bias -= 4096, loc += 4096;
@@ -551,6 +583,7 @@ static int vfs_write(int fd_num, void *buf, int count) {
 				now = GetClusLoc(fat[TurnClus(now)]);
 			}
 			fd[fd_num].bias = loc;
+			if (fd[fd_num].real_bias != NULL) *fd[fd_num].real_bias = loc;
 			if (loc > sz) {
 				struct SzList *NowSz = SzHead, *lst;
 				int finish;
@@ -610,6 +643,7 @@ static int vfs_lseek(int fd_num, int offset, int whence) {
 			bias = sz + offset;
 		}
 		result = bias;
+		fd[fd_num].bias = bias;
 		if (fd[fd_num].real_bias != NULL) *fd[fd_num].real_bias = bias;
 	}
 	kmt -> spin_unlock(&trap_lock);
