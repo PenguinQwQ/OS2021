@@ -105,7 +105,6 @@ uint32_t ProcLoc;
 uint32_t ZeroLoc, NullLoc, RandLoc;
 
 static void vfs_init()  {
-	printf("%d\n", cpu_current());
 	// init for sda
 	sda = dev -> lookup("sda");
 	// init for fat
