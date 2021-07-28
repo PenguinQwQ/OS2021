@@ -129,19 +129,26 @@ static void vfs_init()  {
 	if (id == -1) {
 	struct file* tep = create_file(FILE_START, "proc", 1);
 	assert(tep != NULL && tep -> flag == 0xffffffff);
-   
     ProcLoc = GetClusLoc(tep -> NxtClus);
+	pmm -> free(tep);
 	tep = create_file(ProcLoc, "cpuinfo", 0);
+	pmm -> free(tep);
 	tep = create_file(ProcLoc, "meminfo", 0);
-	
+	pmm -> free(tep);
 
 	tep = create_file(FILE_START, "dev", 1);
 	assert(tep != NULL && tep -> flag == 0xffffffff);
+	pmm -> free(tep);
+
 	uint32_t nxt = GetClusLoc(tep -> NxtClus);
 	tep = create_file(nxt, "zero", 0);
 	ZeroLoc = tep -> bias;
+	pmm -> free(tep);
+
 	tep = create_file(nxt, "null", 0);
 	NullLoc = tep -> bias;
+	pmm -> free(tep);
+	
 	tep = create_file(nxt, "random", 0);
 	RandLoc = tep -> bias;
 	pmm -> free(tep);
