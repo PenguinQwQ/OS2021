@@ -104,50 +104,7 @@ struct file* create_file(uint32_t now, char *name, int type) {
 uint32_t ProcLoc;
 uint32_t ZeroLoc, NullLoc, RandLoc;
 
-static void vfs_init()  {
-	// init for sda
-	sda = dev -> lookup("sda");
-	// init for fat
-	fat = (uint32_t *)pmm -> alloc(0x10000);
-	assert(fat != NULL);
-	sda -> ops -> read(sda, FAT_START, fat, 0x10000);
-	clus = fat[0];
-	assert(clus != 0);
-	fat[0] = 0;
 
-
-	// init for fd
-	memset(fd, 0, sizeof(fd));
-	fd[0].used = fd[1].used = fd[2].used = 1;
-	for (int i = 3; i < 1024; i++)
-		fd[i].used = 0;
-	for (int i = 0; i < MAX_CPU; i++)
-		mode[i] = 1;
-/*
-	// init for dev and proc
-	struct file* tep = create_file(FILE_START, "proc", 1);
-	assert(tep != NULL && tep -> flag == 0xffffffff);
-   
-    ProcLoc = GetClusLoc(tep -> NxtClus);
-	tep = create_file(ProcLoc, "cpuinfo", 0);
-	tep = create_file(ProcLoc, "meminfo", 0);
-	
-
-	tep = create_file(FILE_START, "dev", 1);
-	assert(tep != NULL && tep -> flag == 0xffffffff);
-	uint32_t nxt = GetClusLoc(tep -> NxtClus);
-	tep = create_file(nxt, "zero", 0);
-	ZeroLoc = tep -> bias;
-	tep = create_file(nxt, "null", 0);
-	NullLoc = tep -> bias;
-	tep = create_file(nxt, "random", 0);
-	RandLoc = tep -> bias;
-	pmm -> free(tep);
-*/
-	ZeroLoc = ZeroLoc ? ZeroLoc : 0xffffffff;
-	RandLoc = RandLoc ? RandLoc : 0xffffffff;
-	NullLoc = NullLoc ? NullLoc : 0xffffffff;
-}
 
 
 
@@ -288,6 +245,55 @@ static int vfs_close(int num) {
 	kmt -> spin_unlock(&trap_lock);
 	return result;
 } 
+
+static void vfs_init()  {
+	// init for sda
+	sda = dev -> lookup("sda");
+	// init for fat
+	fat = (uint32_t *)pmm -> alloc(0x10000);
+	assert(fat != NULL);
+	sda -> ops -> read(sda, FAT_START, fat, 0x10000);
+	clus = fat[0];
+	assert(clus != 0);
+	fat[0] = 0;
+
+
+	// init for fd
+	memset(fd, 0, sizeof(fd));
+	fd[0].used = fd[1].used = fd[2].used = 1;
+	for (int i = 3; i < 1024; i++)
+		fd[i].used = 0;
+	for (int i = 0; i < MAX_CPU; i++)
+		mode[i] = 1;
+
+	// init for dev and proc
+	int id = vfs -> open("/proc", O_RDONLY);
+	if (id == -1) {
+	struct file* tep = create_file(FILE_START, "proc", 1);
+	assert(tep != NULL && tep -> flag == 0xffffffff);
+   
+    ProcLoc = GetClusLoc(tep -> NxtClus);
+	tep = create_file(ProcLoc, "cpuinfo", 0);
+	tep = create_file(ProcLoc, "meminfo", 0);
+	
+
+	tep = create_file(FILE_START, "dev", 1);
+	assert(tep != NULL && tep -> flag == 0xffffffff);
+	uint32_t nxt = GetClusLoc(tep -> NxtClus);
+	tep = create_file(nxt, "zero", 0);
+	ZeroLoc = tep -> bias;
+	tep = create_file(nxt, "null", 0);
+	NullLoc = tep -> bias;
+	tep = create_file(nxt, "random", 0);
+	RandLoc = tep -> bias;
+	pmm -> free(tep);
+	}
+	else vfs -> close(id);
+
+	ZeroLoc = ZeroLoc ? ZeroLoc : 0xffffffff;
+	RandLoc = RandLoc ? RandLoc : 0xffffffff;
+	NullLoc = NullLoc ? NullLoc : 0xffffffff;
+}
 
 static int vfs_mkdir(const char *pathname) {
 	kmt -> spin_lock(&trap_lock);
