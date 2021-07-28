@@ -167,7 +167,10 @@ void *fast_alloc(int id, int kd) {
 }
 
 static void *kalloc(size_t size) {
-  if ((size >> 20) >= 16) return NULL;
+  if ((size >> 20) >= 16) {
+	  assert(0);
+	  return NULL;
+  }
   int i = ienabled();
   iset(false);
   if (size < sizeof(task_t)) size = sizeof(task_t);
