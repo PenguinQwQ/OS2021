@@ -55,12 +55,7 @@ struct file* create_file(uint32_t now, char *name, int type) {
 		struct file *nxt = tep;
 		int flag = 0;
 		for (int i = 0; i < 64; i++) {
-			if (strcmp(nxt -> name, name) == 0) {
-				memcpy(file, nxt, sizeof(struct file));
-				flag = 1;
-				break;	
-			}
-			else if (nxt -> name[0] == 0) {
+			if (nxt -> name[0] == 0) {
 				strcpy(file -> name, name);
 				if (type == 0) file -> type = 8;
 				else file -> type = DT_DIR;
