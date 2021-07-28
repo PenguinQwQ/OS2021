@@ -11,6 +11,8 @@ uint32_t mode[MAX_CPU];
 uint32_t *fat;
 uint32_t clus;
 struct fd_ fd[1024];
+int real_bias[1024];
+static int tot = 0;
 
 struct SzList {
 	uint32_t inode;
@@ -632,6 +634,14 @@ static int vfs_dup(int fd_num) {
 			memcpy(fd[newfd].file, fd[fd_num].file, sizeof(struct file));	
 		}
 	}
+	if (fd[fd_num].real_bias == NULL) {
+		tot++;
+		assert(tot < 1024);	
+		real_bias[tot - 1] = fd[fd_num].bias;
+		fd[fd_num].real_bias = &real_bias[tot - 1];
+	}
+	fd[newfd].real_bias = fd[fd_num].real_bias;
+	fd[fd_num].bias = fd[newfd].bias = *fd[fd_num].real_bias;
 	kmt -> spin_unlock(&trap_lock);
 	return newfd;
 }

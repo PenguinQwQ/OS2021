@@ -11,5 +11,6 @@ struct fd_ {
 	int used;
 	int flag;
 	int bias;
+	int *real_bias;
 	struct file* file;
 };
