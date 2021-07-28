@@ -460,6 +460,7 @@ while(1);
 
 static void os_init() {
   T++;
+  printf("%d\n", sizeof(task_t));
   Lists_sum = 0;
   pmm->init();
   kmt->init();
