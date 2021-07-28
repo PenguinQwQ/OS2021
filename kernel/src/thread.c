@@ -66,7 +66,6 @@ static void kmt_teardown(task_t *task) {
 	task -> stack = NULL;
 	task -> name  = NULL;
 	task -> ctx	  = NULL;
-	task -> next  = 0;
 	pmm  -> free(task);
 	kmt -> spin_unlock(&trap_lock);
 }
