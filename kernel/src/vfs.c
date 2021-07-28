@@ -123,7 +123,7 @@ static void vfs_init()  {
 		fd[i].used = 0;
 	for (int i = 0; i < MAX_CPU; i++)
 		mode[i] = 1;
-/*
+
 	// init for dev and proc
 	struct file* tep = create_file(FILE_START, "proc", 1);
 	assert(tep != NULL && tep -> flag == 0xffffffff);
@@ -143,7 +143,7 @@ static void vfs_init()  {
 	tep = create_file(nxt, "random", 0);
 	RandLoc = tep -> bias;
 	pmm -> free(tep);
-*/
+
 	ZeroLoc = ZeroLoc ? ZeroLoc : 0xffffffff;
 	RandLoc = RandLoc ? RandLoc : 0xffffffff;
 	NullLoc = NullLoc ? NullLoc : 0xffffffff;
@@ -369,7 +369,6 @@ static int vfs_fstat(int fd_num, struct ufs_stat *buf) {
 }
 
 static int vfs_link(const char *oldpath, const char *newpath) {
-	assert(0);
    	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current(), result = -1;
 
@@ -408,7 +407,6 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 }
 
 static int vfs_unlink(const char* path) {
-	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? FILE_START : current[id] -> inode;
