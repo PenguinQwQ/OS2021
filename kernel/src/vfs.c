@@ -593,9 +593,10 @@ static int vfs_lseek(int fd_num, int offset, int whence) {
 	int result = -1;
 	if (fd_num < 0 || fd_num >= 1024 || fd[fd_num].file == NULL) result = -1;
 	else {
-		//  offset > size ?
-		if (whence == SEEK_CUR) fd[fd_num].bias += offset;
-		else if (whence == SEEK_SET) fd[fd_num].bias = offset;	
+		int bias = fd[fd_num].bias;
+		if (fd[fd_num].real_bias != NULL) bias = *fd[fd_num].real_bias;
+		if (whence == SEEK_CUR) bias += offset;
+		else if (whence == SEEK_SET) bias = offset;	
 		else {
 			int sz = fd[fd_num].file -> size;
 			struct SzList* NowSz = SzHead;
@@ -606,9 +607,10 @@ static int vfs_lseek(int fd_num, int offset, int whence) {
 				}
 				NowSz = NowSz -> nxt;	
 			}
-			fd[fd_num].bias = sz - offset;
+			bias = sz + offset;
 		}
-		result = fd[fd_num].bias;
+		result = bias;
+		if (fd[fd_num].real_bias != NULL) *fd[fd_num].real_bias = bias;
 	}
 	kmt -> spin_unlock(&trap_lock);
 	return result;
