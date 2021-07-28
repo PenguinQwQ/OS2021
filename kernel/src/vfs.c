@@ -408,6 +408,7 @@ static int vfs_link(const char *oldpath, const char *newpath) {
 }
 
 static int vfs_unlink(const char* path) {
+	assert(0);
 	kmt -> spin_lock(&trap_lock);
 	int id = cpu_current();
 	uint32_t now = (path[0] == '/') ? FILE_START : current[id] -> inode;
