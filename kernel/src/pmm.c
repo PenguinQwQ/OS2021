@@ -173,7 +173,6 @@ static void *kalloc(size_t size) {
   }
   int i = ienabled();
   iset(false);
-  if (size < sizeof(task_t)) size = sizeof(task_t);
   int id = cpu_current(), bj = 0;
   void *space;
   for (int i = 0; i < MAX_DATA_SIZE; i++) {

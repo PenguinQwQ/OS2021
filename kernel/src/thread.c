@@ -10,13 +10,10 @@ static void kmt_init() {
 	for (int i = 0; i < MAX_CPU; i++)
 		current[i] = NULL;	
 }
-//static int sum = 0;
-//extern uint32_t ProcLoc;
-//int tt = 0;
+extern uint32_t ProcLoc;
+static int sum = 0;
 static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), void *arg) {
 	kmt -> spin_lock(&trap_lock);
-//	tt++;
-//	assert(tt == 1);
 	task -> stack = pmm -> alloc(STACK_SIZE);
 	assert(task -> stack != NULL);
 	task -> name  = name;
@@ -29,17 +26,16 @@ static int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), 
 	task -> sleep_flag = false;
 	task -> inode = FILE_START;
 	task -> next  = NULL;
-//	if (ProcLoc) {
-//		sum++;
-//		char s[100];
-//		sprintf(s, "%d", sum);
-//		struct file* tep = create_file(ProcLoc, s, 1);
-//		assert(0);
-//		uint32_t nxt = GetClusLoc(tep -> NxtClus);
-//		tep = create_file(nxt, "name", 0);
-//		add_name(tep, task -> name);
-//		pmm -> free(tep);
-//	}
+	if (ProcLoc) {
+		sum++;
+		char s[100];
+		sprintf(s, "%d", sum);
+		struct file* tep = create_file(ProcLoc, s, 1);
+		uint32_t nxt = GetClusLoc(tep -> NxtClus);
+		tep = create_file(nxt, "name", 0);
+		add_name(tep, task -> name);
+		pmm -> free(tep);
+	}
 	if (task_head == NULL) task_head = task;
 	else {
 		task_t *now = task_head;
